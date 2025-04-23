@@ -1,0 +1,153 @@
+/* DoctorProfilePage.css */
+
+.doctor-profile-page {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f9f9f9;
+    color: #333;
+  }
+  
+  .navbar {
+    background: #7ddbdc;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+  }
+  
+  .navbar nav a {
+    margin: 0 1.5rem;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  
+  .profile-main {
+    max-width: 1140px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  
+  .doctor-header {
+    display: flex;
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    gap: 2rem;
+    align-items: center;
+  }
+  
+  .doctor-photo {
+    width: 160px;
+    height: 160px;
+    border-radius: 16px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  
+  .doctor-info h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .doctor-info .speciality {
+    font-weight: 500;
+    color: #666;
+  }
+  
+  .doctor-info .location,
+  .doctor-info .rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+    color: #555;
+    margin-top: 4px;
+  }
+  
+  .message-btn {
+    margin-top: 1rem;
+    background: #00cfcf;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .about-section,
+  .services-section,
+  .reviews-section,
+  .info-section,
+  .recommended-section {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .about-section p,
+  .info-section p {
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .services-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .services-list li {
+    background: #ecfafa;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    color: #007c7c;
+  }
+  
+  .review {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+  }
+  
+  .review p {
+    margin: 0.4rem 0;
+  }
+  
+  .recommended-card {
+    display: inline-block;
+    width: 150px;
+    text-align: center;
+    margin-right: 1rem;
+  }
+  
+  .recommended-card img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer {
+    background: #7ddbdc;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+  

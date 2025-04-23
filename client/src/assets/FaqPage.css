@@ -1,0 +1,248 @@
+/* src/assets/FaqPage.css */
+
+.page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: "Segoe UI", sans-serif;
+    color: #222;
+    background: #f9f9f9;
+  }
+  
+  /* Navbar */
+  .navbar {
+    background: #7ddbdc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 32px;
+    height: 90px;
+    color: #fff;
+  }
+  
+  .nav-left,
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  
+  .logo img {
+    height: 40px;
+  }
+  
+  .menu a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    margin: 0 12px;
+  }
+  
+  .menu a.active {
+    border-bottom: 2px solid #fff;
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .avatar {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+  }
+  
+  .status {
+    font-size: 12px;
+    color: #38d27c;
+  }
+  
+  /* Hero section */
+  .faq-hero {
+    background: #ecfafa;
+    padding: 48px 64px 80px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .faq-hero-text h2 {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+  
+  .faq-hero-text p {
+    margin-top: 0.5rem;
+    color: #555;
+    font-size: 1rem;
+  }
+  
+  .faq-hero-img {
+    height: 180px;
+    object-fit: contain;
+  }
+  
+  /* Main layout */
+  .main {
+    display: flex;
+    padding: 24px 64px;
+    gap: 32px;
+    flex: 1;
+    background: #ecfafa;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .sidebar-header {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  
+  .avatar-large {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar li a {
+    display: block;
+    padding: 10px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #333;
+    background: #eafafa;
+    margin-bottom: 8px;
+  }
+  
+  .sidebar li a.active {
+    background: #7ddbdc;
+    color: #fff;
+  }
+  
+  .delete-account,
+  .logout {
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .delete-account {
+    background: #fff;
+    border: 1px solid #ccc;
+  }
+  
+  .logout {
+    background: #7ddbdc;
+    color: #fff;
+  }
+  
+  /* FAQ Section */
+  .faq-content {
+    flex: 1;
+  }
+  
+  .faq-content h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  
+  /* Scrollable FAQ Box */
+  .faq-box-scrollable {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    max-height: 440px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    line-height: 1.7;
+  }
+  
+  .faq-box-scrollable p {
+    margin-bottom: 1rem;
+  }
+  
+  /* Footer */
+  .footer {
+    background: #7ddbdc;
+    color: #fff;
+    padding: 32px;
+    margin-top: auto;
+  }
+  
+  .footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 24px;
+  }
+  
+  .footer-logo {
+    height: 40px;
+    margin-bottom: 12px;
+  }
+  
+  .footer-block h4 {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  
+  .footer-block p,
+  .footer-block li {
+    font-size: 0.9rem;
+    color: #eafefe;
+    line-height: 1.6;
+  }
+  
+  .footer-block ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .social-icons {
+    display: flex;
+    gap: 10px;
+    font-size: 1.2rem;
+    margin-top: 8px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .main {
+      flex-direction: column;
+      padding: 24px;
+    }
+  
+    .faq-hero {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 32px;
+    }
+  
+    .faq-hero-img {
+      position: static;
+      margin-top: 16px;
+      align-self: center;
+    }
+  }
+  

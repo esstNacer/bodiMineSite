@@ -1,0 +1,187 @@
+/* src/assets/HowItWorksPage.css */
+
+/* Variables & Reset */
+:root {
+    --primary:      #7ddbdc;
+    --bg-light:     #f3fbfb;
+    --text:         #222;
+    --muted:        #666;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body, .how-page {
+    background: var(--bg-light);
+    color: var(--text);
+    font-family: "Segoe UI", Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Main wrapper */
+  .how-content-wrapper {
+    flex: 1;
+    max-width: 1180px;
+    margin: 48px auto;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  
+  /* How It Works Hero */
+  .how-hero {
+    background: #fff;
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    border-radius: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .how-text {
+    flex: 1;
+    min-width: 280px;
+  }
+  .how-text h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+  .how-text ol {
+    list-style: none;
+    counter-reset: step;
+  }
+  .how-text ol li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: .8rem;
+    line-height: 1.4;
+  }
+  .how-text ol li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0; top: 0;
+    width: 24px; height: 24px;
+    background: var(--primary);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+  .how-image {
+    flex: 1;
+    min-width: 280px;
+    text-align: center;
+  }
+  .how-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  }
+  
+  /* Recommendations Section */
+  .recommendations {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .recommendations .logos {
+    flex: 1;
+    min-width: 200px;   /* un peu plus large pour les logos */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .recommendations .logos img {
+    max-width: 140px;    /* augmenté de 120px à 140px */
+    width: 100%;
+    height: auto;
+  }
+  .rec-text {
+    flex: 3;
+    min-width: 300px;
+  }
+  .rec-text h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  .rec-text p {
+    margin-bottom: 1rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .rec-text ol {
+    list-style: none;
+    counter-reset: step;
+    margin-bottom: 1rem;
+  }
+  .rec-text ol li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: .8rem;
+    line-height: 1.4;
+  }
+  .rec-text ol li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0; top: 0;
+    color: var(--primary);
+    font-weight: 700;
+  }
+  .rec-text ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1rem;
+  }
+  .rec-text ul li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: .8rem;
+    line-height: 1.4;
+  }
+  .rec-text ul li::before {
+    content: "•";
+    position: absolute;
+    left: 0; top: 0;
+    color: var(--primary);
+    font-weight: bold;
+  }
+  .rec-text ul li strong {
+    color: var(--primary);
+  }
+  
+  /* Scrollable container */
+  .rec-text.scrollable {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 1rem;
+  }
+  .rec-text.scrollable::-webkit-scrollbar {
+    width: 6px;
+  }
+  .rec-text.scrollable::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 3px;
+  }
+  .rec-text.scrollable::-webkit-scrollbar-track {
+    background: #f0f0f0;
+  }
+  
+  /* Responsive */
+  @media(max-width:900px) {
+    .how-hero,
+    .recommendations {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+  

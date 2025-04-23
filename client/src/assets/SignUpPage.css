@@ -1,0 +1,39 @@
+/* src/pages/SignUpPage.css */
+/* ---------- On reprend la plupart des règles de LoginPage.css ---------- */
+@import './LoginPage.css';
+
+/* ----- Ajustements pour le layout “Send code” ----- */
+.code-row .code-input {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+.code-row input[type="text"] {
+  flex: 1;
+}
+.btn.send-code {
+  background: var(--turquoise);
+  color: #fff;
+  padding: 0 16px;
+  font-size: 14px;
+  border-radius: var(--radius);
+}
+
+/* ----- Ajustement marges formulaire ----- */
+.signin form {
+  gap: 14px; /* un peu moins d’espace vertical */
+}
+
+/* ----- Checkbox mieux alignée ----- */
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  gap: 4px;
+}
+.checkbox-row input {
+  margin: 0;
+}
+
+/* ----- Responsive identique ----- */
+/* (déjà présent dans LoginPage.css) */
