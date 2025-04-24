@@ -1,12 +1,13 @@
 // src/pages/LoginPage.tsx
 import React, { useEffect, useState, FormEvent, JSX } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../assets/LoginPage.css';
 
 import globe      from '../images/globe.png';
 import verifyImg  from '../images/verify.png';
 import connectImg from '../images/connect.png';
 import bodyMine   from '../images/logobodymine.png';
+import { FiHome, FiSearch } from 'react-icons/fi';
 
 interface Slide {
   title: string;
@@ -63,24 +64,22 @@ storage.setItem('user', JSON.stringify(data.user));
   return (
     <div className="page">
       <header className="navbar">
-        <div className="nav-left">
-          <div className="logo">
-            <img src={bodyMine} alt="Bodymine Cosmetic Surgery" />
-          </div>
-          <nav className="menu">
-            <a href="/">Home</a>
-            <a href="/">Chat</a>
-            <a href="/">Search</a>
-          </nav>
-        </div>
-        <div className="nav-right">
-          <span className="lang">EN ▾</span>
-          <div className="avatar">
-            <img src="https://i.pravatar.cc/36?img=48" alt="Parth Ramani" />
-            <span className="status online" />
-          </div>
-        </div>
-      </header>
+                    <div className="logo">
+                      <img src={bodyMine} alt="BodyMine Cosmetic Surgery" />
+                    </div>
+            
+                    <nav className="main-nav">
+                      <a href="/">
+                        <FiHome /> Home
+                      </a>
+                      <a href="/">
+                        <FiSearch /> Chat
+                      </a>
+                      <a  href="/">
+                        <FiSearch /> Search
+                      </a>
+                    </nav>
+                  </header>
 
       <main className="content">
         <section className="carousel">
@@ -160,8 +159,38 @@ storage.setItem('user', JSON.stringify(data.user));
       </main>
 
       <footer className="footer">
-        {/* ... footer identique ... */}
-      </footer>
+              <div className="footer-content">
+                <div className="footer-block">
+                  <img src={bodyMine} alt="BodyMine" className="footer-logo" />
+                  <p>
+                    Bodymine is the leading directory to help you find the perfect surgeon or clinic, anywhere in the world.
+                  </p>
+                  <div className="social-icons">
+                    <span>🔵</span><span>🐦</span><span>▶️</span>
+                  </div>
+                </div>
+                <div className="footer-block">
+                  <h4>Home</h4>
+                  <ul>
+                    <li>Menu</li>
+                    <li>Chat</li>
+                    <li>Search</li>
+                  </ul>
+                </div>
+                <div className="footer-block">
+                  <h4>Info</h4>
+                  <ul>
+                    <li>Terms & Conditions</li>
+                    <li>Privacy Policy</li>
+                    <li>FAQs</li>
+                  </ul>
+                </div>
+                <div className="footer-block">
+                  <h4>Contact Us</h4>
+                  <p>info@bodymine.com</p>
+                </div>
+              </div>
+            </footer>
     </div>
   );
 }

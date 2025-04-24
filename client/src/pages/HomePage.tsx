@@ -2,7 +2,7 @@
 import React, { useContext, useState } from "react";
 import "../assets/Home.css";
 import { Link } from "react-router-dom";
-import { FiSearch, FiMapPin, FiSliders } from "react-icons/fi";
+import { FiSearch, FiMapPin, FiSliders, FiHome } from "react-icons/fi";
 import { UserContext } from "../components/UserContext";
 
 import doctorImage from "../images/doctor.png";
@@ -13,7 +13,7 @@ import bodyMine from "../images/logobodymine.png";
 
 export default function HomePage() {
   const { user } = useContext(UserContext) || { user: null };
-  console.log(user?.first_name);
+  
   const [slide, setSlide] = useState(0);
 
   const carousel = [
@@ -25,27 +25,35 @@ export default function HomePage() {
   return (
     <div className="homepage">
       <header className="navbar">
-        <div className="navbar-left">
-          <div className="logo">
-            <img src={bodyMine} alt="BodyMine Cosmetic Surgery" />
-          </div>
-          <nav>
-            <a href="/home" className="active">Home</a>
-            <a href="/chat">Chat</a>
-            <a href="/search">Search</a>
-          </nav>
-        </div>
-        <div className="navbar-right">
-          <span className="lang">EN ▾</span>
-          <Link to="/editProfile" className="profile">
-            <img src="https://i.pravatar.cc/32?img=12" alt="avatar" className="avatar" />
-            <div>
-              <span className="name">{user?.first_name || "User"} {user?.last_name || "User"}</span><br />
-              <span className="status">Online</span>
-            </div>
-          </Link>
-        </div>
-      </header>
+                    <div className="logo">
+                      <img src={bodyMine} alt="BodyMine Cosmetic Surgery" />
+                    </div>
+            
+                    <nav className="main-nav">
+                      <a href="/home">
+                        <FiHome /> Home
+                      </a>
+                      <a href="/chat">
+                        <FiSearch /> Chat
+                      </a>
+                      <a  href="/search">
+                        <FiSearch /> Search
+                      </a>
+                    </nav>
+            
+                    <div className="profile-mini">
+                      <span className="lang">EN ▾</span>
+                      <Link to={"/editProfile"}>
+                      <img
+                        className="profile-avatar"
+                        src="https://i.pravatar.cc/40?img=12"
+                        alt="Parth Ramani"
+                      />
+                      <span className="profile-name">
+                        {user?.first_name} {user?.last_name} <span className="status-dot">●</span>
+                      </span></Link>
+                    </div>
+                  </header>
 
       <section className="hero">
         <div className="hero-left">

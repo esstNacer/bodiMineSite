@@ -14,6 +14,7 @@ import CGUPage from './pages/CGUPage';
 import SearchPage from './pages/SearchPage';
 import ChatPage from './pages/ChatPage';
 import DoctorProfilePage from './pages/DoctorProfilePage';
+import MyBodyProjectPage from './pages/MyBodyProjectPage';
 
 export default function App() {
   return (
@@ -30,7 +31,8 @@ export default function App() {
       <Route path="/CGU" element={<CGUPage />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/chat" element={<ChatPage />} />
-      <Route path="/doctor" element={<DoctorProfilePage />} />
+      <Route path="/doctor/:id" element={<DoctorProfilePage />} />
+      <Route path="/myBodyProject" element={<MyBodyProjectPage />} />
 
     </Routes>
   );

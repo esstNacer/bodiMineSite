@@ -1,5 +1,5 @@
 /* src/assets/SupportPage.css */
-
+@import "./MyBodyProjectPage.css";
 :root {
     --primary: #7ddbdc;
     --primary-dark: #00cfcf;
@@ -301,4 +301,37 @@
     font-size: 1.2rem;
     margin-top: 8px;
   }
+  /* src/assets/SupportPage.css */
+
+/* zone support centrale */
+.support-zone { display: flex; flex-direction: column; gap: 28px; }
+
+.support-header{
+  display:flex;justify-content:space-between;align-items:center;
+  background:#fff;border-radius:16px;padding:24px 32px;box-shadow:0 4px 14px rgb(0 0 0 / .05);
+}
+.support-hero{width:180px;max-width:40%;}
+
+.support-grid{
+  display:grid;grid-template-columns:1fr 260px;gap:28px;
+}
+.support-form, .email-box, .faq-box{
+  background:#fff;border-radius:16px;padding:24px 28px;box-shadow:0 4px 14px rgb(0 0 0 / .05);
+}
+
+/* formulaire */
+.support-form input, .support-form textarea{
+  width:100%;margin-top:10px;padding:10px 14px;border:1px solid #ddd;border-radius:10px;font-size:.9rem;
+}
+.attach{display:inline-flex;align-items:center;gap:6px;color:#007c7c;font-size:.85rem;margin:12px 0;cursor:pointer}
+.attach:hover{text-decoration:underline}
+
+/* email readonly */
+.email-box input{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:10px;background:#f0f0f0;color:#333}
+
+/* FAQ */
+.faq-box details{margin-top:12px}
+.faq-box summary{cursor:pointer;font-weight:600}
+.faq-box p{margin-top:4px;font-size:.85rem;color:#555}
+
   

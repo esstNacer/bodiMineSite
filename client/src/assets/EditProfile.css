@@ -1,5 +1,5 @@
 /* src/assets/EditProfile.css */
-
+@import "./MyBodyProjectPage.css";
 :root {
     --primary: #7ddbdc;
     --light-bg: #f3fbfb;

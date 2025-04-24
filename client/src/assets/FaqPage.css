@@ -1,5 +1,5 @@
 /* src/assets/FaqPage.css */
-
+@import "./MyBodyProjectPage.css";
 .page {
     display: flex;
     flex-direction: column;
@@ -225,6 +225,19 @@
     font-size: 1.2rem;
     margin-top: 8px;
   }
+  /* src/assets/FaqPage.css */
+
+/* zone CGU */
+.cgu-zone { display:flex; flex-direction:column; gap:28px; }
+.cgu-scroll{
+  background:#fff;border-radius:16px;box-shadow:0 4px 14px rgb(0 0 0 / .05);
+  padding:24px 32px;max-height:520px;overflow:auto;line-height:1.6;font-size:.95rem;color:#333;
+}
+.cgu-scroll hr{margin:20px 0;border:none;border-top:1px solid #eee}
+.cgu-scroll strong{font-weight:700}
+
+/* on ré-utilise .support-header de SupportPage.css */
+
   
   /* Responsive */
   @media (max-width: 768px) {

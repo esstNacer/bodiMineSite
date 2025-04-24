@@ -1,5 +1,5 @@
 // src/pages/HowItWorksPage.tsx
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import '../assets/HowItWorksPage.css';
 
@@ -9,37 +9,44 @@ import sslLogo   from '../images/ssl.png';
 import rgpdLogo  from '../images/rgpd.png';
 import trustLogo from '../images/trust.png';
 import bodyMine  from '../images/logobodymine.png';
+import { FiHome, FiSearch } from 'react-icons/fi';
+import { UserContext } from '../components/UserContext';
 
 export default function HowItWorksPage() {
+  const { user } = useContext(UserContext) || { user: null };
   return (
     <div className="how-page">
       {/* ===== Navbar ===== */}
       <header className="navbar">
-        <div className="nav-left">
-          <Link to="/" className="logo">
-            <img src={bodyMine} alt="BodyMine Cosmetic Surgery" />
-          </Link>
-          <nav className="menu">
-            <Link to="/home">Home</Link>
-            <Link to="/chat">Chat</Link>
-            <Link to="/search">Search</Link>
-          </nav>
-        </div>
-        <div className="nav-right">
-          <span className="lang">EN ▾</span>
-          <div className="profile">
-            <img
-              src="https://i.pravatar.cc/32?img=12"
-              alt="Parth Ramani"
-              className="avatar"
-            />
-            <div className="profile-info">
-              <span className="name">Parth Ramani</span>
-              <span className="status online">Online</span>
-            </div>
-          </div>
-        </div>
-      </header>
+                    <div className="logo">
+                      <img src={bodyMine} alt="BodyMine Cosmetic Surgery" />
+                    </div>
+            
+                    <nav className="main-nav">
+                      <a href="/home">
+                        <FiHome /> Home
+                      </a>
+                      <a href="/chat">
+                        <FiSearch /> Chat
+                      </a>
+                      <a  href="/search">
+                        <FiSearch /> Search
+                      </a>
+                    </nav>
+            
+                    <div className="profile-mini">
+                      <span className="lang">EN ▾</span>
+                      <Link to={"/editProfile"}>
+                      <img
+                        className="profile-avatar"
+                        src="https://i.pravatar.cc/40?img=12"
+                        alt="Parth Ramani"
+                      />
+                      <span className="profile-name">
+                        {user?.first_name} {user?.last_name} <span className="status-dot">●</span>
+                      </span></Link>
+                    </div>
+                  </header>
 
       {/* ===== Main Content ===== */}
       <main className="how-content-wrapper">

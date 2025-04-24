@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../assets/ChatPage.css';
-import { FiPhoneCall } from 'react-icons/fi';
+import { FiHome, FiPhoneCall, FiSearch } from 'react-icons/fi';
 import { IoSend } from 'react-icons/io5';
 import bodyMineLogo from '../images/logobodymine.png';
 import clinic1 from '../images/clinic1.png';
@@ -65,25 +65,35 @@ export default function ChatPage() {
   return (
     <div className="page">
       <header className="navbar">
-        <div className="nav-left">
-          <img src={bodyMineLogo} alt="BodyMine" className="logo" />
-          <nav className="menu">
-            <a href="/home">Home</a>
-            <a href="/chat" className="active">Chat</a>
-            <a href="/search">Search</a>
-          </nav>
-        </div>
-        <div className="nav-right">
-          <span className="lang">EN ▾</span>
-           <Link to="/editProfile" className="profile">
-                      <img src="https://i.pravatar.cc/32?img=12" alt="avatar" className="avatar" />
-                      <div>
-                        <span className="name">{user?.first_name || "User"} {user?.last_name || "User"}</span><br />
-                        <span className="status">Online</span>
-                      </div>
-            </Link>
-        </div>
-      </header>
+              <div className="logo">
+                <img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" />
+              </div>
+      
+              <nav className="main-nav">
+                <a href="/home">
+                  <FiHome /> Home
+                </a>
+                <a href="/chat">
+                  <FiSearch /> Chat
+                </a>
+                <a  href="/search">
+                  <FiSearch /> Search
+                </a>
+              </nav>
+      
+              <div className="profile-mini">
+                <span className="lang">EN ▾</span>
+                <Link to={"/editProfile"} >
+                <img
+                  className="profile-avatar"
+                  src="https://i.pravatar.cc/40?img=12"
+                  alt="Parth Ramani"
+                />
+                 <span className="profile-name">
+                                        {user?.first_name} {user?.last_name} <span className="status-dot">●</span>
+                                      </span></Link>
+              </div>
+            </header>
 
       <div className="carousel">
         <img src={clinic1} alt="Clinic 1" />

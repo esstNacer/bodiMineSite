@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../assets/Search.css';
 import bodyMineLogo from '../images/logobodymine.png';
 import { useUser } from '../components/UserContext';
-import { FiSearch } from 'react-icons/fi';
+import { FiHome, FiSearch } from 'react-icons/fi';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
@@ -144,28 +144,36 @@ const activityOptions = [
 
   return (
     <div className="page">
-      <header className="navbar">
-        <div className="nav-left">
-          <div className="logo">
-            <img src={bodyMineLogo} alt="BodyMine" />
-          </div>
-          <nav className="menu">
-            <a href="/home">Home</a>
-            <a href="/chat">Chat</a>
-            <a href="/search" className="active">Search</a>
-          </nav>
-        </div>
-        <div className="nav-right">
-          <span className="lang">EN ▾</span>
-          <Link to="/editProfile" className="profile">
-            <img src="https://i.pravatar.cc/32?img=12" alt="avatar" className="avatar" />
-            <div>
-              <span className="name">{user?.first_name || 'User'} {user?.last_name || 'User'}</span><br />
-              <span className="status">Online</span>
-            </div>
-          </Link>
-        </div>
-      </header>
+    <header className="navbar">
+                  <div className="logo">
+                    <img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" />
+                  </div>
+          
+                  <nav className="main-nav">
+                    <a href="/home">
+                      <FiHome /> Home
+                    </a>
+                    <a href="/chat">
+                      <FiSearch /> Chat
+                    </a>
+                    <a  href="/search">
+                      <FiSearch /> Search
+                    </a>
+                  </nav>
+          
+                  <div className="profile-mini">
+                    <span className="lang">EN ▾</span>
+                    <Link to={"/editProfile"}>
+                    <img
+                      className="profile-avatar"
+                      src="https://i.pravatar.cc/40?img=12"
+                      alt="Parth Ramani"
+                    />
+                    <span className="profile-name">
+                      {user?.first_name} {user?.last_name} <span className="status-dot">●</span>
+                    </span></Link>
+                  </div>
+                </header>
 
       <main className="main-content">
         <div className="filters-wrapper">
@@ -209,10 +217,11 @@ const activityOptions = [
     />
   </div>
         </div>
-<a href="/doctor"><div className="doctor-grid">
+<div className="doctor-grid">
           {doctors.length > 0 ? (
             doctors.map((doc) => (
               <div className="doctor-card" key={doc.professional_id}>
+<Link to={`/doctor/${doc.professional_id}`} className="doctor-link">                
                 <div className="doctor-img">
                   <img src={doc.photo_url || 'https://i.imgur.com/1X3K1vF.png'} alt={doc.full_name} />
                   <div className="heart-icon">
@@ -225,6 +234,7 @@ const activityOptions = [
                 <div className="rating">
                   <span>⏱ {doc.practice_tenure || 'N/A'}</span>
                 </div>
+                </Link>
                 <button className="chat-btn" onClick={() => handleStartChat(doc.professional_id)}>
   💬 Chat
 </button>
@@ -234,7 +244,7 @@ const activityOptions = [
           ) : (
             <p style={{ padding: '1rem', textAlign: 'center', gridColumn: '1/-1' }}>No results found</p>
           )}
-        </div></a>
+        </div>
         
       </main>
 

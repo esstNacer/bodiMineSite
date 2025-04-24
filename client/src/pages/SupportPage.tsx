@@ -1,141 +1,201 @@
-import React from 'react';
-import '../assets/SupportPage.css';
-import { FiMail, FiPaperclip } from 'react-icons/fi';
+// src/pages/SupportPage.tsx
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import {
+  FiHome,
+  FiSearch,
+  FiUser,
+  FiLock,
+  FiFileText,
+  FiBookOpen,
+  FiLifeBuoy,
+  FiTrash2,
+  FiLogOut,
+  FiMail,
+  FiPaperclip,
+} from 'react-icons/fi';
+import { BsDot } from 'react-icons/bs';
+
+import '../assets/MyBodyProjectPage.css';   // même grille / sidebar / bannière
+import '../assets/SupportPage.css';         // (juste quelques règles pour le formulaire)
+
 import bodyMineLogo from '../images/logobodymine.png';
-import helpImage from '../images/help.png';
+import clinic1 from '../images/clinic1.png';
+import clinic2 from '../images/clinic2.png';
+import clinic3 from '../images/clinic3.png';
+import helpImage   from '../images/help.png';
 import { useUser } from '../components/UserContext';
 
 export default function SupportPage() {
   const { user } = useUser();
+  const { logout } = useUser();
+  /* ---------- carrousel ---------- */
+  const banners = [clinic1, clinic2, clinic3];
+  const [slide, setSlide] = useState(0);
 
   return (
-    <div className="page">
+    <div className="mybody-page">
+      {/* ▬▬▬ NAVBAR ▬▬▬ */}
       <header className="navbar">
-        <div className="nav-left">
-          <div className="logo">
-            <img src={bodyMineLogo} alt="BodyMine" />
-          </div>
-          <nav className="menu">
-            <a href="/home">Home</a>
-            <a href="/chat" className="active">Chat</a>
-            <a href="/search">Search</a>
-          </nav>
+        <div className="logo">
+          <img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" />
         </div>
-        <div className="nav-right">
+
+        <nav className="main-nav">
+          <a href="/home">
+            <FiHome /> Home
+          </a>
+          <a href="/chat">
+            <FiSearch /> Chat
+          </a>
+          <a href="/search">
+            <FiSearch /> Search
+          </a>
+        </nav>
+
+        <div className="profile-mini">
           <span className="lang">EN ▾</span>
-          <div className="profile">
-            <img src="https://i.pravatar.cc/32?img=12" alt="avatar" className="avatar" />
-            <div>
-              <span className="name">{user?.first_name} {user?.last_name}</span><br />
-              <span className="status">Online</span>
-            </div>
-          </div>
+          <Link to="/editProfile" style={{ display: 'flex', gap: 8 }}>
+            <img
+              className="profile-avatar"
+              src="https://i.pravatar.cc/40?img=12"
+              alt="avatar"
+            />
+            <span className="profile-name">
+              {user?.first_name} {user?.last_name} <span className="status-dot">●</span>
+            </span>
+          </Link>
         </div>
       </header>
 
-      <main className="main">
-        {/* Sidebar */}
-        <aside className="sidebar">
-          <div className="sidebar-header">
-            <img src="https://i.pravatar.cc/48" alt="Avatar" className="avatar-large" />
+      {/* ▬▬▬ BANNIÈRE ▬▬▬ */}
+      <div className="banner-carousel">
+        <img src={banners[slide]} alt="banner" />
+        <div className="dots">
+          {banners.map((_, i) => (
+            <BsDot
+              key={i}
+              size={18}
+              className={slide === i ? 'active' : ''}
+              onClick={() => setSlide(i)}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* ▬▬▬ CONTENU ▬▬▬ */}
+      <main className="content-grid">
+        {/* -------- SIDEBAR -------- */}
+        <aside className="side-menu">
+          <div className="hello-card">
+            <img src="https://i.pravatar.cc/64?img=12" className="hello-avatar" alt="avatar" />
             <div>
-              Hello<br />
+              Hello <br />
               <strong>{user?.first_name} {user?.last_name}</strong>
             </div>
           </div>
-          <ul>
-            <li><a href="/editProfile">Edit Profile</a></li>
-            <li><a href="#">Change Password</a></li>
-            <li><a href="#">My Body Project</a></li>
-            <li><a href="/CGU">Terms & Conditions</a></li>
-            <li><a href="#">News & Article</a></li>
-            <li><a className="active" href="/support">Support</a></li>
+
+          <ul className="menu-links">
+            <li>
+              <Link to="/editProfile"><FiUser /> Edit Profile</Link>
+            </li>
+            <li>
+              <Link to="/changePassword"><FiLock /> Change Password</Link>
+            </li>
+            <li>
+              <Link to="/myBodyProject"><FiFileText /> My Body Project</Link>
+            </li>
+            <li>
+              <Link to="/CGU"><FiFileText /> Terms &amp; Conditions</Link>
+            </li>
+            <li>
+              <Link to="/news"><FiBookOpen /> News &amp; Article</Link>
+            </li>
+            <li className="active">
+              <Link to="/support"><FiLifeBuoy /> Support</Link>
+            </li>
           </ul>
-          <button className="delete-account">Delete Account</button>
-          <button className="logout">Logout</button>
+
+          <button className="danger-btn"><FiTrash2 /> Delete Account</button>
+          <button className="logout-btn" onClick={logout}><FiLogOut /> Logout</button>
         </aside>
 
-        {/* Content + FAQ */}
-        <div className="support-layout">
-          {/* Top header */}
+        {/* -------- ZONE SUPPORT -------- */}
+        <section className="support-zone">
+          {/* entête */}
           <div className="support-header">
             <div>
               <h2>How can we help you ?</h2>
               <p>We're here to support you anytime. Choose the best way to reach us.</p>
             </div>
-            <img src={helpImage} alt="support" className="support-img" />
+            <img src={helpImage} className="support-hero" alt="help" />
           </div>
 
-          {/* Main support section */}
-          <div className="support-content">
-            {/* Left: Form + Email */}
-            <div>
-              <div className="support-form-box">
+          {/* grille 2 colonnes */}
+          <div className="support-grid">
+            {/* ----- colonne gauche ----- */}
+            <div className="left-col">
+              <div className="support-form">
                 <h3><FiMail /> Send a Message</h3>
                 <form>
                   <input type="text" placeholder="Your name" />
                   <input type="text" placeholder="Subject" />
-                  <textarea placeholder="Your message"></textarea>
-                  <div className="attach-file">
-                    <FiPaperclip className="icon" /> Attach File
-                  </div>
-                  <button type="submit" className="btn primary">Send Message</button>
+                  <textarea placeholder="Your message" rows={5}></textarea>
+
+                  <label className="attach">
+                    <FiPaperclip /> Attach file
+                    <input type="file" hidden />
+                  </label>
+
+                  <button className="btn primary">Send Message</button>
                 </form>
               </div>
 
-              <div className="support-email-box">
+              <div className="email-box">
                 <h3><FiMail /> Email Us</h3>
                 <input type="text" value="support@bodymine.com" readOnly />
               </div>
             </div>
 
-            {/* Right: FAQ */}
+            {/* ----- FAQ ----- */}
             <aside className="faq-box">
               <h3>Frequently Asked Questions</h3>
               <details>
-                <summary>Faq</summary>
-                <a href="/faq"><p>Answers to common questions.</p></a>
+                <summary>FAQ</summary>
+                <Link to="/faq"><p>Answers to common questions.</p></Link>
               </details>
               <details>
                 <summary>Data Privacy</summary>
-                <a href="/dataPrivacy"><p>We care about your data. Here's how we protect it.</p></a>
+                <Link to="/dataPrivacy"><p>We care about your data. Here's how we protect it.</p></Link>
               </details>
               <details>
-                <summary>Terms & Conditions</summary>
-                <a href="/CGU"><p>Please read our T&C before using our service.</p></a>
+                <summary>Terms &amp; Conditions</summary>
+                <Link to="/CGU"><p>Please read our T&amp;C before using our service.</p></Link>
               </details>
             </aside>
           </div>
-        </div>
+        </section>
       </main>
 
-      {/* Footer */}
+      {/* ▬▬▬ FOOTER ▬▬▬ */}
       <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-block">
-            <img src={bodyMineLogo} alt="BodyMine" className="footer-logo" />
+        <div className="footer-wrap">
+          <div className="footer-brand">
+            <img src={bodyMineLogo} alt="BodyMine" />
             <p>Bodymine is the leading directory to help you find the perfect surgeon or clinic, anywhere in the world.</p>
-            <div className="social-icons">
-              <span>🔵</span><span>🐦</span><span>▶️</span>
-            </div>
           </div>
-          <div className="footer-block">
+
+          <div className="footer-col">
             <h4>Home</h4>
-            <ul>
-              <li>Menu</li>
-              <li>Chat</li>
-              <li>Search</li>
-            </ul>
+            <ul><li>Menu</li><li>Chat</li><li>Search</li></ul>
           </div>
-          <div className="footer-block">
+
+          <div className="footer-col">
             <h4>Info</h4>
-            <ul>
-              <li>Terms & Conditions</li>
-              <li>Privacy Policy</li>
-              <li>FAQs</li>
-            </ul>
+            <ul><li>Terms &amp; Conditions</li><li>Privacy Policy</li><li>FAQs</li></ul>
           </div>
-          <div className="footer-block">
+
+          <div className="footer-col">
             <h4>Contact Us</h4>
             <p>info@bodymine.com</p>
           </div>

@@ -80,25 +80,23 @@ export default function SignUpPage() {
 
   return (
     <div className="page">
-      <header className="navbar">
-        <div className="nav-left">
-          <div className="logo">
-            <img src={bodyMine} alt="Bodymine" />
-          </div>
-          <nav className="menu">
-            <a href="/" className="active">Home</a>
-            <a href="/chat">Chat</a>
-            <a href="/search">Search</a>
-          </nav>
-        </div>
-        <div className="nav-right">
-          <span className="lang">EN ▾</span>
-          <div className="avatar">
-            <img src="https://i.pravatar.cc/36?img=48" alt="Avatar" />
-            <span className="status online" />
-          </div>
-        </div>
-      </header>
+     <header className="navbar">
+                   <div className="logo">
+                     <img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" />
+                   </div>
+           
+                   <nav className="main-nav">
+                     <a href="/home">
+                       <FiHome /> Home
+                     </a>
+                     <a href="/chat">
+                       <FiSearch /> Chat
+                     </a>
+                     <a  href="/search">
+                       <FiSearch /> Search
+                     </a>
+                   </nav>
+                 </header>
 
       <main className="content">
         <section className="carousel">
