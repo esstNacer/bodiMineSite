@@ -15,7 +15,6 @@ import SearchPage from './pages/SearchPage';
 import ChatPage from './pages/ChatPage';
 import DoctorProfilePage from './pages/DoctorProfilePage';
 import MyBodyProjectPage from './pages/MyBodyProjectPage';
-
 import ProfessionalLoginPage from './PagesPro/ProfessionalLoginPage';
 import ProfessionalDashboard from './PagesPro/ProfessionalDashboard';
 import ProfessionalSignup from './PagesPro/ProfessionalSignup';
