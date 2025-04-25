@@ -16,13 +16,20 @@ import ChatPage from './pages/ChatPage';
 import DoctorProfilePage from './pages/DoctorProfilePage';
 import MyBodyProjectPage from './pages/MyBodyProjectPage';
 
+import ProfessionalLoginPage from './PagesPro/ProfessionalLoginPage';
+import ProfessionalDashboard from './PagesPro/ProfessionalDashboard';
+import ProfessionalSignup from './PagesPro/ProfessionalSignup';
+
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/loginPro" element={<ProfessionalLoginPage />} />
       <Route path="/sign-up" element={<SignUpPage />} />
+      <Route path="/professional/sign-up" element={<ProfessionalSignup/>} />
       <Route path="/home" element={<HomePage />} />
+      <Route path="/pro/dashboard" element={<ProfessionalDashboard />} />
       <Route path="/editProfile" element={<EditProfilePage />} />
       <Route path="/how-it-works" element={<HowItWorksPage />} />
       <Route path="/support" element={<SupportPage />} />

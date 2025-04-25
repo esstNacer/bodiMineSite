@@ -18,7 +18,7 @@ app.use(express.json());
 // Monter les routes sous /api/…
 app.use('/api/auth', authRouter);
 app.use('/api/patients',      patientsRouter);
-app.use('/api/professionals',      professionalsRouter);
+app.use('/api/professional',      professionalsRouter);
 app.use('/api/chats', chatRoutes);
 
 

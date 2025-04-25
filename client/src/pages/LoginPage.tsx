@@ -8,6 +8,7 @@ import verifyImg  from '../images/verify.png';
 import connectImg from '../images/connect.png';
 import bodyMine   from '../images/logobodymine.png';
 import { FiHome, FiSearch } from 'react-icons/fi';
+import { useUser } from '../components/UserContext';
 
 interface Slide {
   title: string;
@@ -23,6 +24,7 @@ const slides: Slide[] = [
 ];
 
 export default function LoginPage(): JSX.Element {
+  const { updateUser, setToken } = useUser();
   const [index, setIndex]       = useState<number>(0);
   const [email, setEmail]       = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -37,29 +39,32 @@ export default function LoginPage(): JSX.Element {
 
   const current = slides[index];
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setError('');
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Login failed');
-      // Stocker token
-const storage = remember ? localStorage : sessionStorage;
-storage.setItem('token', data.token);
+ /* ------------- form submit ------------- */
+const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setError('');
 
-// Stocker les infos utilisateur
-console.log(data.user);
-storage.setItem('user', JSON.stringify(data.user));
-      navigate('/home');
-    } catch (err: any) {
-      setError(err.message);
-    }
+  try {
+    /* appel API */
+    const res  = await fetch('/api/auth/login', {
+      method : 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body   : JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Login failed');
+
+    /* on choisit où stocker selon « remember » 
+       et on propage l’info à TOUTE l’app via le contexte */
+    updateUser(data.user,  remember);   // ← stocke + déclenche le re-render
+    setToken (data.token, remember);    // ← idem pour le JWT
+
+    navigate('/home');                  // redirection
+  } catch (err: any) {
+    setError(err.message);
   }
+};
+
 
   return (
     <div className="page">
@@ -151,9 +156,9 @@ storage.setItem('user', JSON.stringify(data.user));
               </button>
             </div>
 
-            <button type="button" className="btn secondary">
+            <a href="/loginPro"><button type="button" className="btn secondary">
               Professional access
-            </button>
+            </button> </a>
           </form>
         </section>
       </main>
@@ -194,3 +199,4 @@ storage.setItem('user', JSON.stringify(data.user));
     </div>
   );
 }
+

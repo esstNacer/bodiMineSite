@@ -1,0 +1,50 @@
+/********— variables héritées des autres pages —********/
+:root{
+    --blue:#70b7e2;
+    --blue-dark:#379dd1;
+    --border:#dfe6f2;
+    --grey:#6e7e95;
+    --radius:10px;
+    font-family:'Inter',Arial,sans-serif;
+  }
+  .btn{padding:.6rem 2rem;border:none;border-radius:var(--radius);font-weight:600;cursor:pointer;font-size:.9rem}
+  .btn.primary{background:var(--blue-dark);color:#fff}
+  .btn.outline{background:#fff;border:2px solid var(--blue-dark);color:var(--blue-dark)}
+  .btn.full{width:100%}
+  .row.btns{display:flex;gap:12px;margin-top:18px}
+  
+  /********— carte centrale (wizard) —********/
+  .wizard-card{
+    width:420px;margin:40px auto;background:#fff;border:1px solid var(--border);
+    border-radius:var(--radius);padding:34px 32px;
+  }
+  .wizard-card h3{font-size:1.1rem;margin-bottom:18px;color:#1d2a38}
+  .wizard-card form{display:flex;flex-direction:column;gap:14px}
+  .wizard-card input, .wizard-card select{
+    padding:.6rem .9rem;border:1px solid var(--border);border-radius:var(--radius);
+    font-size:.85rem
+  }
+  .wizard-card select{background:#fff}
+  .form-error{background:#ffecec;color:#b22;border-radius:var(--radius);
+              padding:.55rem;text-align:center;font-size:.8rem}
+  
+  .pwd-wrapper{position:relative}
+  .pwd-wrapper span{position:absolute;right:10px;top:50%;transform:translateY(-50%);
+                    cursor:pointer;color:var(--grey)}
+  
+  .pwd-tip{font-size:.72rem;color:var(--grey);}
+  
+  .terms-box{
+    height:260px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius);
+    padding:.9rem;font-size:.82rem;color:#333;line-height:1.45
+  }
+  .agree{display:flex;align-items:center;gap:8px;font-size:.8rem;color:#333}
+  .agree input{accent-color:var(--blue-dark)}
+  
+  .success{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+  .success h3{margin:0}
+  
+  @media(max-width:520px){
+    .wizard-card{width:100%;border:none;padding:26px}
+  }
+  

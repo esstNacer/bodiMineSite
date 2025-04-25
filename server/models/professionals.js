@@ -16,6 +16,14 @@ export const Professionals = {
     return rows[0];
   },
 
+  findOne: async (email) => {
+    const [rows] = await pool.query(
+      'SELECT * FROM professionals WHERE email = ?',
+      [email]
+    );
+    return rows[0];
+  },
+
   create: async (data) => {
     const {
       full_name,
