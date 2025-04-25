@@ -44,6 +44,7 @@ export default function ProfessionalLoginPage() {
 
   /* ================================================= */
   return (
+    <div class="paro">
     <div className="pro-login">
       {/* ░░ HEADER ░░ */}
       <header className="pro-nav">
@@ -199,6 +200,7 @@ export default function ProfessionalLoginPage() {
           </div>
         </div>
       </footer>
+    </div>
     </div>
   );
 }

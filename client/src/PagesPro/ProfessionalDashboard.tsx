@@ -1,186 +1,256 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+/*  src/pages/ProfessionalDashboard.tsx
+    Tableau de bord du professionnel – branché sur ProContext
+    + affichage des patients conforme à la structure SQL
+----------------------------------------------------------------- */
+import { useEffect, useState } from "react";
+import axios from "axios";
 import {
   Bell,
-  ChevronLeft,
-  ChevronRight,
   LogOut,
   User,
-  Settings,
-  MessageSquare,
+  Menu,
   Phone,
-  Menu
-} from 'lucide-react';
-import '../assets/ProfessionalDashboard.css';
-import logoBodyMine from '../images/logobodymine.png';
+  MessageSquare,
+  Star,
+  Notebook,
+  Lock,
+  Paperclip,
+  Headphones,
+} from "lucide-react";
+import { usePro } from "../components/ProContext";
+import "../assets/ProfessionalDashboard.css";
 
-/* ------------------------------------------------------------------ */
-/* ————— placeholders (données factices) ————— */
+import logoBodyMine from "../images/logobodymine.png";
+import strip1 from "../images/strip1.png";
+import strip2 from "../images/strip2.png";
+import strip3 from "../images/strip3.png";
+import avatarPro from "../images/doctor-small.png";
+import { FaMoneyBill, FaPepperHot } from "react-icons/fa";
+import SidebarPro from "../components/SidebarPro";
+import TopbarPro from "../components/TopbarPro";
+
+/* ───────── BANNIÈRE HERO ───────── */
 const carousel = [
-  { src: '/assets/partner1.jpg', alt: 'Partner' },
-  { src: '/assets/clinic1.jpg',  alt: 'Clinic'  },
-  { src: '/assets/partner2.jpg', alt: 'Silicone Industry' }
+  { src: strip1, alt: "Partner banner" },
+  { src: strip2, alt: "Clinic banner" },
+  { src: strip3, alt: "Silicone banner" },
 ];
-const notifications = [
-  { id: 1, text: 'New message from your patient…', date: '28 OCT — 09:53', type: 'msg' },
-  { id: 2, text: 'Plan upgraded to PREMIUM',        date: '27 OCT — 17:42', type: 'plan' }
-];
-const messagesSidebar = [
-  { id: 1, name: 'Brooklyn Simmons', snippet: 'Hi! How Are You?', avatar: '/assets/avatar_woman.png', active: true }
-];
-const chatHistory = [
-  { id: 1, mine:false, text:'This is an example of medicine that you have to buy at the pharmacy', time:'05:21 pm', img:'/assets/pills.jpg' },
-  { id: 2, mine:true , text:'Alright, I’ll get it from the pharmacy.',                                    time:'05:21 pm' }
-];
-/* ------------------------------------------------------------------ */
 
+/* ════════════════════════════════════════════════════════
+   COMPONENT
+════════════════════════════════════════════════════════ */
 export default function ProfessionalDashboard() {
+  /* 1) Contexte */
+  const { professional, proToken, proLogout } = usePro();
+  const proId = professional?.professional_id;
+
+  /* 2) Axios : ajoute / retire le bearer */
+  useEffect(() => {
+    axios.defaults.headers.common.Authorization = proToken
+      ? `Bearer ${proToken}`
+      : "";
+  }, [proToken]);
+
+  /* 3) State */
   const [slide, setSlide] = useState(0);
+  const [patients, setPatients] = useState<any[]>([]);
+  const [current, setCurrent] = useState<any | null>(null);
+  const [msgs, setMsgs] = useState<any[]>([]);
+  const [draft, setDraft] = useState("");
 
-  /* ——— helpers ——— */
-  const prev = () => setSlide(s => (s === 0 ? carousel.length - 1 : s - 1));
-  const next = () => setSlide(s => (s === carousel.length - 1 ? 0 : s + 1));
+  /* 4) Récupère la liste de tous les patients ayant déjà
+        discuté avec ce pro -> retourne directement les colonnes
+        de la table `patients` (id, first_name, last_name, photo_url,
+        favorite_specialization…)                                        */
+  useEffect(() => {
+    if (!proId) return;
+    axios
+      .get(`/api/chats/conversations/pro/${proId}`)
+      .then((res) => setPatients(res.data))
+      .catch((err) => console.error("Error conversations:", err));
+  }, [proId]);
 
+  /* 5) Récupère l’historique pour le patient sélectionné */
+  useEffect(() => {
+    if (!proId || !current) return;
+    axios
+      .get(`/api/chats?patientId=${current.patient_id}&professionalId=${proId}`)
+      .then((res) => setMsgs(res.data))
+      .catch((err) => console.error("Error messages:", err));
+  }, [current, proId]);
+
+  /* 6) Envoie message */
+  const send = async () => {
+    if (!draft.trim() || !current || !proId) return;
+    const payload = {
+      professional_id: proId,
+      patient_id: current.patient_id,
+      sender: "pro",
+      message: draft.trim(),
+    };
+    try {
+      await axios.post("/api/chats", payload);
+      setMsgs((m) => [
+        ...m,
+        { ...payload, timestamp: new Date().toISOString() },
+      ]);
+      setDraft("");
+    } catch (err) {
+      console.error("Send error:", err);
+    }
+  };
+
+  /* 7) Carousel */
+  const next = () => setSlide((s) => (s + 1) % carousel.length);
+  const prev = () => setSlide((s) => (s ? s - 1 : carousel.length - 1));
+
+  /* 8) UI */
   return (
-    <div className="pro-dash">
-      {/* ========== NAVBAR ========== */}
-      <nav className="topbar">
-        <img src={logoBodyMine} alt="BodyMine" className="logo" />
+    <div className="pro">
+      <div className="pro-dash">
+        {/* ░░ Top-bar ░░ */}
+        <TopbarPro/>
 
-        <div className="topbar-right">
-          <span className="lang">EN ▾</span>
-          <img src="/assets/doctor_small.png" alt="Dr." className="avatar-sm" />
-          <div className="doc-info">
-            <strong>Dr. Himakshi</strong>
-            <span className="online">Online</span>
-          </div>
-        </div>
-      </nav>
-
-      {/* ========== CAROUSEL ========= */}
-      <section className="carousel">
-        <button className="nav prev" onClick={prev}><ChevronLeft size={18}/></button>
-        <img src={carousel[slide].src} alt={carousel[slide].alt} />
-        <button className="nav next" onClick={next}><ChevronRight size={18}/></button>
-        <div className="dots">
-          {carousel.map((_,i)=>
-            <span key={i} className={i===slide?'dot active':'dot'} onClick={()=>setSlide(i)} />)}
-        </div>
-      </section>
-
-      <main className="grid">
-        {/* ===== SIDEBAR ===== */}
-        <aside className="sidebar">
-          <div className="profile-card">
-            <img src="/assets/doctor_small.png" alt="" />
-            <div>
-              <h4>Dr. Himakshi</h4>
-              <span className="online">Online</span>
-            </div>
-          </div>
-
-          <ul className="side-links">
-            <li className="active"><Menu size={16}/> Dashboard</li>
-            <li><User size={16}/> Edit Profile</li>
-            <li>Your Plan</li>
-            <li>Doctor list</li>
-            <li>Purchase Services</li>
-            <li>Change Password</li>
-            <li>Terms &amp; Conditions</li>
-            <li>Support</li>
-          </ul>
-
-          <button className="btn logout"><LogOut size={16}/> Logout</button>
-          <button className="btn delete">Delete Account</button>
-        </aside>
-
-        {/* ===== MIDDLE COLUMN ===== */}
-        <section className="middle">
-          {/* notifications */}
-          <div className="widget notif">
-            <h5>Notifications</h5>
-            {notifications.map(n=>(
-              <div key={n.id} className="notif-row">
-                <Bell size={14}/>
-                <div>
-                  <p>{n.text}</p>
-                  <span>{n.date}</span>
-                </div>
-              </div>
+        {/* ░░ Carousel ░░ */}
+        <section className="carousel">
+          <button className="nav prev" onClick={prev}>
+            ‹
+          </button>
+          <div className="carousel-strip">
+            {carousel.map((c, i) => (
+              <img
+                key={i}
+                src={c.src}
+                alt={c.alt}
+                style={{ opacity: i === slide ? 1 : 0.4 }}
+              />
             ))}
-            <Link to="#" className="btn tiny full">View Chat</Link>
           </div>
+          <button className="nav next" onClick={next}>
+            ›
+          </button>
+        </section>
 
-          {/* (fake) chart */}
-          <div className="widget chart">
-            <h5>Patients Chat</h5>
-            <img src="/assets/chart_dummy.png" alt="chart" />
-          </div>
+        {/* ░░ Layout ░░ */}
+        <main className="grid">
+          {/* █ Sidebar */}
+          <SidebarPro active="Dashboard" />
 
-          {/* messages list */}
-          <div className="widget messages">
+          {/* █ Patients list */}
+          <section className="widget messages">
             <header>
-              <h5>Messages <span className="count">12</span></h5>
-              <input type="text" placeholder="Search conversation" />
-              <div className="tabs">
-                <button className="active">Active</button>
-                <button>Ended</button>
-              </div>
+              <h5>
+                Patients <span className="count">{patients.length}</span>
+              </h5>
+              <input placeholder="Search…" />
             </header>
 
             <ul className="msg-list">
-              {messagesSidebar.map(m=>(
-                <li key={m.id} className={m.active?'active':''}>
-                  <img src={m.avatar} alt="" />
+              {patients.map((p) => (
+                <li
+                  key={p.patient_id}
+                  className={
+                    current?.patient_id === p.patient_id ? "active" : ""
+                  }
+                  onClick={() => setCurrent(p)}
+                >
+                  <img
+                    src={
+                      p.photo_url ||
+                      `https://i.pravatar.cc/36?u=${p.patient_id}`
+                    }
+                  />
                   <div>
-                    <h6>{m.name}</h6>
-                    <p>{m.snippet}</p>
+                    <h3>
+                      {p.first_name} {p.last_name}
+                    </h3>
+                    <p>{p.favorite_specialization || "Patient"}</p>
                   </div>
                 </li>
               ))}
             </ul>
-          </div>
-        </section>
+          </section>
 
-        {/* ===== CHAT AREA ===== */}
-        <section className="chatbox">
-          <header className="chat-head">
-            <div>
-              <h5>Dr. Chirag Patel</h5>
-              <span className="spec">General Physician · <span className="online">Active</span></span>
-            </div>
-            <button className="btn tiny"><Phone size={14}/> Call</button>
-          </header>
+          {/* █ Chatbox */}
+          {current && (
+        <section className="chat-box">
+              <header className="chat-head">
+                <div>
+                  <h5>
+                    {current.first_name} {current.last_name}
+                  </h5>
+                  <span className="spec">
+                    {current.favorite_specialization || "Patient"}
+                  </span>
+                </div>
+                <button className="btn tiny">
+                  <Phone size={14} /> Call
+                </button>
+              </header>
 
-          <div className="chat-body">
-            {chatHistory.map(msg=>(
-              <div key={msg.id} className={msg.mine?'msg mine':'msg'}>
-                {msg.img && <img src={msg.img} alt="" />}
-                <p>{msg.text}</p>
-                <span>{msg.time}</span>
+              <div className="chat-body">
+                {msgs.map((m, i) => (
+                  <div
+                    key={i}
+                    className={m.sender === "pro" ? "msg mine" : "msg"}
+                  >
+                    <p>{m.message}</p>
+                    <span>
+                      {new Date(m.timestamp).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </span>
+                  </div>
+                ))}
               </div>
-            ))}
-            <em className="typing">Dr. Chirag is typing</em>
+
+              <footer className="chat-foot">
+                <input
+                  value={draft}
+                  onChange={(e) => setDraft(e.target.value)}
+                  placeholder="Send a message…"
+                />
+                <button
+                  className="btn tiny send"
+                  disabled={!draft.trim()}
+                  onClick={send}
+                >
+                  <MessageSquare size={14} />
+                </button>
+              </footer>
+            </section>
+          )}
+        </main>
+
+        {/* ░░ Footer ░░ */}
+        <footer className="site-footer">
+          <img src={logoBodyMine} alt="BodyMine" />
+          <p>
+            Bodymine is the leading directory to help you find the perfect surgeon
+            or clinic, anywhere in the world.
+          </p>
+
+          <div className="f-columns">
+            <div>
+              <h6>Home</h6>
+              <ul><li>Menu</li><li>Chat</li></ul>
+            </div>
+            <div>
+              <h6>Info</h6>
+              <ul>
+                <li>Terms & Conditions</li>
+                <li>Privacy Policy</li>
+                <li>FAQs</li>
+              </ul>
+            </div>
+            <div>
+              <h6>Contact Us</h6>
+              <p>info@bodymine.com</p>
+            </div>
           </div>
-
-          <footer className="chat-foot">
-            <input type="text" placeholder="Send a Message…" />
-            <button className="btn tiny send"><MessageSquare size={14}/></button>
-          </footer>
-        </section>
-      </main>
-
-      {/* ========== FOOTER ========== */}
-      <footer className="site-footer">
-        <img src="/assets/logobodymine.png" alt="BodyMine" />
-        <p>Bodymine is the leading directory to help you find the perfect surgeon or clinic, anywhere in the world.</p>
-
-        <div className="f-columns">
-          <div><h6>Home</h6><ul><li>Menu</li><li>Chat</li></ul></div>
-          <div><h6>Info</h6><ul><li>Terms & Conditions</li><li>Privacy Policy</li><li>FAQs</li></ul></div>
-          <div><h6>Contact Us</h6><p>info@bodymine.com</p></div>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 }

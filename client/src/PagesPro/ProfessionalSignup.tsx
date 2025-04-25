@@ -88,6 +88,7 @@ export default function ProfessionalSignup() {
 
   /* ─────────────────────────── UI ─────────────────────────── */
   return (
+    <div className='pro'>
     <div className="pro-signup">
       {/* === HERO + copy EXACTEMENT les mêmes que ta page login === */}
       <header className="pro-nav">
@@ -366,6 +367,7 @@ export default function ProfessionalSignup() {
                 </div>
               </div>
             </footer>
+    </div>
     </div>
   );
 }

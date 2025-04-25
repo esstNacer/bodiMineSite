@@ -92,7 +92,7 @@ const activityOptions = [
         speciality,
         country,
       });
-      const res = await fetch(`/api/professionals/filter?${params.toString()}`);
+      const res = await fetch(`/api/professional/filter?${params.toString()}`);
       const data = await res.json();
       setDoctors(data);
     } catch (error) {

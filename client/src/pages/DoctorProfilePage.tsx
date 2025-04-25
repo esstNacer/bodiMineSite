@@ -44,7 +44,7 @@ export default function DoctorProfilePage() {
   useEffect(() => {
     if (!doctor) return;
   
-    fetch(`/api/professionals/`)
+    fetch(`/api/professional/`)
       .then((r) => r.json())
       .then((data) => setRecommended(data))
       .catch((err) => console.error('Error fetching recommended doctors:', err));
@@ -55,7 +55,7 @@ export default function DoctorProfilePage() {
     if (!id) return;
 
     setLoading(true);
-    fetch(`/api/professionals/${id}`)
+    fetch(`/api/professional/${id}`)
       .then((r) => r.json())
       .then((data) => setDoctor(data))
       .catch((err) => console.error('Error fetching doctor:', err))

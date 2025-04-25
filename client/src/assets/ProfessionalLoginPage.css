@@ -2,16 +2,16 @@
   1. Variables – reset – helpers
 ═══════════════════════════════════════════════════════*/
 :root{
-    /* Palette */
+    /* Palette */
     --turquoise        : #70B7E2;
     --turquoise-dark   : #70B7E2;
-    --blob             : #70B7E2;      /* blob foncé */
+    --blob             : #70B7E2;
     --bg-light         : #f5fcfc;
     --text             : #1f1f1f;
     --grey             : #5a5a5a;
     --border           : #d9e3e5;
   
-    /* Métriques */
+    /* Métriques */
     --radius-card      : 12px;
     --radius-pill      : 999px;
     --shadow           : 0 6px 20px rgba(0,0,0,.06);
@@ -19,82 +19,85 @@
     font-family:'Inter','Segoe UI',Arial,sans-serif;
   }
   
-  *{box-sizing:border-box;margin:0;padding:0}
-  a{color:inherit;text-decoration:none}
-  img{display:block;max-width:100%}
-  button,input{font-family:inherit}
+  /* portée limitée au conteneur .paro ───────────────────*/
+  .paro *,
+  .paro *::before,
+  .paro *::after {box-sizing:border-box;margin:0;padding:0}
+  
+  .paro a        {color:inherit;text-decoration:none}
+  .paro img      {display:block;max-width:100%}
+  .paro button,
+  .paro input    {font-family:inherit}
   
   /*═══════════════════════════════════════════════════════
     2. Boutons
   ═══════════════════════════════════════════════════════*/
-  .btn{
+  .paro .btn{
     padding:.7rem 2.2rem;
     border:none;font-weight:600;font-size:.95rem;cursor:pointer;
     border-radius:var(--radius-pill);
     transition:background .18s,color .18s,border-color .18s;
   }
-  .btn.primary      {background:var(--turquoise-dark);color:#fff}
-  .btn.primary:hover{background:#12b0b0}
-  .btn.outline      {background:#fff;border:2px solid var(--turquoise-dark);color:var(--turquoise-dark)}
-  .btn.outline:hover{background:var(--turquoise-dark);color:#fff}
-  .btn.small        {padding:.45rem 1.4rem;font-size:.8rem;border-width:2px}
+  .paro .btn.primary      {background:var(--turquoise-dark);color:#fff}
+  .paro .btn.primary:hover{background:#12b0b0}
+  .paro .btn.outline      {background:#fff;border:2px solid var(--turquoise-dark);color:var(--turquoise-dark)}
+  .paro .btn.outline:hover{background:var(--turquoise-dark);color:#fff}
+  .paro .btn.small        {padding:.45rem 1.4rem;font-size:.8rem;border-width:2px}
   
   /*═══════════════════════════════════════════════════════
     3. Barre supérieure
   ═══════════════════════════════════════════════════════*/
-  .pro-nav{
+  .paro .pro-nav{
     height:86px;background:var(--turquoise);
     display:flex;align-items:center;justify-content:space-between;
     padding:0 44px;
   }
-  .nav-logo{height:62px}
-  .nav-right{display:flex;align-items:center;gap:32px;color:#fff}
-  .lang{font-weight:600;cursor:pointer}
+  .paro .nav-logo {height:62px}
+  .paro .nav-right{display:flex;align-items:center;gap:32px;color:#fff}
+  .paro .lang     {font-weight:600;cursor:pointer}
   
   /*═══════════════════════════════════════════════════════
     4. HERO
   ═══════════════════════════════════════════════════════*/
-  .hero{
+  .paro .hero{
     display:grid;grid-template-columns:460px 1fr;gap:52px;align-items:center;
     max-width:1280px;margin:60px auto 66px;padding:0 44px;
   }
-  .hero-copy h1{
+  .paro .hero-copy h1{
     font-size:2.35rem;line-height:1.24;margin-bottom:22px;font-weight:700;
   }
-  .hero-copy h1 span{color:var(--turquoise-dark)}
-  .lead{
+  .paro .hero-copy h1 span{color:var(--turquoise-dark)}
+  .paro .lead{
     font-size:1rem;line-height:1.58;color:var(--grey);max-width:540px;
     margin-bottom:30px;
   }
-  .cta-row{display:flex;gap:24px;margin-bottom:18px}
+  .paro .cta-row{display:flex;gap:24px;margin-bottom:18px}
   
-  /*── Visuel + blob ──*/
-  .hero-visual{
-    position:relative;max-width:380px;margin:0 auto;
-  }
-  .hero-visual::before{
+  /* visuel + blob */
+  .paro .hero-visual{position:relative;max-width:380px;margin:0 auto}
+  .paro .hero-visual::before{
     content:'';position:absolute;inset:-42px -36px -32px -40px;
     background:var(--blob);opacity:.28;z-index:-1;
     border-radius:63% 37% 58% 42%/44% 60% 40% 56%;
     transform:rotate(-9deg);
   }
   
-  /*── Colonne de droite : titre + liste ──*/
-  .hero-aside{display:flex;flex-direction:column;gap:34px}
-  .how-title{
+  /* colonne droite */
+  .paro .hero-aside{display:flex;flex-direction:column;gap:34px}
+  .paro .how-title{
     font-size:1.12rem;font-weight:700;color:var(--text);
   }
   
-  /*── Liste numérotée ──*/
-  .how-works{
+  /* liste numérotée */
+  .paro .how-works{
     list-style:none;counter-reset:step;
     display:flex;flex-direction:column;gap:20px;font-size:.97rem;
   }
-  .how-works li{
+  .paro .how-works li{
     counter-increment:step;position:relative;padding-left:60px;
     line-height:1.46;color:var(--text);
   }
-  .how-works li::before{
+  .paro .how-works li::before{
     content:counter(step);
     position:absolute;left:0;top:0;
     width:38px;height:38px;border-radius:50%;
@@ -106,44 +109,47 @@
   /*═══════════════════════════════════════════════════════
     5. Pitch + Login
   ═══════════════════════════════════════════════════════*/
-  .double{
+  .paro .double{
     display:grid;grid-template-columns:1fr 430px;gap:74px;
     max-width:1280px;margin:0 auto 84px;padding:0 44px;
   }
-  .pitch h2{
+  .paro .pitch h2{
     font-size:1.84rem;line-height:1.34;margin-bottom:22px;font-weight:700;
   }
-  .pitch h2 span{color:var(--turquoise-dark)}
-  .pitch p{color:var(--grey);line-height:1.57;margin-bottom:18px}
+  .paro .pitch h2 span{color:var(--turquoise-dark)}
+  .paro .pitch p     {color:var(--grey);line-height:1.57;margin-bottom:18px}
   
-  .login-card{
+  .paro .login-card{
     background:#fff;border-radius:var(--radius-card);box-shadow:var(--shadow);
     padding:38px 34px;
   }
-  .login-card h3{font-size:1.46rem;text-align:center;margin-bottom:24px;font-weight:700}
-  .btn.oauth.google{
+  .paro .login-card h3{
+    font-size:1.46rem;text-align:center;margin-bottom:24px;font-weight:700
+  }
+  .paro .btn.oauth.google{
     width:100%;background:#fff;border:1px solid var(--border);color:#555;
     border-radius:var(--radius-pill);padding:.62rem 0;
   }
-  .divider{
+  .paro .divider{
     margin:22px 0;font-size:.78rem;text-align:center;color:var(--grey);position:relative
   }
-  .divider::before,.divider::after{
+  .paro .divider::before,
+  .paro .divider::after{
     content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border)
   }
-  .divider::before{left:0}.divider::after{right:0}
-  .login-card form{display:flex;flex-direction:column;gap:18px}
-  .login-card input{
+  .paro .divider::before{left:0}.paro .divider::after{right:0}
+  .paro .login-card form{display:flex;flex-direction:column;gap:18px}
+  .paro .login-card input{
     padding:.78rem 1.05rem;border:1px solid var(--border);
     border-radius:var(--radius-card);font-size:.9rem
   }
-  .login-card input:focus{border-color:var(--turquoise-dark);outline:none}
-  .row.remember{
+  .paro .login-card input:focus{border-color:var(--turquoise-dark);outline:none}
+  .paro .row.remember{
     font-size:.75rem;color:var(--grey);display:flex;justify-content:space-between
   }
-  .btn.full{width:100%}
-  .small   {font-size:.8rem;text-align:center;margin-top:12px}
-  .form-error{
+  .paro .btn.full{width:100%}
+  .paro .small   {font-size:.8rem;text-align:center;margin-top:12px}
+  .paro .form-error{
     background:#ffecec;color:#b22;border-radius:var(--radius-card);
     padding:.6rem;text-align:center
   }
@@ -151,45 +157,47 @@
   /*═══════════════════════════════════════════════════════
     6. Bande « Partner »
   ═══════════════════════════════════════════════════════*/
-  .partner-strip{
+  .paro .partner-strip{
     max-width:1280px;margin:0 auto 88px;padding:0 44px;
     display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px
   }
-  .partner-strip img{
+  .paro .partner-strip img{
     width:100%;height:180px;object-fit:cover;border-radius:var(--radius-card)
   }
   
   /*═══════════════════════════════════════════════════════
     7. Footer
   ═══════════════════════════════════════════════════════*/
-  .footer{
+  .paro .footer{
     background:var(--turquoise);color:#fff;text-align:center;
     padding:56px 44px;display:flex;flex-direction:column;align-items:center;gap:30px
   }
-  .footer-logo{height:46px}
-  .baseline{font-size:.96rem;max-width:450px;line-height:1.54}
-  .footer-cols{
+  .paro .footer-logo{height:46px}
+  .paro .baseline{font-size:.96rem;max-width:450px;line-height:1.54}
+  .paro .footer-cols{
     display:flex;gap:86px;flex-wrap:wrap;justify-content:center
   }
-  .footer-cols h4{font-size:1.02rem;margin-bottom:10px;font-weight:700}
-  .footer-cols ul{list-style:none;font-size:.9rem;line-height:1.9;padding:0}
-  .footer-cols li{color:#eaffff}
+  .paro .footer-cols h4{
+    font-size:1.02rem;margin-bottom:10px;font-weight:700
+  }
+  .paro .footer-cols ul{list-style:none;font-size:.9rem;line-height:1.9;padding:0}
+  .paro .footer-cols li{color:#eaffff}
   
   /*═══════════════════════════════════════════════════════
     8. Responsive
   ═══════════════════════════════════════════════════════*/
   @media(max-width:1100px){
-    .hero       {grid-template-columns:1fr;text-align:center}
-    .hero-aside {align-items:center}
-    .how-title  {text-align:center}
-    .how-works  {align-items:center}
-    .double     {grid-template-columns:1fr}
-    .login-card {margin:0 auto}
+    .paro .hero       {grid-template-columns:1fr;text-align:center}
+    .paro .hero-aside {align-items:center}
+    .paro .how-title  {text-align:center}
+    .paro .how-works  {align-items:center}
+    .paro .double     {grid-template-columns:1fr}
+    .paro .login-card {margin:0 auto}
   }
   @media(max-width:600px){
-    .cta-row{flex-direction:column;align-items:center}
-    .how-works li{padding-left:44px}
-    .how-works li::before{width:30px;height:30px;font-size:.9rem}
-    .partner-strip{gap:20px}
+    .paro .cta-row{flex-direction:column;align-items:center}
+    .paro .how-works li{padding-left:44px}
+    .paro .how-works li::before{width:30px;height:30px;font-size:.9rem}
+    .paro .partner-strip{gap:20px}
   }
   

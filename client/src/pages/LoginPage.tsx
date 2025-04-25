@@ -159,6 +159,9 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
             <a href="/loginPro"><button type="button" className="btn secondary">
               Professional access
             </button> </a>
+            <a href="/admin/addBlog"><button type="button" className="btn secondary">
+              admin access
+            </button> </a>
           </form>
         </section>
       </main>

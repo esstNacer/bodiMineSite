@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import '../assets/SignUpPage.css';
 
 import connectImg from '../images/connect.png';
-import bodyMine  from '../images/logobodymine.png';
+import bodyMineLogo  from '../images/logobodymine.png';
 
 export default function SignUpPage() {
   const navigate = useNavigate();
