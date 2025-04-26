@@ -21,6 +21,10 @@ import ProfessionalSignup from './PagesPro/ProfessionalSignup';
 import ProfessionalSupport from './PagesPro/ProfessionalSupport';
 import ProfessionalFaq from './PagesPro/ProfessionalFaq';
 import Editprofile from './PagesPro/EditProfile/Editprofile';
+import ProfessionalCGU from './PagesPro/ProfessionalCGU';
+import ProfessionalDataPrivicy from './PagesPro/ProfessionalDataPrivicy';
+import NotificationsPage from './PagesPro/NotificationsPage';
+import PurchaseServicesPage from './PagesPro/PurchaseServicesPage';
 
 import AddBlogPage from './Admin/AddBlogPage';
 import BannerPage from './Admin/BannerPage';
@@ -42,12 +46,19 @@ export default function App() {
       <Route path="/faq" element={<FaqPage />} />
       <Route path="/pro/faq" element={<ProfessionalFaq />} />
       <Route path="/dataPrivacy" element={<DataPrivacyPage />} />
+      <Route path="/pro/dataPrivicy" element={<ProfessionalDataPrivicy />} />
       <Route path="/CGU" element={<CGUPage />} />
+      <Route path="/pro/CGU" element={<ProfessionalCGU />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/chat" element={<ChatPage />} />
       <Route path="/doctor/:id" element={<DoctorProfilePage />} />
       <Route path="/myBodyProject" element={<MyBodyProjectPage />} />
-      <Route path="/pro/editProfile" element={<Editprofile />} />
+      <Route path="/pro/edit" element={<Editprofile />} />
+      <Route path="/pro/purchase-services" element={<PurchaseServicesPage />} />
+      <Route path="/pro/notifications" element={<NotificationsPage />} />
+
+
+
 
       <Route path="/admin/blog" element={<AddBlogPage />} />
 <Route path="/admin/banner/patient" element={<BannerPage variant="patient" />} />

@@ -1,23 +1,52 @@
 // src/components/TopbarPro.tsx
-import { Link } from "react-router-dom";
-import { LogOut } from "lucide-react";
-import { usePro } from "./ProContext";
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { LogOut } from 'lucide-react'
+import { usePro } from './ProContext'
 
-import logo   from "../images/logobodymine.png";
-import avatar from "../images/doctor-small.png";
-import "../assets/ProfessionalDashboard.css";   // ou la feuille où se trouve .topbar /.navbar
+import logo from '../images/logobodymine.png'
+import defaultAvatar from '../images/doctor-small.png'
+import '../assets/ProfessionalDashboard.css'
 
-/* props -----------------------------------------------------------------*/
+interface Photo {
+  photo_id: number
+  professional_id: number
+  photo_url: string
+  type: string
+  created_at: string
+}
+
 interface TopbarProps {
-  /** classe CSS à utiliser à la place de "topbar" (optionnel) */
-  classNameOverride?: string;
+  classNameOverride?: string
 }
 
 export default function TopbarPro({ classNameOverride }: TopbarProps) {
-  const { professional, proLogout } = usePro();
+  const { professional, proToken, proLogout } = usePro()
+  const cls = classNameOverride ?? 'topbar'
 
-  /* si aucune classe passée → on garde "topbar" */
-  const cls = classNameOverride ?? "topbar";
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!professional?.professional_id || !proToken) return
+
+    fetch(`/api/photos/pro/${professional.professional_id}`, {
+      headers: { Authorization: `Bearer ${proToken}` }
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch photos')
+        return res.json() as Promise<Photo[]>
+      })
+      .then(photos => {
+        // on prend la première photo de type "profile"
+        const profilePhoto = photos.find(p => p.type === 'profile')
+        if (profilePhoto) {
+          setProfilePhotoUrl(profilePhoto.photo_url)
+        }
+      })
+      .catch(err => {
+        console.error('Error loading profile photo:', err)
+      })
+  }, [professional, proToken])
 
   return (
     <nav className={cls}>
@@ -28,17 +57,21 @@ export default function TopbarPro({ classNameOverride }: TopbarProps) {
       <div className="topbar-right">
         <span className="lang">EN ▾</span>
 
-        <img src={avatar} alt="avatar" className="avatar-sm" />
+        <img
+          src={profilePhotoUrl ?? defaultAvatar}
+          alt="avatar"
+          className="avatar-sm"
+        />
 
         <div className="doc-info">
-          <strong>{professional?.full_name ?? "Doctor"}</strong>
+          <strong>{professional?.full_name ?? 'Doctor'}</strong>
           <span className="online">Online</span>
         </div>
 
         <button className="btn tiny" onClick={proLogout}>
-          <LogOut size={14}/> Logout
+          <LogOut size={14} /> Logout
         </button>
       </div>
     </nav>
-  );
+  )
 }

@@ -44,9 +44,19 @@ import {
   
   const setInStorage = (key: string, value: any, remember = true) => {
     const store = remember ? localStorage : sessionStorage;
-    if (value === null) store.removeItem(key);
-    else store.setItem(key, JSON.stringify(value));
+    if (value === null) {
+      store.removeItem(key);
+    } else {
+      if (key === STORAGE_KEY_PRTOK) {
+        // Pour le token, on stocke *directement* la chaîne, sans JSON.stringify
+        store.setItem(key, value as string);
+      } else {
+        store.setItem(key, JSON.stringify(value));
+      }
+    }
   };
+  
+
   
   const getFromStorage = (key: string) => {
     const raw = localStorage.getItem(key) ?? sessionStorage.getItem(key);

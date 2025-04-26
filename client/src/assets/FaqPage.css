@@ -161,6 +161,21 @@
   .faq-content {
     flex: 1;
   }
+  .faq-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    max-height: 800px;    /* ou la hauteur que vous voulez */
+    overflow: hidden;     /* pour que seul le body défile */
+  }
+  .faq-card .faq-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;              /* prend tout l’espace disponible */
+    line-height: 1.6;
+  }
   
   .faq-content h2 {
     font-size: 1.5rem;

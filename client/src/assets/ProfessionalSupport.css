@@ -18,6 +18,23 @@
     background: var(--light-bg);
     color: #222;
   }
+  /* liens directs dans la FAQ */
+.faq-link {
+    background: var(--white);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.05);
+  }
+  
+  .faq-link a{
+    color: var(--highlight);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  
+  .faq-link a:hover{ text-decoration: underline }
+  
   
   /* NAVBAR */
   .nav-left, .nav-right {

@@ -64,7 +64,7 @@ CREATE TABLE notifications (
   professional_id INT,
   project_id INT,
   message TEXT,
-  `read` BOOLEAN DEFAULT FALSE,
+  `read` INT DEFAULT FALSE,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (professional_id) REFERENCES professionals(professional_id),
   FOREIGN KEY (project_id) REFERENCES mybody_projects(project_id)
@@ -76,6 +76,7 @@ CREATE TABLE premium_subscriptions (
   professional_id INT,
   start_date DATETIME,
   end_date DATETIME,
+  subscriptions_name VARCHAR(50),
   `status` ENUM('active', 'inactive'),
   FOREIGN KEY (professional_id) REFERENCES professionals(professional_id)
 );
@@ -86,6 +87,7 @@ CREATE TABLE professional_photos (
   professional_id INT,
   photo_url VARCHAR(255),
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `type` VARCHAR(50),
   FOREIGN KEY (professional_id) REFERENCES professionals(professional_id)
 );
 

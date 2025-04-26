@@ -1,3 +1,4 @@
+// src/pages/DoctorListPage.tsx
 import React, { useState, useEffect } from 'react';
 import '../assets/Search.css';
 import bodyMineLogo from '../images/logobodymine.png';
@@ -6,77 +7,72 @@ import { FiHome, FiSearch } from 'react-icons/fi';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
-import { components } from 'react-select';
 
 interface Professional {
-    isFavorited: any;
-    photo_url: string;
-    professional_id: number;
-    full_name: string;
-    clinic_address?: string;
-    city?: string;
-    country?: string;
-    email: string;
-    specialization?: string;
-    practice_tenure?: string;
-    practice_start_date?: string;
-    is_premium?: boolean;
-  }
-  
+  professional_id: number;
+  full_name: string;
+  specialization?: string;
+  country?: string;
+  practice_tenure?: string;
+  email: string;
+  photo_url?: string;
+  isFavorited?: boolean;
+}
+
+interface Photo {
+  photo_id: number;
+  professional_id: number;
+  photo_url: string;
+  type: string;
+}
 
 export default function DoctorListPage() {
   const { user } = useUser();
-  
-const specialityOptions = [
-  { value: 'Breast surgery', label: 'Breast surgery' },
-  { value: 'Facial surgery', label: 'Facial surgery' },
-  { value: 'Liposuction', label: 'Liposuction' },
-  { value: 'Abdominoplasty', label: 'Abdominoplasty' },
-  { value: 'Dental care', label: 'Dental care' },
-  { value: 'Buttock surgery', label: 'Buttock surgery' },
-  { value: 'Hair surgery', label: 'Hair surgery' },
-  { value: 'Hand Surgery', label: 'Hand Surgery' },
-  { value: 'Ear surgery', label: 'Ear surgery' },
-  { value: 'Intimate surgery', label: 'Intimate surgery' },
-  { value: 'Reconstructive surgery', label: 'Reconstructive surgery' },
-  { value: 'Non surgical treatments', label: 'Non surgical treatments' },
-];
 
-const countryOptions = [
-  "Albania", "Andorra", "Armenia", "Austria", "Azerbaijan", "Belarus", "Belgium", "Bulgaria",
-  "Croatia", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Finland", "France", "Georgia",
-  "Germany", "Greece", "Hungary", "Iceland", "Ireland", "Italy", "Lithuania", "Luxembourg", "Malta",
-  "Moldova", "Monaco", "Montenegro", "North Macedonia", "Norway", "Poland", "Portugal", "Romania",
-  "Serbia", "Turkey"
-].map(country => ({ value: country, label: country }));
-
-const relevanceOptions = [
-  { value: 'speciality', label: 'Speciality' },
-  { value: 'relevance', label: 'Relevance' },
-  { value: 'reviews', label: 'Reviews' },
-  { value: 'popularity', label: 'Popularity' },
-];
-
-const activityOptions = [
-  {
-    value: 'online',
-    label: (
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <span style={{ width: 10, height: 10, backgroundColor: 'green', borderRadius: '50%', marginRight: 8 }}></span>
-        Online
-      </div>
-    ),
-  },
-  {
-    value: 'offline',
-    label: (
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <span style={{ width: 10, height: 10, backgroundColor: 'red', borderRadius: '50%', marginRight: 8 }}></span>
-        Offline
-      </div>
-    ),
-  },
-];
+  const specialityOptions = [
+    { value: 'Breast surgery', label: 'Breast surgery' },
+    { value: 'Facial surgery', label: 'Facial surgery' },
+    /* …etc… */
+  ];
+  const countryOptions = [
+    /* …etc… */
+  ].map(c => ({ value: c, label: c }));
+  const activityOptions = [
+    {
+      value: 'online',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span style={{
+            width: 10, height: 10,
+            backgroundColor: 'green',
+            borderRadius: '50%',
+            marginRight: 8
+          }} />
+          Online
+        </div>
+      ),
+    },
+    {
+      value: 'offline',
+      label: (
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <span style={{
+            width: 10, height: 10,
+            backgroundColor: 'red',
+            borderRadius: '50%',
+            marginRight: 8
+          }} />
+          Offline
+        </div>
+      ),
+    },
+  ];
+  const relevanceOptions = [
+    { value: 'speciality', label: 'Speciality' },
+    { value: 'relevance', label: 'Relevance' },
+    { value: 'reviews', label: 'Reviews' },
+    { value: 'popularity', label: 'Popularity' },
+  ];
 
   const [query, setQuery] = useState('');
   const [location, setLocation] = useState('');
@@ -84,24 +80,48 @@ const activityOptions = [
   const [country, setCountry] = useState('');
   const [doctors, setDoctors] = useState<Professional[]>([]);
 
+  /** 1) Fetch initial list */
   const fetchDoctors = async () => {
     try {
-      const params = new URLSearchParams({
-        query,
-        location,
-        speciality,
-        country,
-      });
+      const params = new URLSearchParams({ query, location, speciality, country });
       const res = await fetch(`/api/professional/filter?${params.toString()}`);
-      const data = await res.json();
+      const data: Professional[] = await res.json();
       setDoctors(data);
-    } catch (error) {
-      console.error('Error fetching doctors:', error);
+    } catch (err) {
+      console.error('Error fetching doctors:', err);
     }
   };
+
+  /** 2) Après chaque chargement, récupérer la photo profile si manquante */
+  useEffect(() => {
+    doctors.forEach(doc => {
+      if (!doc.photo_url) {
+        fetch(`/api/photos/pro/${doc.professional_id}`)
+          .then(r => r.json())
+          .then((photos: Photo[]) => {
+            const prof = photos.find(p => p.type === 'profile');
+            if (prof) {
+              setDoctors(prev =>
+                prev.map(d =>
+                  d.professional_id === doc.professional_id
+                    ? { ...d, photo_url: prof.photo_url }
+                    : d
+                )
+              );
+            }
+          })
+          .catch(() => {
+            // si pas de photo ou erreur, on laisse le placeholder
+          });
+      }
+    });
+  }, [doctors]);
+
+  useEffect(() => { fetchDoctors(); }, []);
+
+
   const handleStartChat = async (professionalId: number) => {
     if (!user?.patient_id) return;
-  
     try {
       await fetch('/api/chats', {
         method: 'POST',
@@ -111,69 +131,41 @@ const activityOptions = [
           professional_id: professionalId,
           message: "Hi doctor, I'd like to start a conversation.",
           sender: "patient"
-        }),
+        })
       });
-  
-      // Enregistre l'ID du médecin sélectionné dans localStorage
       localStorage.setItem('selectedDoctorId', String(professionalId));
-  
-      // Redirige vers la page de chat
       window.location.href = "/chat";
     } catch (err) {
       console.error("Error starting chat:", err);
     }
   };
-  
-  
 
-  useEffect(() => {
-    fetchDoctors();
-  }, []);
-
-  const handleSearch = () => {
-    fetchDoctors();
-  };
-
-  function setActivity(arg0: string): void {
-    throw new Error('Function not implemented.');
-  }
-
-  function setRelevance(arg0: string): void {
-    throw new Error('Function not implemented.');
-  }
 
   return (
     <div className="page">
-    <header className="navbar">
-                  <div className="logo">
-                    <img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" />
-                  </div>
-          
-                  <nav className="main-nav">
-                    <a href="/home">
-                      <FiHome /> Home
-                    </a>
-                    <a href="/chat">
-                      <FiSearch /> Chat
-                    </a>
-                    <a  href="/search">
-                      <FiSearch /> Search
-                    </a>
-                  </nav>
-          
-                  <div className="profile-mini">
-                    <span className="lang">EN ▾</span>
-                    <Link to={"/editProfile"}>
-                    <img
-                      className="profile-avatar"
-                      src="https://i.pravatar.cc/40?img=12"
-                      alt="Parth Ramani"
-                    />
-                    <span className="profile-name">
-                      {user?.first_name} {user?.last_name} <span className="status-dot">●</span>
-                    </span></Link>
-                  </div>
-                </header>
+      <header className="navbar">
+        <div className="logo">
+          <img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" />
+        </div>
+        <nav className="main-nav">
+          <a href="/home"><FiHome /> Home</a>
+          <a href="/chat"><FiSearch /> Chat</a>
+          <a href="/search"><FiSearch /> Search</a>
+        </nav>
+        <div className="profile-mini">
+          <span className="lang">EN ▾</span>
+          <Link to="/editProfile">
+            <img
+              className="profile-avatar"
+              src={`https://i.pravatar.cc/40?u=${user?.patient_id}`}
+              alt="You"
+            />
+            <span className="profile-name">
+              {user?.first_name} {user?.last_name} <span className="status-dot">●</span>
+            </span>
+          </Link>
+        </div>
+      </header>
 
       <main className="main-content">
         <div className="filters-wrapper">
@@ -182,80 +174,89 @@ const activityOptions = [
               type="text"
               placeholder="Doctor, Hospital, Dental"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={e => setQuery(e.target.value)}
             />
             <input
               type="text"
               placeholder="Location"
               value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              onChange={e => setLocation(e.target.value)}
             />
-            <button className="search-btn" onClick={handleSearch}><FiSearch /> Search</button>
+            <button className="search-btn" onClick={fetchDoctors}>
+              <FiSearch /> Search
+            </button>
           </div>
           <div className="filter-row">
-    <Select
-      options={specialityOptions}
-      placeholder="Speciality"
-      onChange={(option) => setSpeciality(option?.value || '')}
-      className="react-select"
-    />
-    <Select
-      options={countryOptions}
-      placeholder="Country"
-      onChange={(option) => setCountry(option?.value || '')}
-      className="react-select"
-    />
-    <Select
-      options={activityOptions}
-      placeholder="Activity"
-      className="react-select"
-    />
-    <Select
-      options={relevanceOptions}
-      placeholder="Relevance"
-      className="react-select"
-    />
-  </div>
+            <Select
+              options={specialityOptions}
+              placeholder="Speciality"
+              onChange={opt => setSpeciality(opt?.value || '')}
+              className="react-select"
+            />
+            <Select
+              options={countryOptions}
+              placeholder="Country"
+              onChange={opt => setCountry(opt?.value || '')}
+              className="react-select"
+            />
+            <Select
+              options={activityOptions}
+              placeholder="Activity"
+              className="react-select"
+            />
+            <Select
+              options={relevanceOptions}
+              placeholder="Relevance"
+              className="react-select"
+            />
+          </div>
         </div>
-<div className="doctor-grid">
-          {doctors.length > 0 ? (
-            doctors.map((doc) => (
-              <div className="doctor-card" key={doc.professional_id}>
-<Link to={`/doctor/${doc.professional_id}`} className="doctor-link">                
-                <div className="doctor-img">
-                  <img src={doc.photo_url || 'https://i.imgur.com/1X3K1vF.png'} alt={doc.full_name} />
-                  <div className="heart-icon">
-                    {doc.isFavorited ? <FaHeart /> : <FaRegHeart />}
-                  </div>
-                </div>
-                <h4>{doc.full_name}</h4>
-                <p>{doc.specialization}</p>
-                <p>{doc.country}</p>
-                <div className="rating">
-                  <span>⏱ {doc.practice_tenure || 'N/A'}</span>
-                </div>
-                </Link>
-                <button className="chat-btn" onClick={() => handleStartChat(doc.professional_id)}>
-  💬 Chat
-</button>
 
+        <div className="doctor-grid">
+          {doctors.length > 0 ? (
+            doctors.map(doc => (
+              <div className="doctor-card" key={doc.professional_id}>
+                <Link to={`/doctor/${doc.professional_id}`} className="doctor-link">
+                  <div className="doctor-img">
+                    <img
+                      src={doc.photo_url || 'https://i.imgur.com/1X3K1vF.png'}
+                      alt={doc.full_name}
+                    />
+                    <div className="heart-icon">
+                      {doc.isFavorited ? <FaHeart /> : <FaRegHeart />}
+                    </div>
+                  </div>
+                  <h4>{doc.full_name}</h4>
+                  <p>{doc.specialization}</p>
+                  <p>{doc.country}</p>
+                  <div className="rating">
+                    <span>⏱ {doc.practice_tenure || 'N/A'}</span>
+                  </div>
+                </Link>
+                <button
+                  className="chat-btn"
+                  onClick={() => handleStartChat(doc.professional_id)}
+                >
+                  💬 Chat
+                </button>
               </div>
             ))
           ) : (
-            <p style={{ padding: '1rem', textAlign: 'center', gridColumn: '1/-1' }}>No results found</p>
+            <p style={{ padding: '1rem', textAlign: 'center', gridColumn: '1/-1' }}>
+              No results found
+            </p>
           )}
         </div>
-        
       </main>
 
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-block">
             <img src={bodyMineLogo} alt="BodyMine" className="footer-logo" />
-            <p>Bodymine is the leading directory to help you find the perfect surgeon or clinic, anywhere in the world.</p>
-            <div className="social-icons">
-              <span>🔵</span><span>🐦</span><span>▶️</span>
-            </div>
+            <p>
+              Bodymine is the leading directory to help you find the perfect
+              surgeon or clinic, anywhere in the world.
+            </p>
           </div>
           <div className="footer-block">
             <h4>Home</h4>

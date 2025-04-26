@@ -48,11 +48,14 @@ function BodyMineProfilePage() {
   };
 
   return (
-    <>
+    <> <div className='pure'>
       <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         {/* Header */}
+        <div className="pro">
+        <div className="pro-dash">
         <TopbarPro />
-
+</div>
+</div>
         {/* Main Content */}
         <Container maxWidth="lg" sx={{ mt: 2 }}>
           <Grid container spacing={2}>
@@ -136,6 +139,7 @@ function BodyMineProfilePage() {
             <Container maxWidth="lg" sx={{ mt: 4 }}>
               <Grid container spacing={2}>
                 {/* Sidebar */}
+                
                 <SidebarPro />
 
                 {/* Main Content */}
@@ -179,6 +183,7 @@ function BodyMineProfilePage() {
 
       {/* Footer */}
       <FooterPro />
+      </div>
     </>
   );
 }

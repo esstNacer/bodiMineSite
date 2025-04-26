@@ -249,3 +249,74 @@
   .pro .sidebar{display:none}
   .pro .chatbox{margin-top:24px}
 }
+/* Container profile-card positionné en relatif pour le bouton */
+.sidebar .profile-card {
+  position: relative;
+  padding-right: 48px; /* espace pour la cloche */
+}
+
+/* Bouton de notifications */
+.sidebar .profile-card .notif-btn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--pro-bg);
+  color: var(--pro-blue-dark);
+  transition: background .2s, color .2s;
+  text-decoration: none;
+}
+
+/* Hover et focus */
+.sidebar .profile-card .notif-btn:hover,
+.sidebar .profile-card .notif-btn:focus {
+  background: var(--pro-blue-dark);
+  color: #fff;
+}
+.pure .carousel img {
+  height: var(--carousel-height);
+}
+/* Notification button */
+.sidebar .profile-card .notif-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--pro-bg);
+  color: var(--pro-blue-dark);
+  transition: background .2s, color .2s;
+}
+
+/* État “has unread” */
+.sidebar .profile-card .notif-btn.unread {
+  background: var(--pro-blue-dark);
+  color: #fff;
+}
+
+/* Petit badge rouge en coin */
+.sidebar .profile-card .notif-btn.unread::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  background: #f44336;
+  border-radius: 50%;
+}
+
+/* Hover effect */
+.sidebar .profile-card .notif-btn:hover {
+  background: var(--pro-blue-dark);
+  color: #fff;
+}

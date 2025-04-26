@@ -92,15 +92,30 @@ export async function loginProfessional(req, res, next) {
   }
 }
 
-  
-  
-
-export async function create(req, res, next) {
+export async function create(req, res) {
   try {
-    const result = await Professionals.create(req.body);
-    res.status(201).json(result);
+    // 1. Création dans la base
+    const { insertId } = await Professionals.create(req.body);
+
+    // 2. Récupérer le professionnel fraîchement créé
+    const professional = await Professionals.findById(insertId);
+
+    if (!professional) {
+      return res.status(404).json({ error: 'Professional not found after creation' });
+    }
+
+    // 3. Créer un token JWT
+    const token = jwt.sign(
+      { sub: professional.professional_id, role: 'professional' },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
+
+    // 4. Envoyer tout en réponse
+    res.json({ token, professional });
   } catch (err) {
-    next(err);
+    console.error(err);
+    res.status(500).json({ error: 'Error creating professional' });
   }
 }
 

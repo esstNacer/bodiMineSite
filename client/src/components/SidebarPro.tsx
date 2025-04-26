@@ -1,46 +1,114 @@
 // src/components/SidebarPro.tsx
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Menu, User, Star, Notebook, Lock,
-  Paperclip, Headphones, LogOut
+  Paperclip, Headphones, LogOut, Bell
 } from "lucide-react";
 import { FaMoneyBill } from "react-icons/fa";
 import { usePro } from "./ProContext";
 
-import avatar from "../images/doctor-small.png";
+import defaultAvatar from "../images/doctor-small.png";
 import "../assets/ProfessionalDashboard.css";
 
 interface SidebarProps {
-  active?: string;             // entrée mise en surbrillance
-  classNameOverride?: string;  // classe CSS substitutive (ex.: "sidebar")
+  active?: string;
+  classNameOverride?: string;
+}
+
+interface Notification {
+  notification_id: number;
+  read: number; // 0 = unread
+}
+
+interface Photo {
+  photo_id: number;
+  professional_id: number;
+  photo_url: string;
+  type: string;
+  created_at: string;
 }
 
 export default function SidebarPro({
   active = "Dashboard",
   classNameOverride
 }: SidebarProps) {
-  const { professional, proLogout } = usePro();
+  const { professional, proToken, proLogout } = usePro();
   const cls = classNameOverride ?? "sidebar";
 
+  const [hasUnread, setHasUnread] = useState(false);
+  const [profileUrl, setProfileUrl] = useState<string | null>(null);
+
+  // 1) Notifications non lues
+  useEffect(() => {
+    if (!professional?.professional_id || !proToken) return;
+
+    fetch(`/api/notifications/pro/${professional.professional_id}`, {
+      headers: { Authorization: `Bearer ${proToken}` }
+    })
+      .then(res => res.json())
+      .then((data: Notification[] | { error: string }) => {
+        if (Array.isArray(data)) {
+          setHasUnread(data.some(n => n.read === 0));
+        }
+      })
+      .catch(console.error);
+  }, [professional, proToken]);
+
+  // 2) Photos de profil
+  useEffect(() => {
+    if (!professional?.professional_id || !proToken) return;
+
+    fetch(`/api/photos/pro/${professional.professional_id}`, {
+      headers: { Authorization: `Bearer ${proToken}` }
+    })
+      .then(res => res.json())
+      .then((data: Photo[] | { error: string }) => {
+        if (Array.isArray(data)) {
+          const profiles = data
+            .filter(p => p.type === "profile")
+            .sort((a, b) =>
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime()
+            );
+          if (profiles.length) {
+            setProfileUrl(profiles[0].photo_url);
+          }
+        }
+      })
+      .catch(console.error);
+  }, [professional, proToken]);
+
   const items = [
-    { id:"Dashboard" , label:"Dashboard"         , icon:<Menu size={16}/>       , to:"/pro/dashboard"         },
-    { id:"Edit"      , label:"Edit Profile"      , icon:<User size={16}/>       , to:"/pro/profile/edit"      },
-    { id:"Plan"      , label:"Your Plan"         , icon:<Star size={16}/>       , to:"/pro/plan"              },
-    { id:"DoctorEst" , label:"Doctor Est"        , icon:<Notebook size={16}/>   , to:"/pro/doctor-est"        },
-    { id:"Purchase"  , label:"Purchase Services" , icon:<FaMoneyBill size={16}/>, to:"/pro/purchase-services" },
-    { id:"Password"  , label:"Change Password"   , icon:<Lock size={16}/>       , to:"/pro/password"          },
-    { id:"Terms"     , label:"Terms & Conditions", icon:<Paperclip size={16}/>  , to:"/pro/terms"             },
-    { id:"Support"   , label:"Support"           , icon:<Headphones size={16}/> , to:"/pro/support"           },
+    { id: "Dashboard", label: "Dashboard",          icon: <Menu size={16}/>,       to: "/pro/dashboard"         },
+    { id: "Edit",      label: "Edit Profile",       icon: <User size={16}/>,       to: "/pro/edit"              },
+    { id: "Plan",      label: "Your Plan",          icon: <Star size={16}/>,       to: "/pro/plan"              },
+    { id: "DoctorEst", label: "Doctor list",        icon: <Notebook size={16}/>,   to: "/pro/doctor-est"        },
+    { id: "Purchase",  label: "Purchase Services",  icon: <FaMoneyBill size={16}/>,to: "/pro/purchase-services" },
+    { id: "Password",  label: "Change Password",    icon: <Lock size={16}/>,       to: "/pro/password"          },
+    { id: "Terms",     label: "Terms & Conditions", icon: <Paperclip size={16}/>,  to: "/pro/CGU"               },
+    { id: "Support",   label: "Support",            icon: <Headphones size={16}/>, to: "/pro/support"           },
   ];
 
   return (
     <aside className={cls}>
       <div className="profile-card">
-        <img src={avatar} alt="avatar" />
-        <div>
+        <img
+          src={profileUrl || defaultAvatar}
+          alt="avatar"
+          className="profile-avatar"
+        />
+        <div className="profile-info">
           <h4>{professional?.full_name}</h4>
           <span className="online">Online</span>
         </div>
+        <Link
+          to="/pro/notifications"
+          className={`notif-btn${hasUnread ? " unread" : ""}`}
+          title="Notifications"
+        >
+          <Bell size={20} />
+        </Link>
       </div>
 
       <ul className="side-links">

@@ -1,113 +1,124 @@
-/*  src/pages/ProfessionalSupport.tsx  – version finale  */
-import { useState } from "react";
-import { ChevronDown, ChevronUp, Paperclip } from "lucide-react";
-
+/*  Page “FAQ Professionnels” – calquée sur la page Support
+    ─ hero identique
+    ─ grille :  sidebar  |  carte FAQ (scrollable)
+---------------------------------------------------------------- */
 import TopbarPro   from "../components/TopbarPro";
 import SidebarPro  from "../components/SidebarPro";
 
-import heroPic from "../images/help.png";
+import heroPic     from "../images/help.png";
 import logoBodyMine from "../images/logobodymine.png";
 
-import "../assets/ProfessionalDashboard.css";   // styles communs
-import "../assets/ProfessionalFaq.css";                // styles spécifiques « contenu »
+import "../assets/ProfessionalDashboard.css";   // variables + top/footer
+import "../assets/ProfessionalSupport.css";     // hero + grid de base
+import "../assets/ProfessionalFaq.css";         // ONLY faq overrides
 
-/* FAQ -----------------------------------------------------------------*/
+/* — texte brut ------------------------------------------------ */
+const faqText = `FAQ Professionnels – Bodymine
 
+1. Qu’est-ce que Bodymine ?
 
-export default function ProfessionalFaq () {
-  const [openId, setOpenId] = useState<null | number>(null);
-  const faq = [
-    { q: "Faq",              a: "Here you can place a short answer to the most common question.",to:"/pro/faq"  },
-    { q: "Data privacy",     a: "BodyMine is fully GDPR-compliant and never shares your data."  },
-    { q: "Terms & conditions",a: "Find the complete document in Settings → Legal."              },
-  ];
+Bodymine est une plateforme de mise en relation entre patients et professionnels
+de la chirurgie esthétique. Elle permet aux praticiens de développer leur
+visibilité et de recevoir des demandes qualifiées.
 
+2. Comment créer un compte professionnel ?
+
+Vous pouvez vous inscrire depuis la page dédiée, compléter votre profil avec
+vos spécialités, photos, diplômes, et soumettre votre licence pour validation.
+
+3. Mon profil est-il publié immédiatement ?
+
+Non, chaque profil est vérifié manuellement par notre équipe avant publication,
+pour garantir la qualité et la sécurité de la plateforme.
+
+4. Ai-je accès aux fiches des patients ?
+
+Non. Pour des raisons de confidentialité, les fiches patients sont strictement
+privées. Vous ne pouvez être mis en relation que via MyBodyProjet ou si un
+patient vous contacte directement.
+
+5. Puis-je contacter des patients librement ?
+
+Vous pouvez échanger avec un patient uniquement après avoir reçu une notification
+via MyBodyProjet ou lorsqu’il prend l’initiative de vous contacter.
+
+6. Qu’est-ce que le service MyBodyProjet ?
+
+C’est un service de mise en relation intelligente. Nous recevons des projets de
+patients et notifions les professionnels correspondant au besoin. Vous pouvez
+ensuite engager la conversation avec le patient.
+
+7. Y a-t-il un coût pour être référencé sur Bodymine ?
+
+La création de profil est gratuite. Des options de visibilité et services
+supplémentaires peuvent être proposées ultérieurement.
+
+8. Comment prouver ma légitimité sur Bodymine ?
+
+Lors de votre inscription, vous devez fournir votre licence ou équivalent selon
+votre pays. Pour aller plus loin, nous recommandons d’encourager les avis
+patients et de tenir un profil régulièrement mis à jour.
+
+9. Puis-je échanger avec les patients depuis la plateforme ?
+
+Oui, la messagerie sécurisée Bodymine vous permet de répondre aux demandes et
+d’échanger librement, tout en respectant la confidentialité des échanges.
+
+10. Comment augmenter mes chances de recevoir des demandes ?
+
+Voici quelques conseils :
+• Complétez votre profil à 100 % (bio, diplômes, langues parlées…)
+• Ajoutez des photos avant/après (avec consentement)
+• Soyez réactif aux messages
+• Collectez des avis patients
+• Restez régulièrement en ligne : cela améliore votre visibilité dans les
+  résultats de recherche.
+`;
+
+export default function ProfessionalFaq() {
   return (
-    <div className="pro page">                   {/* même préfixe “pro …” */}
-      {/* ─── TOP-BAR IDENTIQUE ─── */}
-      <TopbarPro />                              {/* ↩︎ rend <nav class="topbar"> */}
+    <div className="pro faq-page">
+      {/* top-bar partagée */}
+      <TopbarPro />
 
-      {/* ─── MISE EN PAGE ─── */}
-      <div className="main">
-        {/* barre latérale identique */}
-        <SidebarPro active="Support" />
+      {/* HERO (identique Support) */}
+      
+     <header className="support-header">
+                 <div>
+                   <h2>How can we help you&nbsp;?</h2>
+                   <p>We’re here to support you anytime. Choose the best way to reach us.</p>
+                 </div>
+                 <img src={heroPic} alt="Support operator" className="support-img" />
+               </header>
 
-        {/* contenu support */}
-        <div className="support-layout">
-          {/* bandeau héro */}
-          <header className="support-header">
-            <div>
-              <h2>How can we help you ?</h2>
-              <p>We’re here to support you anytime. Choose the best way to reach us.</p>
-            </div>
-            <img src={heroPic} alt="Support operator" className="support-img"/>
-          </header>
+      {/* GRILLE */}
+      <div className="faq-grid">
+        <SidebarPro active="FAQ" />
 
-          {/* grille formulaire + FAQ */}
-          <article className="cgu-scroll">
-          <h2>FAQ – Bodymine</h2>
-            <p><strong>1. Qu’est-ce que Bodymine ?</strong><br />
-              Bodymine est un annuaire international spécialisé en chirurgie esthétique...
-            </p>
-            <p><strong>2. Comment créer mon compte sur Bodymine ?</strong><br />
-              Vous pouvez créer un compte rapidement en vous inscrivant avec votre email...
-            </p>
-            <p><strong>3. Qui a accès à ma fiche patient ?</strong><br />
-              Personne. Les fiches patients sont strictement confidentielles...
-            </p>
-            <p><strong>4. Le service Bodymine est-il gratuit ?</strong><br />
-              Oui, la création de compte et l’utilisation de la plateforme sont gratuites...
-            </p>
-            <p><strong>5. Qu’est-ce que MyBodyProjet ?</strong><br />
-              C’est un service de mise en relation personnalisée...
-            </p>
-            <p><strong>6. Comment rechercher un chirurgien ou une clinique ?</strong><br />
-              Utilisez notre moteur de recherche multicritères...
-            </p>
-            <p><strong>7. Puis-je discuter directement avec un professionnel ?</strong><br />
-              Oui, dès qu’un professionnel vous contacte...
-            </p>
-            <p><strong>8. Comment être sûr(e) de la fiabilité des professionnels ?</strong><br />
-              Les professionnels sont validés à l’inscription sur présentation de leur licence...
-            </p>
-            <p><strong>9. Puis-je modifier ou supprimer ma fiche projet ?</strong><br />
-              Oui, vous gardez le contrôle total...
-            </p>
-            <p><strong>10. J’ai une question ou un problème, que faire ?</strong><br />
-              Vous pouvez nous contacter via le formulaire en ligne ou par email...
-            </p>
+        <section className="faq-card">
+          <header className="faq-head">FAQ Professionnels&nbsp;– Bodymine</header>
+
+          <article className="faq-body">
+            {faqText.trim().split("\n").map((line, idx) =>
+              line.trim() === "" ? <br key={idx} /> : <p key={idx}>{line}</p>
+            )}
           </article>
-
-        </div>
+        </section>
       </div>
 
-      {/* ─── FOOTER IDENTIQUE ─── */}
+      {/* footer réutilisé */}
       <footer className="site-footer">
-                <img src={logoBodyMine} alt="BodyMine" />
-                <p>
-                  Bodymine is the leading directory to help you find the perfect surgeon
-                  or clinic, anywhere in the world.
-                </p>
-      
-                <div className="f-columns">
-                  <div>
-                    <h6>Home</h6>
-                    <ul><li>Menu</li><li>Chat</li></ul>
-                  </div>
-                  <div>
-                    <h6>Info</h6>
-                    <ul>
-                      <li>Terms & Conditions</li>
-                      <li>Privacy Policy</li>
-                      <li>FAQs</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h6>Contact Us</h6>
-                    <p>info@bodymine.com</p>
-                  </div>
-                </div>
-              </footer>
+        <img src={logoBodyMine} alt="BodyMine" />
+        <p>
+          Bodymine is the leading directory to help you find the perfect surgeon
+          or clinic, anywhere in the world.
+        </p>
+        <div className="f-columns">
+          <div><h6>Home</h6><ul><li>Menu</li><li>Chat</li></ul></div>
+          <div><h6>Info</h6><ul><li>Terms &amp; Conditions</li><li>Privacy Policy</li><li>FAQs</li></ul></div>
+          <div><h6>Contact Us</h6><p>info@bodymine.com</p></div>
+        </div>
+      </footer>
     </div>
   );
 }

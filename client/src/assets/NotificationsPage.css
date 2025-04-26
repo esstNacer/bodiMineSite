@@ -1,0 +1,105 @@
+/* === NotificationsPage.css === */
+
+/* Card principale */
+.notifications-card {
+  background: #fff;
+  border-radius: 20px;              /* coins plus arrondis */
+  padding: 32px 24px;               /* espace intérieur généreux */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+/* En-tête */
+.notifications-header {
+  margin-bottom: 24px;
+}
+.notifications-header h2 {
+  margin: 0;
+  font-size: 1.75rem;               /* titre un peu plus grand */
+  font-weight: 600;
+  color: #004451;                   /* bleu foncé (var(--pro-text) ou ton code) */
+  line-height: 1.2;
+}
+.notifications-header p {
+  margin: 8px 0 0;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+/* Sections “Today” / “Yesterday” */
+.notification-section + .notification-section {
+  margin-top: 32px;
+}
+.notification-section h3 {
+  margin: 0 0 16px;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #004451;
+}
+
+/* Items */
+.notification-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px 0;
+  transition: background 0.2s;
+}
+.notification-item:not(:last-child) {
+  border-bottom: 1px solid #e8ebf0;
+}
+.notification-item:hover {
+  background: #f9fbff;
+  cursor: pointer;
+}
+
+/* État “non lu” */
+.notification-item.unread {
+  background: #eef8ff;              /* fond bleu très clair */
+}
+.notification-item.unread .notification-title {
+  font-weight: 700;                 /* titre encore plus marqué */
+}
+
+/* Avatar */
+.notification-avatar {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 16px;
+}
+
+/* Détails texte */
+.notification-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.notification-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #004451;
+  line-height: 1.2;
+}
+.notification-message {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #555;
+}
+
+/* Horodatage */
+.notification-time {
+  flex-shrink: 0;
+  margin-left: 16px;
+  font-size: 0.8rem;
+  color: #777;
+  white-space: nowrap;
+}
+
+/* Full width */
+.content .notifications-card {
+  width: 100%;
+}
