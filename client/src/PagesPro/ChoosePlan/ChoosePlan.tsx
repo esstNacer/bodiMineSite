@@ -52,8 +52,9 @@ export default function ChoosePlan() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       {/* Header */}
+      <div className='pure'>
       <TopBarPro />
-
+</div>
       {/* Main Content */}
       <Container maxWidth="lg" sx={{ mt: 2 }}>
         <Grid container spacing={2}>
@@ -109,8 +110,8 @@ export default function ChoosePlan() {
                     width: '100%',
                     maxWidth: '600px',
                     cursor: 'pointer',
-                    borderRadius: 2,
-                    p: 3,
+                   
+                    
                     '&:hover': { border: '1px solid #87CEFA', color: '#87CEFA' },
 
                     display: 'flex',
@@ -386,7 +387,7 @@ export default function ChoosePlan() {
                       </Typography>
                       <Button
                         variant="contained"
-                        onClick={() => window.location.href = '/dashboard'}
+                        onClick={() => window.location.href = '/PRO/dashboard'}
                       >
                         Go to Dashboard
                       </Button>
