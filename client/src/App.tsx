@@ -21,6 +21,7 @@ import ProfessionalSignup from './PagesPro/ProfessionalSignup';
 import ProfessionalSupport from './PagesPro/ProfessionalSupport';
 import ProfessionalFaq from './PagesPro/ProfessionalFaq';
 import Editprofile from './PagesPro/EditProfile/Editprofile';
+import ChoosePlan from './PagesPro/ChoosePlan/ChoosePlan';
 
 import AddBlogPage from './Admin/AddBlogPage';
 import BannerPage from './Admin/BannerPage';
@@ -48,6 +49,7 @@ export default function App() {
       <Route path="/doctor/:id" element={<DoctorProfilePage />} />
       <Route path="/myBodyProject" element={<MyBodyProjectPage />} />
       <Route path="/pro/editProfile" element={<Editprofile />} />
+      <Route path="/pro/choosePlan" element={<ChoosePlan />} />
 
       <Route path="/admin/blog" element={<AddBlogPage />} />
 <Route path="/admin/banner/patient" element={<BannerPage variant="patient" />} />
