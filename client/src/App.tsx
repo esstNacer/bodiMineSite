@@ -8,7 +8,7 @@ import EditProfilePage from './pages/EditProfilePage';
 import SignUpPage from './pages/SignUpPage';
 import HowItWorksPage from './pages/HowItWorksPage';
 import SupportPage from './pages/SupportPage';
-import FaqPage from './pages/faqPage';
+import FaqPage from './pages/FaqPage';
 import DataPrivacyPage from './pages/DataPrivacyPage';
 import CGUPage from './pages/CGUPage';
 import SearchPage from './pages/SearchPage';
