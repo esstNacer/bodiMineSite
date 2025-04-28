@@ -1,30 +1,43 @@
+// ES module export
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 dotenv.config();
 
-// On récupère directement l'URL Railway (mysql://root:password@host:port/railway)
-const dbUrl = process.env.DATABASE_URL;
+let pool;
 
-// On analyse l'URL pour extraire les infos
-const regex = /^mysql:\/\/(.*?):(.*?)@(.*?):(.*?)\/(.*?)$/;
-const match = dbUrl.match(regex);
+// ✅ Si DATABASE_URL est défini (prod Render)
+if (process.env.DATABASE_URL) {
+  const regex = /^mysql:\/\/(.*?):(.*?)@(.*?):(.*?)\/(.*?)$/;
+  const match = process.env.DATABASE_URL.match(regex);
 
-if (!match) {
-  throw new Error('Invalid DATABASE_URL format');
+  if (!match) {
+    throw new Error('Invalid DATABASE_URL format');
+  }
+
+  const [, user, password, host, port, database] = match;
+
+  pool = mysql.createPool({
+    host,
+    port,
+    user,
+    password,
+    database,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+  });
+} else {
+  // ✅ Sinon (dev local)
+  pool = mysql.createPool({
+    host:     process.env.DB_HOST,
+    port:     process.env.DB_PORT || 3306,
+    user:     process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+  });
 }
-
-const [, user, password, host, port, database] = match;
-
-// Créer le pool MySQL
-const pool = mysql.createPool({
-  host,
-  port,
-  user,
-  password,
-  database,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
 
 export default pool;
