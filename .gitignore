@@ -1,0 +1,44 @@
+# Ignorer les fichiers/dossiers Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Ignorer les fichiers d'environnement
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignorer les dossiers de build Vite/React
+dist/
+build/
+
+# Ignorer les fichiers système inutiles
+.DS_Store
+Thumbs.db
+
+# Ignorer les fichiers de logs
+logs/
+*.log
+
+# Ignorer les uploads locaux (facultatif si tu stockes localement)
+uploads/
+
+# Ignorer les fichiers IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignorer les fichiers Render
+render.yaml
+
+# Facultatif si tu utilises Linux/MacOS
+*.bak
+*.tmp
