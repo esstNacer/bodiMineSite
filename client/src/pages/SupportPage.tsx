@@ -34,6 +34,8 @@ export default function SupportPage() {
   const [slide, setSlide] = useState(0);
 
   return (
+    <div className="home-wrapper">
+
     <div className="mybody-page">
       {/* ▬▬▬ NAVBAR ▬▬▬ */}
       <header className="navbar">
@@ -201,6 +203,7 @@ export default function SupportPage() {
           </div>
         </div>
       </footer>
+    </div>
     </div>
   );
 }

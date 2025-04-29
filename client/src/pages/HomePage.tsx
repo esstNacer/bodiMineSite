@@ -1,8 +1,14 @@
 // src/pages/HomePage.tsx
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import "../assets/Home.css";
-import { Link } from "react-router-dom";
-import { FiSearch, FiMapPin, FiSliders, FiHome } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
+import { 
+  FiSearch, FiMapPin, FiSliders, FiHome, 
+  FiHeart, FiSmile, FiScissors, FiActivity, FiUser, 
+  FiThumbsUp, FiScissors as FiHairCut, FiBriefcase, 
+  FiUserCheck, FiRefreshCw, FiAward, 
+  FiChevronLeft, FiChevronRight 
+} from "react-icons/fi";
 import { UserContext } from "../components/UserContext";
 
 import doctorImage from "../images/doctor.png";
@@ -13,8 +19,14 @@ import bodyMine from "../images/logobodymine.png";
 
 export default function HomePage() {
   const { user } = useContext(UserContext) || { user: null };
-  
+  const navigate = useNavigate();
   const [slide, setSlide] = useState(0);
+  const [openedSections, setOpenedSections] = useState<string[]>([]);
+
+  const specialityRef = useRef<HTMLDivElement>(null!);
+  const doctorsRef = useRef<HTMLDivElement>(null!);
+  const clinicsRef = useRef<HTMLDivElement>(null!);
+  const articlesRef = useRef<HTMLDivElement>(null!);
 
   const carousel = [
     { src: clinic1, alt: "New Clinic Dental Care" },
@@ -22,52 +34,102 @@ export default function HomePage() {
     { src: clinic3, alt: "New Cosmetic Surgery Website" },
   ];
 
-  return (
-    <div className="homepage">
-      <header className="navbar">
-                    <div className="logo">
-                      <img src={bodyMine} alt="BodyMine Cosmetic Surgery" />
-                    </div>
-            
-                    <nav className="main-nav">
-                      <a href="/home">
-                        <FiHome /> Home
-                      </a>
-                      <a href="/chat">
-                        <FiSearch /> Chat
-                      </a>
-                      <a  href="/search">
-                        <FiSearch /> Search
-                      </a>
-                    </nav>
-            
-                    <div className="profile-mini">
-                      <span className="lang">EN ▾</span>
-                      <Link to={"/editProfile"}>
-                      <img
-                        className="profile-avatar"
-                        src="https://i.pravatar.cc/40?img=12"
-                        alt="Parth Ramani"
-                      />
-                      <span className="profile-name">
-                        {user?.first_name} {user?.last_name} <span className="status-dot">●</span>
-                      </span></Link>
-                    </div>
-                  </header>
+  const specialities = [
+    { name: "Breast Surgery", icon: <FiHeart /> },
+    { name: "Facial Surgery", icon: <FiSmile /> },
+    { name: "Liposuction", icon: <FiScissors /> },
+    { name: "Abdominoplasty", icon: <FiActivity /> },
+    { name: "Dental Care", icon: <FiUser /> },
+    { name: "Buttock Surgery", icon: <FiThumbsUp /> },
+    { name: "Hair Surgery", icon: <FiHairCut /> },
+    { name: "Hand Surgery", icon: <FiBriefcase /> },
+    { name: "Ear Surgery", icon: <FiHeart /> },
+    { name: "Intimate Surgery", icon: <FiUserCheck /> },
+    { name: "Reconstructive Surgery", icon: <FiRefreshCw /> },
+    { name: "Non-Surgical Treatments", icon: <FiAward /> },
+  ];
 
+  const [doctors, setDoctors] = useState<any[]>([]);
+  const [clinics, setClinics] = useState<any[]>([]);
+  const [articles, setArticles] = useState<any[]>([]);
+
+  useEffect(() => {
+    setDoctors([
+      { id: 1, name: "Dr. Natalie Gomez", specialty: "Plastic Surgeon" },
+      { id: 2, name: "Dr. Alex Martin", specialty: "Dental Surgeon" },
+    ]);
+    setClinics([
+      { id: 1, name: "Medicoal Clinic" },
+      { id: 2, name: "Clinic du Parc" },
+    ]);
+    setArticles([
+      { id: 1, title: "Hair Transparent Advice" },
+      { id: 2, title: "Support Plastic Surgery" },
+    ]);
+  }, []);
+
+  const handleToggleSection = (section: string) => {
+    if (openedSections.includes(section)) {
+      setOpenedSections(openedSections.filter((s) => s !== section));
+    } else {
+      setOpenedSections([...openedSections, section]);
+    }
+  };
+
+  const handleScroll = (ref: React.RefObject<HTMLDivElement>, direction: "left" | "right") => {
+    if (ref.current) {
+      const amount = 300;
+      ref.current.scrollBy({
+        left: direction === "left" ? -amount : amount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const handleProtectedNavigation = (path: string) => {
+    if (user) {
+      navigate(path);
+    } else {
+      navigate("/login");
+    }
+  };
+  return (
+    <div className="home-wrapper">
+
+      {/* Navbar */}
+      <header className="navbar">
+        <div className="navbar-left">
+          <div className="logo">
+            <img src={bodyMine} alt="BodyMine Cosmetic Surgery" />
+          </div>
+          <nav>
+            <Link to="/home"><FiHome /> Home</Link>
+            <button className="nav-btn" onClick={() => handleProtectedNavigation("/chat")}><FiSearch /> Chat</button>
+            <button className="nav-btn" onClick={() => handleProtectedNavigation("/search")}><FiSearch /> Search</button>
+          </nav>
+        </div>
+
+        <div className="navbar-right">
+          <span className="lang">EN ▾</span>
+          {user ? (
+            <Link to="/editProfile" className="profile">
+              <img className="avatar" src="https://i.pravatar.cc/40?img=12" alt="User Avatar" />
+              <span className="name">{user.first_name} {user.last_name} <span className="status">●</span></span>
+            </Link>
+          ) : (
+            <Link to="/login" className="nav-btn">Login</Link>
+          )}
+        </div>
+      </header>
+
+      {/* Hero */}
       <section className="hero">
         <div className="hero-left">
-          <h1>
-            Find the Right Care,<br />
-            <span>Anywhere in the World</span>
-          </h1>
-          <p>
-            Connect with top-rated cosmetic surgeons and clinics.<br />
-            Your journey to confidence starts here.
-          </p>
+          <h1>Find the Right Care,<br /><span>Anywhere in the World</span></h1>
+          <p>Connect with top-rated cosmetic surgeons and clinics.<br />Your journey to confidence starts here.</p>
           <div className="hero-buttons">
-            <button className="btn primary">Explore Clinics</button>
-            <a href="/search"><button className="btn secondary">Find a Doctor</button></a>
+            <button className="btn primary" onClick={() => handleProtectedNavigation("/search")}>Explore Clinics</button>
+            <button className="btn secondary" onClick={() => handleProtectedNavigation("/search")}>Find a Doctor</button>
           </div>
         </div>
 
@@ -85,6 +147,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Searchbar */}
       <section className="searchbar">
         <div className="search-row">
           <div className="input-group">
@@ -95,7 +158,7 @@ export default function HomePage() {
             <FiMapPin className="icon" />
             <input type="text" placeholder="Location" />
           </div>
-          <button className="search-btn">Search</button>
+          <button className="search-btn" onClick={() => handleProtectedNavigation("/search")}>Search</button>
           <button className="filter-btn"><FiSliders /></button>
         </div>
 
@@ -107,69 +170,113 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Carousel */}
       <section className="carousel">
         <div className="carousel-inner">
           {carousel.map((item, i) => (
-            <img
-              key={i}
-              src={item.src}
-              alt={item.alt}
-              className={i === slide ? "active" : ""}
-            />
-          ))}
-        </div>
-        <div className="carousel-indicators">
-          {carousel.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setSlide(i)}
-              className={i === slide ? "active" : ""}
-            />
+            <img key={i} src={item.src} alt={item.alt} className={i === slide ? "active" : ""} />
           ))}
         </div>
       </section>
 
+      {/* Sections */}
       <section className="sections">
+
+        {/* Specialities */}
         <div className="section section-speciality">
-          <h2>Our Speciality <a href="#">See All</a></h2>
+          <h2 onClick={() => handleToggleSection("speciality")}>Our Speciality <a href="#">See All</a></h2>
+          {openedSections.includes("speciality") && (
+            <div className="specialities-carousel-wrapper">
+              <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(specialityRef, "left")} />
+              <div className="specialities-track" ref={specialityRef}>
+                {specialities.map((spec, index) => (
+                  <div key={index} className="speciality-item">
+                    <div className="speciality-icon">{spec.icon}</div>
+                    <div className="speciality-name">{spec.name}</div>
+                  </div>
+                ))}
+              </div>
+              <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(specialityRef, "right")} />
+            </div>
+          )}
         </div>
+
+        {/* Doctors */}
         <div className="section section-doctors">
-          <h2>Top <span>Doctors</span></h2>
+    <h2 onClick={() => handleToggleSection("doctors")}>Top <span>Doctors</span></h2>
+    {openedSections.includes("doctors") && (
+      <div className="specialities-carousel-wrapper">
+        <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(doctorsRef, "left")} />
+        <div className="specialities-track" ref={doctorsRef}>
+          {doctors.map((doc) => (
+            <div key={doc.id} className="speciality-item">
+              <div className="speciality-icon">🩺</div>
+              <div className="speciality-name">{doc.name}</div>
+              <small>{doc.specialty}</small>
+            </div>
+          ))}
         </div>
+        <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(doctorsRef, "right")} />
+      </div>
+    )}
+  </div>
+
+        {/* Clinics */}
         <div className="section section-clinics">
-          <h2>Top <span>Clinics</span></h2>
+    <h2 onClick={() => handleToggleSection("clinics")}>Top <span>Clinics</span></h2>
+    {openedSections.includes("clinics") && (
+      <div className="specialities-carousel-wrapper">
+        <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(clinicsRef, "left")} />
+        <div className="specialities-track" ref={clinicsRef}>
+          {clinics.map((clinic) => (
+            <div key={clinic.id} className="speciality-item">
+              <div className="speciality-icon">🏥</div>
+              <div className="speciality-name">{clinic.name}</div>
+            </div>
+          ))}
         </div>
+        <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(clinicsRef, "right")} />
+      </div>
+    )}
+  </div>
+
+        {/* Articles */}
         <div className="section section-articles">
-          <h2>Health Article <a href="#">See All</a></h2>
+    <h2 onClick={() => handleToggleSection("articles")}>Health Article <a href="#">See All</a></h2>
+    {openedSections.includes("articles") && (
+      <div className="specialities-carousel-wrapper">
+        <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(articlesRef, "left")} />
+        <div className="specialities-track" ref={articlesRef}>
+          {articles.map((article) => (
+            <div key={article.id} className="speciality-item">
+              <div className="speciality-icon">📚</div>
+              <div className="speciality-name">{article.title}</div>
+            </div>
+          ))}
         </div>
+        <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(articlesRef, "right")} />
+      </div>
+    )}
+  </div>
+
+
       </section>
 
+      {/* Footer */}
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-block">
             <img src={bodyMine} alt="BodyMine" className="footer-logo" />
-            <p>
-              Bodymine is the leading directory to help you find the perfect surgeon or clinic, anywhere in the world.
-            </p>
-            <div className="social-icons">
-              <span>🔵</span><span>🐦</span><span>▶️</span>
-            </div>
+            <p>Bodymine is the leading directory to help you find the perfect surgeon or clinic, anywhere in the world.</p>
+            <div className="social-icons"><span>🔵</span><span>🐦</span><span>▶️</span></div>
           </div>
           <div className="footer-block">
             <h4>Home</h4>
-            <ul>
-              <li>Menu</li>
-              <li>Chat</li>
-              <li>Search</li>
-            </ul>
+            <ul><li>Menu</li><li>Chat</li><li>Search</li></ul>
           </div>
           <div className="footer-block">
             <h4>Info</h4>
-            <ul>
-              <li>Terms & Conditions</li>
-              <li>Privacy Policy</li>
-              <li>FAQs</li>
-            </ul>
+            <ul><li>Terms & Conditions</li><li>Privacy Policy</li><li>FAQs</li></ul>
           </div>
           <div className="footer-block">
             <h4>Contact Us</h4>
@@ -177,6 +284,7 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
     </div>
   );
 }

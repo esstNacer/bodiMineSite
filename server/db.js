@@ -7,6 +7,7 @@ let pool;
 
 // ✅ Si DATABASE_URL est défini (prod Render)
 if (process.env.DATABASE_URL) {
+  
   const regex = /^mysql:\/\/(.*?):(.*?)@(.*?):(.*?)\/(.*?)$/;
   const match = process.env.DATABASE_URL.match(regex);
 
@@ -26,7 +27,7 @@ if (process.env.DATABASE_URL) {
     connectionLimit: 10,
     queueLimit: 0
   });
-} else {
+} else {console.log("on m'a pas appeler")
   // ✅ Sinon (dev local)
   pool = mysql.createPool({
     host:     process.env.DB_HOST,

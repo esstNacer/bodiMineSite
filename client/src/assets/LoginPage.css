@@ -4,7 +4,7 @@
    Variables & Reset
 --------------------------------------- */
 
-:root {
+.home-wrapper {
     --turquoise:       #7ddbdc;
     --turquoise-dark:  #19c7c7;
     --bg-light:        #e7f8f9;

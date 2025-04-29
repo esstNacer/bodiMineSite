@@ -1,6 +1,6 @@
 /* src/assets/SupportPage.css */
 @import "./MyBodyProjectPage.css";
-:root {
+.home-wrapper {
     --primary: #7ddbdc;
     --primary-dark: #00cfcf;
     --light-bg: #f9f9f9;

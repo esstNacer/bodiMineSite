@@ -5,8 +5,12 @@ import '../assets/SignUpPage.css';
 
 import connectImg from '../images/connect.png';
 import bodyMineLogo  from '../images/logobodymine.png';
+import { FiHome, FiSearch } from 'react-icons/fi';
+import { useUser } from '../components/UserContext';
 
 export default function SignUpPage() {
+    const { updateUser } = useUser();
+
   const navigate = useNavigate();
 
   // États pour chaque champ patients
@@ -30,10 +34,10 @@ export default function SignUpPage() {
   const [agree,         setAgree]         = useState(false);
   const [error,         setError]         = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setError('');
-
+  
     if (password !== confirmPassword) {
       setError('Les mots de passe ne correspondent pas.');
       return;
@@ -42,43 +46,55 @@ export default function SignUpPage() {
       setError('Vous devez accepter les conditions.');
       return;
     }
-
+  
     const payload = {
       first_name: firstName,
-      last_name:  lastName,
+      last_name: lastName,
       email,
       password,
-      photo_url:               photoUrl,
-      birth_date:              birthDate,
+      photo_url: photoUrl,
+      birth_date: birthDate,
       address,
       city,
       country,
-      phone_number:            phoneNumber,
-      allergies_to_medicine:   allergies,
-      blood_group:             bloodGroup,
-      height_cm:               Number(heightCm),
-      weight_kg:               Number(weightKg),
+      phone_number: phoneNumber,
+      allergies_to_medicine: allergies,
+      blood_group: bloodGroup,
+      height_cm: Number(heightCm),
+      weight_kg: Number(weightKg),
       gender,
       favorite_specialization: favoriteSpec
     };
-
+  
     try {
       const res = await fetch('/api/patients', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
+  
       if (!res.ok) {
         const { error: msg } = await res.json();
         throw new Error(msg || 'Erreur serveur');
       }
+  
+      // Récupérer les données du nouvel utilisateur créé
+      const newUser = await res.json();
+  
+      // Mettre à jour le contexte utilisateur
+      updateUser(newUser, true); // true pour se souvenir dans localStorage
+  
+      // Rediriger vers /home
       navigate('/home');
-    } catch (err) {
+      
+    } catch (err: any) {
       setError(err.message);
     }
   };
+  
 
-  return (
+  return (<div className="home-wrapper">
+
     <div className="page">
      <header className="navbar">
                    <div className="logo">
@@ -89,10 +105,10 @@ export default function SignUpPage() {
                      <a href="/home">
                        <FiHome /> Home
                      </a>
-                     <a href="/chat">
+                     <a href="/sign-up">
                        <FiSearch /> Chat
                      </a>
-                     <a  href="/search">
+                     <a  href="/sign-up">
                        <FiSearch /> Search
                      </a>
                    </nav>
@@ -346,6 +362,7 @@ export default function SignUpPage() {
           </div>
         </div>
       </footer>
+    </div>
     </div>
   );
 }

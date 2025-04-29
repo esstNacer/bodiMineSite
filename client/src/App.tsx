@@ -30,7 +30,7 @@ import BannerPage from './Admin/BannerPage';
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<LoginPage />} />
+      <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/loginPro" element={<ProfessionalLoginPage />} />
       <Route path="/sign-up" element={<SignUpPage />} />

@@ -24,6 +24,8 @@ export default function DataPrivacyPage() {
   const [slide, setSlide] = useState(0);
 
   return (
+    <div className="home-wrapper">
+
     <div className="mybody-page">
       {/* ▬▬▬ NAVBAR ▬▬▬ */}
       <header className="navbar">
@@ -189,6 +191,7 @@ export default function DataPrivacyPage() {
           </div>
         </div>
       </footer>
+    </div>
     </div>
   );
 }

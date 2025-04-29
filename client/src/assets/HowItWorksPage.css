@@ -1,7 +1,7 @@
 /* src/assets/HowItWorksPage.css */
 
 /* Variables & Reset */
-:root {
+.home-wrapper {
     --primary:      #7ddbdc;
     --bg-light:     #f3fbfb;
     --text:         #222;

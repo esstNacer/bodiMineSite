@@ -1,6 +1,6 @@
 /* src/assets/EditProfile.css */
 @import "./MyBodyProjectPage.css";
-:root {
+.home-wrapper {
     --primary: #7ddbdc;
     --light-bg: #f3fbfb;
     --white: #fff;

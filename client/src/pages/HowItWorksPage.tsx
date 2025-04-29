@@ -1,6 +1,6 @@
 // src/pages/HowItWorksPage.tsx
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../assets/HowItWorksPage.css';
 
 import howImg    from '../images/howworks.png';
@@ -14,7 +14,19 @@ import { UserContext } from '../components/UserContext';
 
 export default function HowItWorksPage() {
   const { user } = useContext(UserContext) || { user: null };
+  const navigate = useNavigate();
+
+
+  const handleProtectedNavigation = (path: string) => {
+    if (user) {
+      navigate(path);
+    } else {
+      navigate("/login");
+    }
+  };
   return (
+    <div className="home-wrapper">
+
     <div className="how-page">
       {/* ===== Navbar ===== */}
       <header className="navbar">
@@ -26,25 +38,32 @@ export default function HowItWorksPage() {
                       <a href="/home">
                         <FiHome /> Home
                       </a>
-                      <a href="/chat">
-                        <FiSearch /> Chat
-                      </a>
-                      <a  href="/search">
-                        <FiSearch /> Search
-                      </a>
+                      <button className="nav-btn" onClick={() => handleProtectedNavigation("/chat")}>
+                                  <FiSearch /> Chat
+                                </button>
+                                <button className="nav-btn" onClick={() => handleProtectedNavigation("/search")}>
+                                  <FiSearch /> Search
+                                </button>
                     </nav>
             
                     <div className="profile-mini">
                       <span className="lang">EN ▾</span>
-                      <Link to={"/editProfile"}>
-                      <img
-                        className="profile-avatar"
-                        src="https://i.pravatar.cc/40?img=12"
-                        alt="Parth Ramani"
-                      />
-                      <span className="profile-name">
-                        {user?.first_name} {user?.last_name} <span className="status-dot">●</span>
-                      </span></Link>
+                      {user ? (
+                                  <Link to="/editProfile">
+                                    <img
+                                      className="profile-avatar"
+                                      src="https://i.pravatar.cc/40?img=12"
+                                      alt="User Avatar"
+                                    />
+                                    <span className="profile-name">
+                                      {user.first_name} {user.last_name} <span className="status-dot">●</span>
+                                    </span>
+                                  </Link>
+                                ) : (
+                                  <Link to="/login" className="login-btn">
+                                    Login
+                                  </Link>
+                                )}
                     </div>
                   </header>
 
@@ -214,6 +233,7 @@ export default function HowItWorksPage() {
           </div>
         </div>
       </footer>
+    </div>
     </div>
   );
 }

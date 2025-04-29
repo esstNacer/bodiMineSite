@@ -73,6 +73,8 @@ export default function EditProfilePage() {
 
   /* ===================================================================== */
   return (
+    <div className="home-wrapper">
+
     <div className="mybody-page">
       {/* ▬▬▬ NAVBAR ▬▬▬ */}
       <header className="navbar">
@@ -357,6 +359,7 @@ export default function EditProfilePage() {
           </div>
         </div>
       </footer>
+    </div>
     </div>
   );
 }

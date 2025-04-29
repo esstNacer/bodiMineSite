@@ -142,6 +142,8 @@ export default function DoctorListPage() {
 
 
   return (
+    <div className="home-wrapper">
+
     <div className="page">
       <header className="navbar">
         <div className="logo">
@@ -272,6 +274,7 @@ export default function DoctorListPage() {
           </div>
         </div>
       </footer>
+    </div>
     </div>
   );
 }

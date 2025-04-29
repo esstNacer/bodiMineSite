@@ -67,6 +67,8 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 
 
   return (
+    <div className="home-wrapper">
+
     <div className="page">
       <header className="navbar">
                     <div className="logo">
@@ -77,10 +79,10 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                       <a href="/">
                         <FiHome /> Home
                       </a>
-                      <a href="/">
+                      <a href="/login">
                         <FiSearch /> Chat
                       </a>
-                      <a  href="/">
+                      <a  href="/login">
                         <FiSearch /> Search
                       </a>
                     </nav>
@@ -199,6 +201,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
                 </div>
               </div>
             </footer>
+    </div>
     </div>
   );
 }

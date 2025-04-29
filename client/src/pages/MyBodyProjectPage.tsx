@@ -244,6 +244,8 @@ export default function MyBodyProjectPage() {
     setToDeleteId(null)
   }
   return (
+    <div className="home-wrapper">
+
     <div className="mybody-page">
       {/* Pop-up confirmation */}
       {confirmOpen && (
@@ -560,6 +562,7 @@ export default function MyBodyProjectPage() {
           </div>
         </div>
       </footer>
+    </div>
     </div>
   )
 }
