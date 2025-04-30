@@ -7,7 +7,7 @@ import {
   FiHeart, FiSmile, FiScissors, FiActivity, FiUser, 
   FiThumbsUp, FiScissors as FiHairCut, FiBriefcase, 
   FiUserCheck, FiRefreshCw, FiAward, 
-  FiChevronLeft, FiChevronRight 
+  FiChevronLeft, FiChevronRight, FiMessageCircle
 } from "react-icons/fi";
 import { UserContext } from "../components/UserContext";
 
@@ -95,20 +95,22 @@ export default function HomePage() {
   };
   return (
     <div className="home-wrapper">
-
+  
       {/* Navbar */}
       <header className="navbar">
         <div className="navbar-left">
           <div className="logo">
             <img src={bodyMine} alt="BodyMine Cosmetic Surgery" />
           </div>
-          <nav>
+          <nav className="nav-links">
             <Link to="/home"><FiHome /> Home</Link>
-            <button className="nav-btn" onClick={() => handleProtectedNavigation("/chat")}><FiSearch /> Chat</button>
+            <button className="nav-btn" onClick={() => handleProtectedNavigation("/chat")}><FiMessageCircle /> Chat</button>
             <button className="nav-btn" onClick={() => handleProtectedNavigation("/search")}><FiSearch /> Search</button>
+            <Link to="/login" className="nav-btn login-mobile">Login</Link>
+
           </nav>
         </div>
-
+  
         <div className="navbar-right">
           <span className="lang">EN ▾</span>
           {user ? (
@@ -117,36 +119,36 @@ export default function HomePage() {
               <span className="name">{user.first_name} {user.last_name} <span className="status">●</span></span>
             </Link>
           ) : (
-            <Link to="/login" className="nav-btn">Login</Link>
+            <Link to="/login" className="nav-btn login-desktop">Login</Link>
           )}
         </div>
       </header>
-
-      {/* Hero */}
+  
+      {/* Hero Section */}
       <section className="hero">
         <div className="hero-left">
           <h1>Find the Right Care,<br /><span>Anywhere in the World</span></h1>
           <p>Connect with top-rated cosmetic surgeons and clinics.<br />Your journey to confidence starts here.</p>
           <div className="hero-buttons">
-            <button className="btn primary" onClick={() => handleProtectedNavigation("/search")}>Explore Clinics</button>
-            <button className="btn secondary" onClick={() => handleProtectedNavigation("/search")}>Find a Doctor</button>
+            <button className="btn-hero secondary" onClick={() => handleProtectedNavigation("/search")}>Find a Doctor</button>
           </div>
         </div>
-
+        <div className="doctor-wrapper">
+  <img src={doctorImage} alt="Doctor" className="doctor-img" />
+  </div>
+  
         <div className="hero-right">
-          <img src={doctorImage} alt="Doctor" className="doctor-img" />
-          <div className="how-it-works">
+          
             <h4>How BodyMine Works</h4>
             <ol>
               <li>Search for doctors by specialty or service.</li>
               <li>Select based on experience, fee or rating.</li>
               <li>Start chat and ask questions with your Doctors.</li>
             </ol>
-            <Link to="/how-it-works" className="btn primary read-more">Read more</Link>
-          </div>
+            <Link to="/how-it-works" className="home-wrapper hero-right read-more">Read more</Link>
         </div>
       </section>
-
+  
       {/* Searchbar */}
       <section className="searchbar">
         <div className="search-row">
@@ -161,7 +163,7 @@ export default function HomePage() {
           <button className="search-btn" onClick={() => handleProtectedNavigation("/search")}>Search</button>
           <button className="filter-btn"><FiSliders /></button>
         </div>
-
+  
         <div className="filter-row">
           <select><option>Speciality</option></select>
           <select><option>Country</option></select>
@@ -169,7 +171,7 @@ export default function HomePage() {
           <select><option>Sort By: Relevance</option></select>
         </div>
       </section>
-
+  
       {/* Carousel */}
       <section className="carousel">
         <div className="carousel-inner">
@@ -178,10 +180,10 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-
+  
       {/* Sections */}
       <section className="sections">
-
+  
         {/* Specialities */}
         <div className="section section-speciality">
           <h2 onClick={() => handleToggleSection("speciality")}>Our Speciality <a href="#">See All</a></h2>
@@ -200,68 +202,67 @@ export default function HomePage() {
             </div>
           )}
         </div>
-
+  
         {/* Doctors */}
         <div className="section section-doctors">
-    <h2 onClick={() => handleToggleSection("doctors")}>Top <span>Doctors</span></h2>
-    {openedSections.includes("doctors") && (
-      <div className="specialities-carousel-wrapper">
-        <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(doctorsRef, "left")} />
-        <div className="specialities-track" ref={doctorsRef}>
-          {doctors.map((doc) => (
-            <div key={doc.id} className="speciality-item">
-              <div className="speciality-icon">🩺</div>
-              <div className="speciality-name">{doc.name}</div>
-              <small>{doc.specialty}</small>
+          <h2 onClick={() => handleToggleSection("doctors")}>Top <span>Doctors</span></h2>
+          {openedSections.includes("doctors") && (
+            <div className="specialities-carousel-wrapper">
+              <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(doctorsRef, "left")} />
+              <div className="specialities-track" ref={doctorsRef}>
+                {doctors.map((doc) => (
+                  <div key={doc.id} className="speciality-item">
+                    <div className="speciality-icon">🩺</div>
+                    <div className="speciality-name">{doc.name}</div>
+                    <small>{doc.specialty}</small>
+                  </div>
+                ))}
+              </div>
+              <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(doctorsRef, "right")} />
             </div>
-          ))}
+          )}
         </div>
-        <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(doctorsRef, "right")} />
-      </div>
-    )}
-  </div>
-
+  
         {/* Clinics */}
         <div className="section section-clinics">
-    <h2 onClick={() => handleToggleSection("clinics")}>Top <span>Clinics</span></h2>
-    {openedSections.includes("clinics") && (
-      <div className="specialities-carousel-wrapper">
-        <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(clinicsRef, "left")} />
-        <div className="specialities-track" ref={clinicsRef}>
-          {clinics.map((clinic) => (
-            <div key={clinic.id} className="speciality-item">
-              <div className="speciality-icon">🏥</div>
-              <div className="speciality-name">{clinic.name}</div>
+          <h2 onClick={() => handleToggleSection("clinics")}>Top <span>Clinics</span></h2>
+          {openedSections.includes("clinics") && (
+            <div className="specialities-carousel-wrapper">
+              <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(clinicsRef, "left")} />
+              <div className="specialities-track" ref={clinicsRef}>
+                {clinics.map((clinic) => (
+                  <div key={clinic.id} className="speciality-item">
+                    <div className="speciality-icon">🏥</div>
+                    <div className="speciality-name">{clinic.name}</div>
+                  </div>
+                ))}
+              </div>
+              <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(clinicsRef, "right")} />
             </div>
-          ))}
+          )}
         </div>
-        <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(clinicsRef, "right")} />
-      </div>
-    )}
-  </div>
-
+  
         {/* Articles */}
         <div className="section section-articles">
-    <h2 onClick={() => handleToggleSection("articles")}>Health Article <a href="#">See All</a></h2>
-    {openedSections.includes("articles") && (
-      <div className="specialities-carousel-wrapper">
-        <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(articlesRef, "left")} />
-        <div className="specialities-track" ref={articlesRef}>
-          {articles.map((article) => (
-            <div key={article.id} className="speciality-item">
-              <div className="speciality-icon">📚</div>
-              <div className="speciality-name">{article.title}</div>
+          <h2 onClick={() => handleToggleSection("articles")}>Health Article <a href="#">See All</a></h2>
+          {openedSections.includes("articles") && (
+            <div className="specialities-carousel-wrapper">
+              <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(articlesRef, "left")} />
+              <div className="specialities-track" ref={articlesRef}>
+                {articles.map((article) => (
+                  <div key={article.id} className="speciality-item">
+                    <div className="speciality-icon">📚</div>
+                    <div className="speciality-name">{article.title}</div>
+                  </div>
+                ))}
+              </div>
+              <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(articlesRef, "right")} />
             </div>
-          ))}
+          )}
         </div>
-        <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(articlesRef, "right")} />
-      </div>
-    )}
-  </div>
-
-
+  
       </section>
-
+  
       {/* Footer */}
       <footer className="footer">
         <div className="footer-content">
@@ -284,7 +285,8 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
-
+  
     </div>
   );
+  
 }

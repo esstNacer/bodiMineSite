@@ -99,6 +99,7 @@ export default function ChatPage() {
   )
 
   return (
+    <div className='chat'>
     <div className="page">
       <header className="navbar">
         <div className="logo">
@@ -273,6 +274,7 @@ export default function ChatPage() {
           </div>
         </div>
       </footer>
+    </div>
     </div>
   )
 }

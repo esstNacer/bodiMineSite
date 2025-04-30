@@ -66,34 +66,36 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 };
 
 
-  return (
-    <div className="home-wrapper">
-
+return (
+  <div className='login'>
+  <div className="home-wrapper">
     <div className="page">
       <header className="navbar">
-                    <div className="logo">
-                      <img src={bodyMine} alt="BodyMine Cosmetic Surgery" />
-                    </div>
-            
-                    <nav className="main-nav">
-                      <a href="/">
-                        <FiHome /> Home
-                      </a>
-                      <a href="/login">
-                        <FiSearch /> Chat
-                      </a>
-                      <a  href="/login">
-                        <FiSearch /> Search
-                      </a>
-                    </nav>
-                  </header>
+        {/* Logo centré */}
+        <div className="logo">
+          <img src={bodyMine} alt="BodyMine Cosmetic Surgery" />
+        </div>
+
+        {/* Liens de navigation horizontalement alignés */}
+        <nav className="nav-links">
+          <a href="/" className="nav-btn">
+            <FiHome /> Home
+          </a>
+          <a href="/login" className="nav-btn">
+            <FiSearch /> Chat
+          </a>
+          <a href="/login" className="nav-btn">
+            <FiSearch /> Search
+          </a>
+        </nav>
+      </header>
 
       <main className="content">
-        <section className="carousel">
-          <h3 className="slide-title">{current.title}</h3>
-          <p className="slide-subtitle">{current.subtitle}</p>
-          <img className="slide-img" src={current.src} alt={current.alt} />
-          <div className="dots">
+        <section className="login carousel">
+          <h3 className="login slide-title">{current.title}</h3>
+          <p className="login slide-subtitle">{current.subtitle}</p>
+          <img className="login slide-img" src={current.src} alt={current.alt} />
+          <div className="login dots">
             {slides.map((_, i) => (
               <span
                 key={i}
@@ -151,58 +153,57 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 
             <div className="oauth">
               <button type="button" className="btn oauth google">
-                <img src="https://unpkg.com/simple-icons@latest/icons/google.svg" alt="Google"/> Sign in with Google
+                <img src="https://unpkg.com/simple-icons@latest/icons/google.svg" alt="Google" /> Sign in with Google
               </button>
               <button type="button" className="btn oauth apple">
-                <img src="https://unpkg.com/simple-icons@latest/icons/apple.svg" alt="Apple"/> Sign in with Apple
+                <img src="https://unpkg.com/simple-icons@latest/icons/apple.svg" alt="Apple" /> Sign in with Apple
               </button>
             </div>
 
-            <a href="/loginPro"><button type="button" className="btn secondary">
-              Professional access
-            </button> </a>
-            <a href="/admin/addBlog"><button type="button" className="btn secondary">
-              admin access
-            </button> </a>
+            <a href="/loginPro">
+              <button type="button" className="btn secondary">Professional access</button>
+            </a>
           </form>
         </section>
       </main>
 
       <footer className="footer">
-              <div className="footer-content">
-                <div className="footer-block">
-                  <img src={bodyMine} alt="BodyMine" className="footer-logo" />
-                  <p>
-                    Bodymine is the leading directory to help you find the perfect surgeon or clinic, anywhere in the world.
-                  </p>
-                  <div className="social-icons">
-                    <span>🔵</span><span>🐦</span><span>▶️</span>
-                  </div>
-                </div>
-                <div className="footer-block">
-                  <h4>Home</h4>
-                  <ul>
-                    <li>Menu</li>
-                    <li>Chat</li>
-                    <li>Search</li>
-                  </ul>
-                </div>
-                <div className="footer-block">
-                  <h4>Info</h4>
-                  <ul>
-                    <li>Terms & Conditions</li>
-                    <li>Privacy Policy</li>
-                    <li>FAQs</li>
-                  </ul>
-                </div>
-                <div className="footer-block">
-                  <h4>Contact Us</h4>
-                  <p>info@bodymine.com</p>
-                </div>
-              </div>
-            </footer>
+        <div className="footer-content">
+          <div className="footer-block">
+            <img src={bodyMine} alt="BodyMine" className="footer-logo" />
+            <p>
+              Bodymine is the leading directory to help you find the perfect surgeon or clinic, anywhere in the world.
+            </p>
+            <div className="social-icons">
+              <span>🔵</span><span>🐦</span><span>▶️</span>
+            </div>
+          </div>
+          <div className="footer-block">
+            <h4>Home</h4>
+            <ul>
+              <li>Menu</li>
+              <li>Chat</li>
+              <li>Search</li>
+            </ul>
+          </div>
+          <div className="footer-block">
+            <h4>Info</h4>
+            <ul>
+              <li>Terms & Conditions</li>
+              <li>Privacy Policy</li>
+              <li>FAQs</li>
+            </ul>
+          </div>
+          <div className="footer-block">
+            <h4>Contact Us</h4>
+            <p>info@bodymine.com</p>
+          </div>
+        </div>
+      </footer>
     </div>
-    </div>
-  );
+  </div>
+  </div>
+);
+
 }
 
