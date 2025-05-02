@@ -88,7 +88,7 @@
 }
 .pro .side-links li.active,
 .pro .side-links li:hover{
-  background:var(--pro-bg);            /* fond bleu clair uniquement ici */
+  background:#379dd1;            /* fond bleu clair uniquement ici */
   color:var(--pro-blue-dark);
   font-weight:600;
 }

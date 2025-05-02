@@ -228,12 +228,15 @@ export default function DoctorListPage() {
                       {doc.isFavorited ? <FaHeart /> : <FaRegHeart />}
                     </div>
                   </div>
-                  <h4>{doc.full_name}</h4>
+                  <h4>Dr.{doc.full_name}</h4>
                   <p>{doc.specialization}</p>
                   <p>{doc.country}</p>
                   <div className="rating">
-                    <span>⏱ {doc.practice_tenure || 'N/A'}</span>
+                  <span className="doctor-rating">
+                    ⭐ { 4.8}
+                  </span>
                   </div>
+                  <span > {doc.practice_tenure || 'N/A'}</span>
                 </Link>
                 <button
                   className="chat-btn"

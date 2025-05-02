@@ -10,7 +10,7 @@ import {
 import { AiFillStar } from 'react-icons/ai'
 import { BsCheckCircleFill } from 'react-icons/bs'
 import { useContext, useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import bodyMineLogo from '../images/logobodymine.png'
 import '../assets/DoctorProfilePage.css'
@@ -40,6 +40,8 @@ export default function DoctorProfilePage() {
   // 1. Récupère l’ID depuis l’URL
   const { id } = useParams<{ id: string }>()
   const { user } = useContext(UserContext) ?? { user: null }
+    const navigate = useNavigate();
+  
 
   // 2. States
   const [doctor, setDoctor] = useState<Professional | null>(null)
@@ -145,6 +147,13 @@ export default function DoctorProfilePage() {
       console.error('Error starting chat:', err)
     }
   }
+  const handleProtectedNavigation = (path: string) => {
+    if (user) {
+      navigate(path);
+    } else {
+      navigate("/login");
+    }
+  };
 
   // 9. Choix de l’avatar principal
   const mainPhoto =
@@ -155,35 +164,32 @@ export default function DoctorProfilePage() {
   return (
     <div className="doctor-profile-page">
       {/* NAVBAR */}
-      <header className="navbar">
-        <div className="logo">
-          <img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" />
-        </div>
-        <nav className="main-nav">
-          <a href="/home">
-            <FiHome /> Home
-          </a>
-          <a href="/chat">
-            <FiSearch /> Chat
-          </a>
-          <a href="/search">
-            <FiSearch /> Search
-          </a>
-        </nav>
-        <div className="profile-mini">
-          <span className="lang">EN ▾</span>
-          <Link to="/editProfile">
-            <img
-              className="profile-avatar"
-              src={`https://i.pravatar.cc/40?u=${user?.patient_id}`}
-              alt="You"
-            />
-            <span className="profile-name">
-              {user?.first_name} {user?.last_name} <span className="status-dot">●</span>
-            </span>
-          </Link>
-        </div>
-      </header>
+     <header className="navbar">
+             <div className="navbar-left">
+               <div className="logo">
+                 <img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" />
+               </div>
+               <nav className="nav-links">
+                 <Link to="/home"><FiHome /> Home</Link>
+                 <button className="nav-btn" onClick={() => handleProtectedNavigation("/chat")}><FiMessageCircle /> Chat</button>
+                 <button className="nav-btn" onClick={() => handleProtectedNavigation("/search")}><FiSearch /> Search</button>
+                 <Link to="/login" className="nav-btn login-mobile">Login</Link>
+     
+               </nav>
+             </div>
+       
+             <div className="navbar-right">
+               <span className="lang">EN ▾</span>
+               {user ? (
+                 <Link to="/editProfile" className="profile">
+                   <img className="avatar" src="https://i.pravatar.cc/40?img=12" alt="User Avatar" />
+                   <span className="name">{user.first_name} {user.last_name} <span className="status">●</span></span>
+                 </Link>
+               ) : (
+                 <Link to="/login" className="nav-btn login-desktop">Login</Link>
+               )}
+             </div>
+           </header>
 
       {/* MAIN CONTENT */}
       <main className="profile-main">

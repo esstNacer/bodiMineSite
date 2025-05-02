@@ -86,10 +86,74 @@ body,html,.doctor-profile-page{background:var(--bg);color:var(--txt);font-family
 .recommended-card button{margin-top:.6rem;font-size:.78rem}
 
 /* ========= FOOTER ========= */
-.footer{background:#7ddbdc;color:#fff;text-align:center;font-size:.9rem;padding:2rem;margin-top:3rem}
+.footer{background:#7ddbdc;color:#fff;text-align:center;font-size:.9rem;padding:2rem;margin-top:0}
 
 /* ========= MediaQueries rapide ========= */
 @media(max-width:850px){
   .profile-grid{grid-template-columns:1fr}       /* on passe en une colonne */
   .stats-card,.info-section,.connect-card{grid-column:1}
+}
+@media(max-width: 600px){
+  .doctor-header {
+    grid-template-columns: 1fr;    /* photo + infos + actions en colonne */
+    text-align: center;
+    padding: 2rem 1.5rem;
+  }
+  .doctor-photo {
+    margin: 0 auto 1rem;
+    width: 140px;
+    height: 140px;
+  }
+  .doctor-info h2 {
+    justify-content: center;
+    font-size: 1.6rem;
+  }
+  .doctor-info .speciality,
+  .doctor-info .location,
+  .doctor-info .rating {
+    justify-content: center;
+  }
+  .message-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px;
+    font-size: 1rem;
+  }
+  .action-btns {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 1.2rem;
+  }
+  .action-btns button {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Services thumbnails responsive */
+  .services-thumbs {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  }
+
+  /* Review section adaptation */
+  .review {
+    grid-template-columns: 40px 1fr;
+    gap: 10px;
+  }
+  .review img.avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Stat boxes on 1 column */
+  .stats-strip {
+    grid-template-columns: 1fr;
+  }
+
+  /* Recommended cards smaller */
+  .reco-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+  .recommended-card img {
+    height: 100px;
+  }
 }

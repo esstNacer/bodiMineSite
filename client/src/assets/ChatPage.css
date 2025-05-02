@@ -45,13 +45,13 @@
 .chat .carousel {
   display: flex;
   gap: 1rem;
-  padding: 1.5rem 2rem;
-  background: #ecfafa;
-  overflow-x: auto;
+  padding: 2rem 20rem;
+  background: transparent;
+  
 }
 .chat .carousel img {
   border-radius: 16px;
-  height: 140px;
+  height: 180px;
   width: 100%;
   max-width: 300px;
   object-fit: cover;

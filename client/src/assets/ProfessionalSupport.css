@@ -101,12 +101,12 @@
     border-radius: 8px;
     text-decoration: none;
     color: #333;
-    background: #eafafa;
+    background: transparent;
     margin-bottom: 8px;
     font-size: 14px;
   }
   .sidebar li a.active {
-    background: var(--primary);
+    background: #379dd1;
     color: #fff;
   }
   .delete-account, .logout {
@@ -203,7 +203,7 @@
     padding: 12px;
     border-radius: 8px;
     font-weight: bold;
-    width: 100%;
+    width: 25%;
     cursor: pointer;
   }
   

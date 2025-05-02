@@ -13,7 +13,7 @@ router.get('/conversations/:patientId', async (req, res) => {
   try {
     const { patientId } = req.params;
     const [rows] = await pool.query(`
-      SELECT DISTINCT p.professional_id, p.full_name, p.specialization
+      SELECT DISTINCT p.professional_id, p.full_name, p.specialization, c.timestamp
       FROM chats c
       JOIN professionals p ON p.professional_id = c.professional_id
       WHERE c.patient_id = ?
@@ -43,7 +43,8 @@ router.get('/conversations/pro/:professionalId', async (req, res) => {
              p.first_name,
              p.last_name,
              p.photo_url,
-             p.favorite_specialization
+             p.favorite_specialization,
+             c.timestamp
       FROM   chats c
       JOIN   patients p ON p.patient_id = c.patient_id
       WHERE  c.professional_id = ?

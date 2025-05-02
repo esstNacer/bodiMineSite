@@ -4,6 +4,7 @@
    Variables & Reset
 --------------------------------------- */
 .home-wrapper {
+  background: white;
   --primary:         #7ddbdc;
   --primary-dark:    #19c7c7;
   --bg-light:        #f3fbfb;
@@ -375,7 +376,7 @@ img {
 }
 .input-group {
   position: relative;
-  flex: 1 1 200px;
+  flex: 1 1 20px;
   min-width: 220px;
 }
 .input-group .icon {
@@ -396,8 +397,8 @@ img {
   background: var(--primary);
   color: #fff;
   border: none;
-  padding: .9rem 2.5rem;
-  border-radius: 10px;
+  padding: .9rem 5.5rem;
+  border-radius: 5px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -433,15 +434,15 @@ img {
 /* ---------------------------------------
    CAROUSEL (3 images fixes)
 --------------------------------------- */
-.carousel {
+.home .carousel {
   width: 100%;
   padding: 2rem 5%;
   background: var(--section-light);
   box-sizing: border-box;
 }
-.carousel-inner {
+.home .carousel-inner {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex-wrap: nowrap;
   align-items: stretch;
@@ -449,7 +450,7 @@ img {
   overflow-x: hidden;
   margin: 0 auto;
 }
-.carousel-inner img {
+.home .carousel-inner img {
   flex: 0 0 32%;
   width: 32%;
   height: 220px;
@@ -457,13 +458,13 @@ img {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
-.carousel-inner img:not(:last-child) {
-  margin-right: 2%;
+.home .carousel-inner img:not(:last-child) {
+  margin-right: 0%;
 }
-.carousel-inner::-webkit-scrollbar {
+.home .carousel-inner::-webkit-scrollbar {
   display: none;
 }
-.carousel-indicators {
+.home .carousel-indicators {
   display: none;
 }
 /* ---------------------------------------
@@ -473,7 +474,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 5%;
+  padding: 1.5rem 5%;
   flex-wrap: wrap;
 }
 .sections .section h2 span {
@@ -485,16 +486,24 @@ img {
   color: var(--primary);
 }
 .section-speciality {
-  background: var(--section-light);
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+  background: #eefaff;
 }
 .section-doctors {
-  background: var(--section-white);
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+  background: #CFF5F5;
 }
 .section-clinics {
-  background: var(--section-light);
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+  background: #eefaff;
 }
 .section-articles {
-  background: var(--section-white);
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+  background: #CFF5F5;
 }
 
 /* ---------------------------------------
@@ -713,7 +722,7 @@ img {
   display: flex;
   align-items: center;
   margin-top: 1.5rem;
-  background: var(--section-light);
+  background: #eefaff;
   border-radius: 16px;
   padding: 1rem 2rem;
   overflow: hidden;
@@ -790,7 +799,7 @@ img {
 /* ---- Carousel des Sections (Doctors, Clinics, Articles) ---- */
 .specialities-carousel-wrapper {
   position: relative;
-  background: var(--section-light);
+  background: transparent;
   padding: 2rem 5%;
   border-radius: 16px;
   overflow: hidden;
@@ -812,13 +821,12 @@ img {
 
 .speciality-item {
   flex: 0 0 auto;
-  background: var(--section-white);
+  background: transparent;
   border-radius: 12px;
   padding: 1rem;
   min-width: 150px;
   max-width: 180px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
   transition: all 0.3s ease;
   scroll-snap-align: start;
   display: flex;
@@ -841,6 +849,131 @@ img {
   font-weight: 700;
   font-size: 1rem;
   color: var(--text);
+}
+/* docteur carousel */
+/* ───────────── 1. Wrapper général ───────────── */
+.doctors-carousel-wrapper {
+  position: relative;
+  background: transparent; /* même bleu que ta maquette */
+  padding: 2rem 5%;
+  overflow: hidden;
+}
+
+/* ───────────── 2. Piste défilante ───────────── */
+.doctors-track {
+  display: flex;
+  gap: 1.25rem;                 /* espace régulier entre cartes */
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 0.5rem;       /* petit espace sous les cartes */
+  scroll-behavior: smooth;      /* défilement doux */
+}
+.doctors-track::-webkit-scrollbar { display: none; } /* masquage scrollbar */
+
+/* ───────────── 3. Carte docteur ───────────── */
+.doctor-card {
+  scroll-snap-align: start;
+  flex: 0 0 220px;              /* largeur fixe → 4 cartes tiennent sur >1050 px */
+  background: #fff;
+  border-radius: 12px;
+  padding: 0;
+  box-shadow: 0 4px 14px rgba(0,0,0,.08);
+  overflow: hidden;
+  position: relative;
+  transition: transform .25s ease;
+}
+.doctor-card:hover { transform: translateY(-6px); }
+
+/* 3-a. Image (header) */
+.doctor-photo {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+}
+
+/* 3-b. Icône « favori » (en haut à droite) */
+.doctor-fav {
+  position: absolute;
+  border: none;
+  top: 12.8rem;
+  right: 7px;
+  background: transparent;
+  display: flex;
+  place-items: center;
+  color: red;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+/* 3-c. Bloc infos */
+.doctor-info {
+  padding: .75rem .9rem .9rem;
+}
+.doctor-name   { font-weight: 700; font-size: 1rem; margin-bottom: 0rem; }
+.doctor-title  { font-size: .9rem; color: var(--text-muted, #666); }
+.doctor-meta-home   { font-size: .8rem; color: var(--text-muted, #666); }
+
+/* 3-d. Rating + ancienneté  (ligne étoile + années) */
+.doctor-stats {
+  display: flex;
+  align-items: center;
+  gap: 0rem;
+  margin: 0rem 0 0rem;
+}
+.doctor-rating { color: #000000; font-size: .9rem; }
+
+/* 3-e. Bouton Chat */
+.doctor-chat-btn {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 67px;
+  justify-content: center;
+  gap: .35rem;
+  width: 35%;
+  padding: .45rem 0;
+  border-radius: 6px;
+  background: var(--primary, #00b6c8);
+  color: #fff;
+  font-size: .8rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background .2s;
+}
+.doctor-chat-btn:hover { background: var(--primary-dark, #0092a3); }
+
+/* ───────────── 4. Flèches de navigation (optionnel) ───────────── */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 3px 10px rgba(0,0,0,.12);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.carousel-arrow svg { font-size: 1.2rem; color: var(--primary-dark, #007c8a); }
+
+.carousel-arrow.prev { left: 1rem; }
+.carousel-arrow.next { right: 1rem; }
+
+/* ───────────── 5. Responsive tweaks ───────────── */
+@media (max-width: 1050px) {
+  .doctor-card { flex: 0 0 200px; }
+}
+@media (max-width: 800px) {
+  .doctor-card { flex: 0 0 160px; }
+  .doctor-photo { height: 150px; }
+  .doctors-carousel-wrapper { padding: 1.5rem 1rem; }
+}
+@media (max-width: 550px) {
+  .doctor-card { flex: 0 0 70%; }   /* 1 ½ carte visible */
+  .carousel-arrow { display: none; } /* on s’en passe sur mobile, swipe suffira */
 }
 
 /* Flèches à gauche et droite */
@@ -919,6 +1052,13 @@ img {
   }
 
   .input-group input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    font-size: 0.9rem;
+    border: 1px solid #ccdede;
+    border-radius: 10px;
+  }
+  .input-group-location input{
     width: 100%;
     padding: 0.75rem 1rem 0.75rem 2.5rem;
     font-size: 0.9rem;

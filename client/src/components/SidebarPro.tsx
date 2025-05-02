@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Menu, User, Star, Notebook, Lock,
-  Paperclip, Headphones, LogOut, Bell
+  Paperclip, Headphones, LogOut, Bell, Delete
 } from "lucide-react";
 import { FaMoneyBill } from "react-icons/fa";
 import { usePro } from "./ProContext";
@@ -78,6 +78,33 @@ export default function SidebarPro({
       })
       .catch(console.error);
   }, [professional, proToken]);
+  const handleDeleteAccount = async () => {
+    if (!professional?.professional_id || !proToken) return;
+  
+    const confirmDelete = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
+    if (!confirmDelete) return;
+  
+    try {
+      const response = await fetch(`/api/professional/${professional.professional_id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${proToken}`
+        }
+      });
+  
+      if (response.ok) {
+        alert("Account deleted successfully.");
+        proLogout(); // Déconnecte l'utilisateur après suppression
+      } else {
+        const errorData = await response.json();
+        alert("Error deleting account: " + (errorData.error || response.statusText));
+      }
+    } catch (error) {
+      console.error("Deletion error:", error);
+      alert("An unexpected error occurred. Please try again.");
+    }
+  };
+  
 
   const items = [
     { id: "Dashboard", label: "Dashboard",          icon: <Menu size={16}/>,       to: "/pro/dashboard"         },
@@ -123,6 +150,9 @@ export default function SidebarPro({
 
       <button className="btn logout" onClick={proLogout}>
         <LogOut size={16}/> Logout
+      </button>
+      <button className="btn delete" onClick={handleDeleteAccount}>
+        <Delete size={16}/> Delete Account
       </button>
     </aside>
   );

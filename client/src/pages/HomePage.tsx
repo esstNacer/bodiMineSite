@@ -16,6 +16,25 @@ import clinic1 from "../images/clinic1.png";
 import clinic2 from "../images/clinic2.png";
 import clinic3 from "../images/clinic3.png";
 import bodyMine from "../images/logobodymine.png";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+
+interface Professional {
+  professional_id: number;
+  full_name: string;
+  specialization?: string;
+  country?: string;
+  practice_tenure?: string;
+  email: string;
+  photo_url?: string;
+  isFavorited?: boolean;
+}
+
+interface Photo {
+  photo_id: number;
+  professional_id: number;
+  photo_url: string;
+  type: string;
+}
 
 export default function HomePage() {
   const { user } = useContext(UserContext) || { user: null };
@@ -49,24 +68,45 @@ export default function HomePage() {
     { name: "Non-Surgical Treatments", icon: <FiAward /> },
   ];
 
-  const [doctors, setDoctors] = useState<any[]>([]);
   const [clinics, setClinics] = useState<any[]>([]);
   const [articles, setArticles] = useState<any[]>([]);
-
-  useEffect(() => {
-    setDoctors([
-      { id: 1, name: "Dr. Natalie Gomez", specialty: "Plastic Surgeon" },
-      { id: 2, name: "Dr. Alex Martin", specialty: "Dental Surgeon" },
-    ]);
-    setClinics([
-      { id: 1, name: "Medicoal Clinic" },
-      { id: 2, name: "Clinic du Parc" },
-    ]);
-    setArticles([
-      { id: 1, title: "Hair Transparent Advice" },
-      { id: 2, title: "Support Plastic Surgery" },
-    ]);
-  }, []);
+  const [doctors, setDoctors] = useState<Professional[]>([]);
+  
+    /** 1) Fetch initial list */
+    const fetchDoctors = async () => {
+      try {
+        const res = await fetch(`/api/professional`);
+        const data: Professional[] = await res.json();
+        setDoctors(data);
+      } catch (err) {
+        console.error('Error fetching doctors:', err);
+      }
+    };
+     useEffect(() => {
+        doctors.forEach(doc => {
+          if (!doc.photo_url) {
+            fetch(`/api/photos/pro/${doc.professional_id}`)
+              .then(r => r.json())
+              .then((photos: Photo[]) => {
+                const prof = photos.find(p => p.type === 'profile');
+                if (prof) {
+                  setDoctors(prev =>
+                    prev.map(d =>
+                      d.professional_id === doc.professional_id
+                        ? { ...d, photo_url: prof.photo_url }
+                        : d
+                    )
+                  );
+                }
+              })
+              .catch(() => {
+                // si pas de photo ou erreur, on laisse le placeholder
+              });
+          }
+        });
+      }, [doctors]);
+        useEffect(() => { fetchDoctors(); }, []);
+      
 
   const handleToggleSection = (section: string) => {
     if (openedSections.includes(section)) {
@@ -91,6 +131,26 @@ export default function HomePage() {
       navigate(path);
     } else {
       navigate("/login");
+    }
+  };
+  
+  const handleStartChat = async (professionalId: number) => {
+    if (!user?.patient_id) return;
+    try {
+      await fetch('/api/chats', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patient_id: user.patient_id,
+          professional_id: professionalId,
+          message: "Hi doctor, I'd like to start a conversation.",
+          sender: "patient"
+        })
+      });
+      localStorage.setItem('selectedDoctorId', String(professionalId));
+      window.location.href = "/chat";
+    } catch (err) {
+      console.error("Error starting chat:", err);
     }
   };
   return (
@@ -156,7 +216,7 @@ export default function HomePage() {
             <FiSearch className="icon" />
             <input type="text" placeholder="Doctor, Hospital, Dental" />
           </div>
-          <div className="input-group">
+          <div className="input-group-location">
             <FiMapPin className="icon" />
             <input type="text" placeholder="Location" />
           </div>
@@ -173,8 +233,8 @@ export default function HomePage() {
       </section>
   
       {/* Carousel */}
-      <section className="carousel">
-        <div className="carousel-inner">
+      <section className="home carousel">
+        <div className="home carousel-inner">
           {carousel.map((item, i) => (
             <img key={i} src={item.src} alt={item.alt} className={i === slide ? "active" : ""} />
           ))}
@@ -186,7 +246,7 @@ export default function HomePage() {
   
         {/* Specialities */}
         <div className="section section-speciality">
-          <h2 onClick={() => handleToggleSection("speciality")}>Our Speciality <a href="#">See All</a></h2>
+          <h2 onClick={() => handleToggleSection("speciality")}>Our Speciality <a onClick={() => handleProtectedNavigation("/search")}>See All</a></h2>
           {openedSections.includes("speciality") && (
             <div className="specialities-carousel-wrapper">
               <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(specialityRef, "left")} />
@@ -205,23 +265,75 @@ export default function HomePage() {
   
         {/* Doctors */}
         <div className="section section-doctors">
-          <h2 onClick={() => handleToggleSection("doctors")}>Top <span>Doctors</span></h2>
-          {openedSections.includes("doctors") && (
-            <div className="specialities-carousel-wrapper">
-              <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(doctorsRef, "left")} />
-              <div className="specialities-track" ref={doctorsRef}>
-                {doctors.map((doc) => (
-                  <div key={doc.id} className="speciality-item">
-                    <div className="speciality-icon">🩺</div>
-                    <div className="speciality-name">{doc.name}</div>
-                    <small>{doc.specialty}</small>
-                  </div>
-                ))}
+  <h2 onClick={() => handleToggleSection("doctors")}>
+    Top <span>Doctors</span><a  onClick={() => handleProtectedNavigation("/search")}>See All</a>
+  </h2>
+
+  {openedSections.includes("doctors") && (
+    <section className="doctors-carousel-wrapper">
+      {/* Flèche ← */}
+      <button
+        className="carousel-arrow prev"
+        onClick={() => handleScroll(doctorsRef, "left")}
+      >
+        <FiChevronLeft />
+      </button>
+
+      {/* Piste défilante */}
+      <div className="doctors-track" ref={doctorsRef}>
+        {doctors.map((doc) => (
+          <article className="doctor-card" key={doc.professional_id}>
+            <Link to={`/doctor/${doc.professional_id}`} className="doctor-link">
+              {/* Photo + icône favori */}
+              <img
+                className="doctor-photo"
+                src={doc.photo_url || "https://i.imgur.com/1X3K1vF.png"}
+                alt={doc.full_name}
+              />
+              <button className="doctor-fav">
+                {doc.isFavorited ? <FaHeart /> : <FaRegHeart />}
+              </button>
+
+              {/* Infos principales */}
+              <div className="doctor-info">
+                <h4 className="doctor-name">Dr.{doc.full_name}</h4>
+                <p className="doctor-title">{doc.specialization}</p>
+                <h1 className="doctor-meta-home">{doc.country}</h1>
+
+                {/* Note + ancienneté */}
+                <div className="doctor-stats">
+                  <span className="doctor-rating">
+                    ⭐ { 4.8}
+                  </span>
+                </div>
+                  <span className="doctor-meta-home">
+                    {doc.practice_tenure ?? "N/A"} 
+                  </span>
+                {/* Bouton Chat */}
+                <button
+                  type="button"
+                  className="doctor-chat-btn"
+                  onClick={() => handleStartChat(doc.professional_id)}
+                >
+                  💬 Chat
+                </button>
               </div>
-              <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(doctorsRef, "right")} />
-            </div>
-          )}
-        </div>
+            </Link>
+          </article>
+        ))}
+      </div>
+
+      {/* Flèche → */}
+      <button
+        className="carousel-arrow next"
+        onClick={() => handleScroll(doctorsRef, "right")}
+      >
+        <FiChevronRight />
+      </button>
+    </section>
+  )}
+</div>
+
   
         {/* Clinics */}
         <div className="section section-clinics">

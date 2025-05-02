@@ -97,7 +97,7 @@ CREATE TABLE chats (
   patient_id INT,
   professional_id INT,
   sender VARCHAR(50),
-  message TEXT,
+  `message` TEXT,
   `timestamp` DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (patient_id) REFERENCES patients(patient_id),
   FOREIGN KEY (professional_id) REFERENCES professionals(professional_id)

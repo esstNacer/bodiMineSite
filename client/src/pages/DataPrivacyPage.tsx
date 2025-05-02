@@ -49,14 +49,6 @@ export default function DataPrivacyPage() {
       </header>
 
       {/* ▬▬▬ CAROUSEL ▬▬▬ */}
-      <div className="banner-carousel">
-        <img src={banners[slide]} alt="banner" />
-        <div className="dots">
-          {banners.map((_, i) => (
-            <BsDot key={i} size={18} className={slide===i?'active':''} onClick={() => setSlide(i)} />
-          ))}
-        </div>
-      </div>
 
       {/* ▬▬▬ LAYOUT ▬▬▬ */}
       <main className="content-grid">

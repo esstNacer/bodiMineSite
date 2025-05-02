@@ -97,10 +97,29 @@ export const Professionals = {
   
 
   delete: async (id) => {
-    const [result] = await pool.query(
-      'DELETE FROM professionals WHERE professional_id = ?',
-      [id]
-    );
-    return result;
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+  
+      // 1) Supprimer d'abord toutes les dépendances
+      await connection.query('DELETE FROM notifications WHERE professional_id = ?', [id]);
+      await connection.query('DELETE FROM professional_photos WHERE professional_id = ?', [id]);
+      await connection.query('DELETE FROM premium_subscriptions WHERE professional_id = ?', [id]);
+      await connection.query('DELETE FROM chats WHERE professional_id = ?', [id]);
+      await connection.query('DELETE FROM promotions WHERE professional_id = ?', [id]);
+      await connection.query('DELETE FROM premium_subscriptions_with_discount WHERE professional_id = ?', [id]);
+  
+      // 2) Puis supprimer le professionnel lui-même
+      const [result] = await connection.query('DELETE FROM professionals WHERE professional_id = ?', [id]);
+  
+      await connection.commit();
+      return result;
+    } catch (error) {
+      await connection.rollback();
+      throw error;
+    } finally {
+      connection.release();
+    }
   }
+  
 };
