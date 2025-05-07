@@ -396,264 +396,189 @@
    FULL RESPONSIVE FOR LOGIN PAGE
 --------------------------------------- */
 @media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem;
-    text-align: center;
-  }
-  .navbar-left,
-  .navbar-right {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    gap: 0.5rem;
-  }
-
-  .navbar-left nav {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    width: 100%;
-  }
-
-  .nav-btn, .navbar nav a {
-    font-size: 0.45rem;
-    padding: 0.1rem 0.5rem;
-    border: 0.1px solid transparent;
-    border-radius: 8px;
-    background: transparent;
-    color: white;
-    flex-shrink: 0;
-  }
-
-  .navbar-right {
-    justify-content: center;
-  }
-
-  .nav-left {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .menu {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .menu a {
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-  }
-
-  .nav-right {
-    justify-content: space-between;
-    width: 100%;
-  }
-
-  .content {
-    flex-direction: column;
-    padding: 1rem;
-    gap: 2rem;
-  }
-
-  .content .carousel,
-  .content .signin {
-    max-width: 100%;
-  }
-
-  .slide-title {
-    font-size: 20px;
-  }
-
-  .slide-subtitle {
-    font-size: 16px;
-  }
-
-  .signin form {
-    gap: 1rem;
-  }
-
-  .footer {
-    padding: 2rem;
-  }
-
-  .footer-cols {
-    flex-direction: column;
-    gap: 2rem;
-  }
+  /* 1. Full-screen background */
+.login.mobile {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: url('/assets/bg-doctor.jpg') center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
 }
 
-@media (max-width: 480px) {
-  .navbar {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem;
-    text-align: center;
-  }
-  .navbar-left,
-  .navbar-right {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    gap: 0.5rem;
-  }
-
-  .navbar-left nav {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    width: 100%;
-  }
-
-  .nav-btn, .navbar nav a {
-    font-size: 0.45rem;
-    padding: 0.1rem 0.5rem;
-    border: 0.1px solid transparent;
-    border-radius: 8px;
-    background: transparent;
-    color: white;
-    flex-shrink: 0;
-  }
-
-  .navbar-right {
-    justify-content: center;
-  }
-
-  .logo img {
-    height: 40px;
-  }
-
-  .nav-left {
-    align-items: center;
-  }
-
-  .menu a {
-    font-size: 0.8rem;
-  }
-
-  .lang {
-    font-size: 0.8rem;
-  }
-
-  .slide-title {
-    font-size: 18px;
-  }
-
-  .slide-subtitle {
-    font-size: 14px;
-  }
-
-  .btn {
-    font-size: 13px;
-    padding: 10px;
-  }
-
-  .signin input {
-    font-size: 13px;
-  }
-
-  .footer p,
-  .footer ul,
-  .footer li {
-    font-size: 0.8rem;
-  }
+/* 2. Centrer le card */
+.login-card {
+  margin: auto;
+  width: 90%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
-/* =========================================================
-   📱  LOGIN – Responsive max-width : 600 px
-   (prend en compte .login, .navbar, .carousel, .signin, etc.)
-========================================================= */
-@media (max-width: 600px) {
 
-  /* ——— 1. Conteneur principal ——— */
-  .login .home-wrapper { --gap-sm: 1.2rem; }
+/* 3. Logo */
+.login-card__logo {
+  width: 120px;
+  margin-bottom: 16px;
+}
 
-  /* ——— 2. NAVBAR ——— */
-  .login .navbar {
-    flex-direction: column;
-    gap: var(--gap-sm);
-    height: auto;
-    padding: 0.75rem 1rem;
-    text-align: center;
-  }
-  .login .nav-links {
-    width: 100%;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: nowrap;
-    font-size: .85rem;
-  }
+/* 4. Titres */
+.login-card__title {
+  font-size: 24px;
+  margin-bottom: 8px;
+  color: #0E2A34;
+}
 
-  /* ——— 3. MAIN : mise en colonne → pile verticale ——— */
-  .login .content {
-    flex-direction: column;
-    gap: var(--gap-sm);
-    padding: 0 1rem;
-    max-width: 480px; /* limite la largeur pour confort de lecture */
-  }
+.login-card__subtitle {
+  font-size: 14px;
+  margin-bottom: 24px;
+  color: #4A555C;
+}
 
-  /* ——— 3-a. CAROUSEL ——— */
-  .login .carousel {
-    order: 1;                      /* apparaît en premier */
-    max-width: 100%;
-    padding: 1.8rem 0 0;
-  }
-  .login .slide-img {
-    width: 82%;
-    height: auto;
-    max-height: 200px;
-  }
-  .login .slide-title    { font-size: 1.4rem; }
-  .login .slide-subtitle { font-size: .95rem; max-width: 260px; }
-  .login .dots           { gap: 6px; }
+/* 5. Form */
+.login-card__form .form-error {
+  margin-bottom: 12px;
+  color: #D94A4A;
+  font-size: 13px;
+}
 
-  /* ——— 3-b. SIGN-IN form ——— */
-  .login .signin {
-    order: 2;
-    max-width: 100%;
-    margin-top: .5rem;
-  }
-  .login .signin form {margin-left: 70px; gap: 16px; }
+/* Input groups */
+.input-group {
+  text-align: left;
+  margin-bottom: 16px;
+}
 
-  /* champs full-width + boutons */
-  .login .signin input,
-  .login .btn,
-  .login .btn.primary,
-  .login .btn.secondary,
-  .login .btn.oauth {
-    width: 100%;
-  }
-   /* — .btn.primary —–––––––––––––––––––––––––––––– */
+.input-group label {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: #0E2A34;
+}
 
-  /* OAuth bouton : agrandit l’icône et centre */
-  .login .btn.oauth img { width: 20px; height: 20px; }
+.input-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #CBD5E0;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #0E2A34;
+}
 
-  /* ——— 4. FOOTER ——— */
-  .login .footer {
-    padding: 2.4rem 1rem;
-    text-align: center;
-  }
-  .login .footer-cols,
-  .login .footer-content {
-    flex-direction: column;
-    gap: var(--gap-sm);
-  }
-  .login .footer p { margin: 0 auto 1rem; }
+/* Password toggle */
+.password-wrapper {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  color: #A0AEC0;
+}
+
+/* Remember + forgot */
+.row.remember {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #4A555C;
+  margin-bottom: 24px;
+}
+
+.row.remember .forgot-link {
+  color: #75D5CC;
+  text-decoration: none;
+}
+
+/* Boutons */
+.btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.btn.primary {
+  background-color: #75D5CC;
+  color: #fff;
+}
+
+.btn.secondary.professional {
+  background-color: #4DA6C0;
+  color: #fff;
+}
+
+/* Lien “Sign Up” */
+.small {
+  font-size: 12px;
+  color: #4A555C;
+  margin-bottom: 16px;
+}
+
+.small a {
+  color: #75D5CC;
+  text-decoration: none;
+}
+
+/* Divider “Or continue with” */
+.divider {
+  position: relative;
+  font-size: 12px;
+  color: #A0AEC0;
+  margin-bottom: 16px;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30%;
+  height: 1px;
+  background: #E2E8F0;
+}
+
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
+
+/* OAuth buttons */
+.oauth {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.btn.oauth {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid #CBD5E0;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.btn.oauth img {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
 
 }

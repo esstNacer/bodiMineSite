@@ -7,9 +7,14 @@ import globe      from '../images/globe.png';
 import verifyImg  from '../images/verify.png';
 import connectImg from '../images/connect.png';
 import bodyMine   from '../images/logobodymine.png';
+import bodyMineMobile from '../images/LogoMobile.png'
 import { FiHome, FiSearch } from 'react-icons/fi';
 import { useUser } from '../components/UserContext';
 import Footer from '../components/Footer';
+import useBreakpoint from '../hooks/useBreakpoint';
+import BottomNav from '../components/BottomNav';
+import MobileNavbar from '../components/MobileNavbar';
+import { EyeOffIcon, EyeIcon } from 'lucide-react';
 
 interface Slide {
   title: string;
@@ -69,8 +74,11 @@ const handleGoogleLogin = () => {
   window.location.href = '/api/auth/google'; // Redirige vers ton backend qui gère Google login
 };
 
+  const isMobile = useBreakpoint();
 
 return (
+  <>
+    {!isMobile && (
   <div className='login'>
   <div className="home-wrapper">
     <div className="page">
@@ -175,6 +183,109 @@ return (
     </div>
   </div>
   </div>
+   )}
+   {isMobile && (
+  <div className="login mobile">
+    <div className="login-card">
+      {/* logo BodyMine */}
+      <img
+        src={bodyMineMobile} 
+        alt="BODYMINE Cosmetic Surgery"
+        className="login-card__logo"
+      />
+
+      <h2 className="login-card__title">Welcome</h2>
+      <p className="login-card__subtitle">
+        Please put your information below to Sign in to your account
+      </p>
+
+      <form onSubmit={handleSubmit} className="login-card__form">
+        {error && <div className="form-error">{error}</div>}
+
+        {/* Email */}
+        <div className="input-group">
+          <label>Email</label>
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder="example@gmail.com"
+            required
+          />
+        </div>
+
+        {/* Password */}
+        <div className="input-group">
+          <label>Password</label>
+          <div className="password-wrapper">
+            <input
+              type={password ? "text" : "password"}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="•••••••"
+              required
+            />
+            <span
+              className="toggle-password"
+            >
+              {password ? <EyeOffIcon/> : <EyeIcon/>}
+            </span>
+          </div>
+        </div>
+
+        {/* Remember + forgot */}
+        <div className="row remember">
+          <label>
+            <input
+              type="checkbox"
+              checked={remember}
+              onChange={e => setRemember(e.target.checked)}
+            />
+            Keep me signed in
+          </label>
+          <a href="#forgot" className="forgot-link">
+            Forgot password?
+          </a>
+        </div>
+
+        {/* Sign in */}
+        <button type="submit" className="btn primary">
+          Sign in
+        </button>
+
+        <p className="small">
+          Don’t have an account yet? <a href="/sign-up">Sign Up</a>
+        </p>
+        <div className="oauth">
+          <button
+            type="button"
+            className="btn oauth google"
+            onClick={handleGoogleLogin}
+          >
+            <img
+              src="https://unpkg.com/simple-icons@latest/icons/google.svg"
+              alt="Google"
+            />
+          </button>
+        </div>
+        <p className="divider">Or continue with</p>
+
+        {/* OAuth buttons */}
+
+        {/* Professional access */}
+        <button
+          type="button"
+          className="btn secondary professional"
+          onClick={() => navigate("/loginPro")}
+        >
+          Professional access
+        </button>
+      </form>
+    </div>
+  </div>
+)}
+
+           </>
 );
 
 }

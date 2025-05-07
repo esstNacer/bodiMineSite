@@ -9,7 +9,7 @@
   }
   * { box-sizing:border-box; margin:0; padding:0; }
   body, .how-page {
-    background: var(--bg-light);
+    background: #F7F7F7;
     color: var(--text);
     font-family: "Segoe UI", Arial, sans-serif;
     min-height: 100vh;
@@ -20,9 +20,9 @@
   /* Main wrapper */
   .how-content-wrapper {
     flex: 1;
-    max-width: 1180px;
-    margin: 48px auto;
-    padding: 0 24px;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
     gap: 3rem;
@@ -177,11 +177,41 @@
   }
   
   /* Responsive */
-  @media(max-width:900px) {
-    .how-hero,
-    .recommendations {
-      flex-direction: column;
-      align-items: stretch;
+  @media(max-width:600px){
+
+    /* Hero : texte au-dessus, image pleine largeur */
+    .how-hero{
+      background-color: #eefaff;
+      flex-direction:column;
+      gap:1.2rem;
+      padding:1.6rem 1rem;
+    }
+    .how-text{ text-align:left; }     /* ou center si souhaité */
+    .how-text h1{
+      font-size:1.6rem;
+      margin-bottom:.8rem;
+    }
+  
+    /* Logos en ligne pour éviter la « colonne interminable » */
+    .recommendations .logos{
+      flex-direction:row;
+      justify-content:space-around;
+      gap:.6rem;
+    }
+    .recommendations .logos img{
+      max-width:80px;
+    }
+  
+    /* Carte recommandations : padding réduit */
+    .recommendations{
+      gap:1.4rem;
+      padding:1.6rem 1rem;
+      border-radius:8px;
+    }
+  
+    /* Scroll interne un peu plus haut (moins de place) */
+    .rec-text.scrollable{
+      max-height:400px;
     }
   }
   

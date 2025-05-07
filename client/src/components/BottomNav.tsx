@@ -29,7 +29,7 @@ export default function BottomNav() {
     <button
       type="button"
       className={isActive("/home") || pathname === "/" ? "navbot-btn active" : "navbot-btn"}
-      onClick={() => handleProtectedNavigation("/home")}
+      onClick={() => navigate("/home")}
     >
       <FiGrid className="icon" />
       <span className="label">Dashboard</span>

@@ -1,14 +1,28 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaTiktok, FaTwitter, FaYoutube } from "react-icons/fa";
 import bodyMine from "../images/logobodymine.png";
 import "../assets/Home.css";          // tes variables + .footer existants
 import "./Footer.css";                // 10 lignes d’addons (ci-dessous)
+import { useUser } from "./UserContext";
 
 interface FooterProps {
   className?: string;
 }
 
 export default function Footer({ className = "" }: FooterProps) {
+  const navigate = useNavigate();
+    const { user } = useUser();  
+  const handleNav = (path: string) => {
+
+    if (user) navigate(path);
+    else      navigate("/login");
+  };
+
+  const handleFaq = () => {
+
+    if (user) navigate("/faq");
+    else      navigate("/faqInfo");
+  };
   return (
     <footer className={`footer ${className}`}>
       <div className="footer-content">
@@ -43,7 +57,7 @@ export default function Footer({ className = "" }: FooterProps) {
           <h4>Home</h4>
           <ul>
             <li><Link to="/home">Menu</Link></li>
-            <li><Link to="/chat">Chat</Link></li>
+            <li><Link to="/chat" onClick={()=> handleNav("/chat")}>Chat</Link></li>
             <li><Link to="/search">Search</Link></li>
           </ul>
         </div>
@@ -51,9 +65,9 @@ export default function Footer({ className = "" }: FooterProps) {
         <div className="footer-block">
           <h4>Info</h4>
           <ul>
-            <li><Link to="/terms">Terms&nbsp;&amp;&nbsp;Conditions</Link></li>
+            <li><Link to="/terms" >Terms&nbsp;&amp;&nbsp;Conditions</Link></li>
             <li><Link to="/privacy">Privacy Policy</Link></li>
-            <li><Link to="/faq">FAQs</Link></li>
+            <li><Link to="/faq"onClick={()=>handleFaq}>FAQs</Link></li>
           </ul>
         </div>
 

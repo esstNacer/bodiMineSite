@@ -471,51 +471,73 @@ img {
 /* -----------------------------------------------------------------
    👇 1. Règles communes à toutes les sections
 ------------------------------------------------------------------ */
-.sections .section{
-  position:relative;               /* contexte pour l’abs. */
-  min-height:110px;
-  display:flex;
-  align-items:center;
-  padding:1.5rem 5%;
+.sections .section {
+  position: relative;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;       /* colonne pour accueillir les contenus */
+  align-items: flex-start;
+  padding: 3rem 5% 1.5rem;      /* plus d'espace en haut pour accueillir h2 fixe */
+  overflow: hidden;             /* masque le contenu hors cadre pendant l’animation */
 }
 
-/* titre centré verticalement, plaqué à gauche */
-.sections .section h2{
-  position:absolute;
-  top:40%;
-  left:2%;                         /* ⬅️  5 % depuis le bord gauche */
-  transform:translateY(-50%);
-  margin:0;
-  color:black;
+/* titre toujours en haut à gauche et fixe */
+.sections .section h2 {
+  position: absolute;
+  top: 1rem;                    /* fixe à 1rem du haut */
+  left: 2%;
+  margin: 0;
+  color: black;
+  z-index: 2;                   /* toujours au-dessus */
+  transition: color 0.3s ease;
 }
-.sections .section a{
-  font-size:.85rem;
-  font-weight:600;
-  color:var(--primary);
+
+/* liens dans les titres */
+.sections .section h2 a {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* styles des contenus animés à l’ouverture */
+.sections .section .section-content {
+  width: 100%;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* classe pour l’ouverture */
+.sections .section.open .section-content {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* -----------------------------------------------------------------
-   👇 2. Empilement “sans bande blanche”
-   (s’applique à TOUTE section qui suit une autre .section)
+   Empilement des sections (effet sans espace blanc)
 ------------------------------------------------------------------ */
-.sections .section:first-child{
-  padding-top:calc(1.5rem + 30px);   /* 1.5rem + rayon de 30px = 3rem env. */
+.sections .section:first-child {
+  padding-top: calc(3rem + 30px);
 }
-.sections .section + .section{
-  margin-top:-30px;                           /* chevauche de 30 px */
-  padding-top:calc(1.5rem + 30px);            /* on récupère l’espace interne */
-  border-top-left-radius:30px;                /* on garde les arrondis */
-  border-top-right-radius:30px;
+.sections .section + .section {
+  margin-top: -30px;
+  padding-top: calc(3rem + 30px);
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
 }
 
 /* -----------------------------------------------------------------
-   👇 3. Couleurs / thèmes individuels
+   Couleurs individuelles des sections
 ------------------------------------------------------------------ */
-.section-speciality{  border-top-left-radius:30px;                /* on garde les arrondis */
-  border-top-right-radius:30px;background:#eefaff; }   /* bleu très clair */
-.section-doctors  { background:#CFF5F5; }    /* turquoise clair */
-.section-clinics  { background:#eefaff; }
-.section-articles { background:#CFF5F5; }
+.section-speciality { 
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  background: #eefaff;
+}
+.section-doctors { background: #CFF5F5; }
+.section-clinics { background: #eefaff; }
+.section-articles { background: #CFF5F5; }
+
 
 
 /* ---------------------------------------
@@ -821,16 +843,17 @@ img {
 
 .specialities-track {
   display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  gap: 1rem;
-  padding: 1rem 2rem;
-  align-items: center;
+  overflow-x: auto;          /* scrolling horizontal */
+  scroll-behavior: smooth;   /* défilement fluide */
+  gap: 12px;                 /* espacement entre les éléments */
+  padding-bottom: 10px;      /* évite que le scroll masque le contenu */
 }
 
+/* cache la barre de scroll pour un rendu esthétique (optionnel) */
 .specialities-track::-webkit-scrollbar {
   display: none;
 }
+
 
 .speciality-item {
   flex: 0 0 auto;
@@ -920,7 +943,7 @@ img {
 
 /* 3-c. Bloc infos */
 .doctor-info {
-  padding: .75rem .9rem .9rem;
+  padding-bottom: 0.2rem;
 }
 .doctor-name   { font-weight: 700; font-size: 1rem; margin-bottom: 0rem; }
 .doctor-title  { font-size: .9rem; color: var(--text-muted, #666); }
@@ -1023,6 +1046,16 @@ img {
 }
 /* ========  Mobile 0–991 px  ======== */
 @media (max-width: 991px){
+.speciality-arrow{
+  display: none;
+}
+
+  .home .carousel-inner img {
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+    border-radius: var(--radius-card);
+  }
 
   /* 1. on planque le header */
   .navbar{display:none;}
@@ -1036,6 +1069,8 @@ img {
 
   /* ------ grille 2 colonnes ------ */
   .hero-tel{
+    margin-top:-32px;                       /* chevauche l’arrondi */
+    padding-top:calc(2.2rem + 32px);  
     background: #eefaff;
         padding: 2.2rem 1.2rem 1.6rem;
         display: grid;
@@ -1050,11 +1085,11 @@ img {
 
   /* ---------- Titre ---------- */
   .hero-tel-title{
+    margin-top: 25px;
     grid-area: title;
     font-size: 1.8rem;
     line-height: 1.18;
     font-weight: 700;
-    margin: 0;
   }
   .hero-tel-title span{color:var(--primary,#19c7c7);}
 

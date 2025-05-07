@@ -64,7 +64,7 @@ export default function Header({
           <button
             type="button"
             className="nav-btn"
-            onClick={() => handleNav("/search")}
+            onClick={() => navigate("/search")}
           >
             <FiSearch /> Search
           </button>

@@ -7,19 +7,19 @@ import {
 } from 'react-icons/fi';
 import { BsDot } from 'react-icons/bs';
 
-import '../assets/MyBodyProjectPage.css';  // nav + sidebar + footer + banner
-import '../assets/FaqPage.css';            // zone scroll FAQ
+import '../../assets/MyBodyProjectPage.css';  // nav + sidebar + footer + banner
+import '../../assets/FaqPage.css';            // zone scroll FAQ
 
-import bodyMineLogo from '../images/logobodymine.png';
-import clinic1 from '../images/clinic1.png';
-import clinic2 from '../images/clinic2.png';
-import clinic3 from '../images/clinic3.png';
-import helpImage   from '../images/help.png';
-import { useUser } from '../components/UserContext';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import bodyMineLogo from '../../images/logobodymine.png';
+import clinic1 from '../../images/clinic1.png';
+import clinic2 from '../../images/clinic2.png';
+import clinic3 from '../../images/clinic3.png';
+import helpImage   from '../../images/help.png';
+import { useUser } from '../../components/UserContext';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
-export default function FaqPage() {
+export default function Faq() {
   const { user } = useUser();
   const { logout } = useUser();
   const banners = [clinic1, clinic2, clinic3];
@@ -46,25 +46,7 @@ export default function FaqPage() {
       {/* ▬▬▬ LAYOUT ▬▬▬ */}
       <main className="content-grid">
         {/* ---------- SIDEBAR ---------- */}
-        <aside className="side-menu">
-          <div className="hello-card">
-            <img src="https://i.pravatar.cc/64?img=12" alt="avatar" className="hello-avatar" />
-            <div>Hello<br/><strong>{user?.first_name} {user?.last_name}</strong></div>
-          </div>
-
-          <ul className="menu-links">
-            <li><Link to="/editProfile"><FiUser /> Edit Profile</Link></li>
-            <li><Link to="/changePassword"><FiLock /> Change Password</Link></li>
-            <li><Link to="/myBodyProject"><FiFileText /> My Body Project</Link></li>
-            <li><Link to="/CGU"><FiFileText /> Terms &amp; Conditions</Link></li>
-            <li><Link to="/news"><FiBookOpen /> News &amp; Article</Link></li>
-            <li className="active"><Link to="/support"><FiLifeBuoy /> Support</Link></li>
-          </ul>
-
-          <button className="danger-btn"><FiTrash2 /> Delete Account</button>
-          <button className="logout-btn" onClick={logout}><FiLogOut /> Logout</button>
-        </aside>
-        
+        <aside className="side-menu"></aside>
         {/* ---------- ZONE FAQ ---------- */}
         <section className="cgu-zone">
           {/* Entête contextuelle */}

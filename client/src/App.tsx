@@ -26,6 +26,7 @@ import PurchaseServicesPage from './PagesPro/PurchaseServicesPage';
 import NotificationsPage from './PagesPro/NotificationsPage';
 import ProfessionalCGU from './PagesPro/ProfessionalCGU';
 import ProfessionalDataPrivicy from './PagesPro/ProfessionalDataPrivicy';
+import Faq from './pages/info/Faq';
 
 import AddBlogPage from './Admin/AddBlogPage';
 import BannerPage from './Admin/BannerPage';
@@ -45,6 +46,7 @@ export default function App() {
       <Route path="/support" element={<SupportPage />} />
       <Route path="/pro/support" element={<ProfessionalSupport />} />
       <Route path="/faq" element={<FaqPage />} />
+      <Route path="/faqInfo" element={<Faq />} />
       <Route path="/pro/faq" element={<ProfessionalFaq />} />
       <Route path="/dataPrivacy" element={<DataPrivacyPage />} />
       <Route path="/pro/dataPrivicy" element={<ProfessionalDataPrivicy />} />
