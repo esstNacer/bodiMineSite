@@ -34,18 +34,19 @@
    Navbar
 --------------------------------------- */
 .login .logo img {
-  height: 70px;
+  height: 55px;
   width: auto;
 }
 
 .login .navbar {
-  background: var(--turquoise);
+  background: #7ddbdc;
+  color: #fff;
+  height: 90px;
   display: flex;
-  justify-content: space-between;
+  gap: 2rem;
   align-items: center;
-  padding: 0 32px;
-  height: 100px;
-  color: #7ddbdc;
+  justify-content: start;
+  padding: 0 2.5rem;
 }
 
 .login .nav-left {
@@ -157,6 +158,24 @@
   margin: 0 auto 24px;
   max-width: 300px;
 }
+.login .btn.primary {
+  justify-content: center;
+  background-color: #19c7c7; /* bleu turquoise pastel clair */
+  color: #ffffff;
+  border: none;
+  border-radius: 8px; /* arrondi des coins */
+  padding: 12px 0;
+  width: 100%; /* bouton prend toute la largeur */
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.login .btn.primary:hover {
+  background-color: #a8d5d2; /* un peu plus foncé au hover */
+}
 
 .login .slide-img {
   width: 2200px;
@@ -233,14 +252,24 @@
   cursor: pointer;
 }
 
-.login .btn.primary {
-  background: var(--turquoise);
-  color: #fff;
-}
 
 .login .btn.secondary {
-  background: #a4c9e3;
-  color: #fff;
+  justify-content: center;
+  background-color: #7db4e6; /* Bleu clair saturé */
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 0;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.login .btn.secondary:hover {
+  background-color: #68a2d8; /* Un peu plus foncé en hover */
 }
 
 .login .btn.oauth {
@@ -260,6 +289,12 @@
 .login .small {
   font-size: 13px;
   text-align: center;
+}
+.login .small a{
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  color: #19c7c7;
 }
 
 .login .divider {
@@ -539,4 +574,86 @@
   .footer li {
     font-size: 0.8rem;
   }
+}
+/* =========================================================
+   📱  LOGIN – Responsive max-width : 600 px
+   (prend en compte .login, .navbar, .carousel, .signin, etc.)
+========================================================= */
+@media (max-width: 600px) {
+
+  /* ——— 1. Conteneur principal ——— */
+  .login .home-wrapper { --gap-sm: 1.2rem; }
+
+  /* ——— 2. NAVBAR ——— */
+  .login .navbar {
+    flex-direction: column;
+    gap: var(--gap-sm);
+    height: auto;
+    padding: 0.75rem 1rem;
+    text-align: center;
+  }
+  .login .nav-links {
+    width: 100%;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: nowrap;
+    font-size: .85rem;
+  }
+
+  /* ——— 3. MAIN : mise en colonne → pile verticale ——— */
+  .login .content {
+    flex-direction: column;
+    gap: var(--gap-sm);
+    padding: 0 1rem;
+    max-width: 480px; /* limite la largeur pour confort de lecture */
+  }
+
+  /* ——— 3-a. CAROUSEL ——— */
+  .login .carousel {
+    order: 1;                      /* apparaît en premier */
+    max-width: 100%;
+    padding: 1.8rem 0 0;
+  }
+  .login .slide-img {
+    width: 82%;
+    height: auto;
+    max-height: 200px;
+  }
+  .login .slide-title    { font-size: 1.4rem; }
+  .login .slide-subtitle { font-size: .95rem; max-width: 260px; }
+  .login .dots           { gap: 6px; }
+
+  /* ——— 3-b. SIGN-IN form ——— */
+  .login .signin {
+    order: 2;
+    max-width: 100%;
+    margin-top: .5rem;
+  }
+  .login .signin form {margin-left: 70px; gap: 16px; }
+
+  /* champs full-width + boutons */
+  .login .signin input,
+  .login .btn,
+  .login .btn.primary,
+  .login .btn.secondary,
+  .login .btn.oauth {
+    width: 100%;
+  }
+   /* — .btn.primary —–––––––––––––––––––––––––––––– */
+
+  /* OAuth bouton : agrandit l’icône et centre */
+  .login .btn.oauth img { width: 20px; height: 20px; }
+
+  /* ——— 4. FOOTER ——— */
+  .login .footer {
+    padding: 2.4rem 1rem;
+    text-align: center;
+  }
+  .login .footer-cols,
+  .login .footer-content {
+    flex-direction: column;
+    gap: var(--gap-sm);
+  }
+  .login .footer p { margin: 0 auto 1rem; }
+
 }

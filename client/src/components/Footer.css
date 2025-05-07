@@ -1,0 +1,42 @@
+/* -----------------------------------------------------------------
+   📎  Add-ons spécifiques au footer (icônes réseaux, liens)
+------------------------------------------------------------------ */
+
+  
+  .social-icons a:hover {
+    background:rgba(255,255,255,.30);
+  }
+  
+  /* liens dans les listes */
+  .footer-block ul li a { color:#eafefe; text-decoration:none; }
+  .footer-block ul li a:hover { text-decoration:underline; }
+  /* -----------------------------------------------------------------
+   Alignement horizontal logo + icônes
+------------------------------------------------------------------ */
+.footer-brand{
+    display:flex;
+    align-items:center;
+    gap:24px;                /* espace entre logo & icons */
+  }
+  
+  .socialfoot-icons{
+    display:flex;
+    gap:14px;
+  }
+  
+  .socialfoot-icons a{
+    display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: white;
+        color: #7ddbdc;
+        font-size: 1rem;
+        transition: background .25s;
+  }
+  .socialfoot-icons a:hover{
+    background:rgba(255,255,255,.30);
+  }
+  

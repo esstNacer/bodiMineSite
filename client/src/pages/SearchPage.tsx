@@ -7,6 +7,8 @@ import { FiHome, FiSearch } from 'react-icons/fi';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Select from 'react-select';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 interface Professional {
   professional_id: number;
@@ -145,29 +147,8 @@ export default function DoctorListPage() {
     <div className="home-wrapper">
 
     <div className="page">
-      <header className="navbar">
-        <div className="logo">
-          <img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" />
-        </div>
-        <nav className="main-nav">
-          <a href="/home"><FiHome /> Home</a>
-          <a href="/chat"><FiSearch /> Chat</a>
-          <a href="/search"><FiSearch /> Search</a>
-        </nav>
-        <div className="profile-mini">
-          <span className="lang">EN ▾</span>
-          <Link to="/editProfile">
-            <img
-              className="profile-avatar"
-              src={`https://i.pravatar.cc/40?u=${user?.patient_id}`}
-              alt="You"
-            />
-            <span className="profile-name">
-              {user?.first_name} {user?.last_name} <span className="status-dot">●</span>
-            </span>
-          </Link>
-        </div>
-      </header>
+            <Header className="navbar"/>
+      
 
       <main className="main-content">
         <div className="filters-wrapper">
@@ -236,7 +217,7 @@ export default function DoctorListPage() {
                     ⭐ { 4.8}
                   </span>
                   </div>
-                  <span > {doc.practice_tenure || 'N/A'}</span>
+                  <span > {doc.practice_tenure || 'N/A'} years</span>
                 </Link>
                 <button
                   className="chat-btn"
@@ -254,29 +235,7 @@ export default function DoctorListPage() {
         </div>
       </main>
 
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-block">
-            <img src={bodyMineLogo} alt="BodyMine" className="footer-logo" />
-            <p>
-              Bodymine is the leading directory to help you find the perfect
-              surgeon or clinic, anywhere in the world.
-            </p>
-          </div>
-          <div className="footer-block">
-            <h4>Home</h4>
-            <ul><li>Menu</li><li>Chat</li><li>Search</li></ul>
-          </div>
-          <div className="footer-block">
-            <h4>Info</h4>
-            <ul><li>Terms & Conditions</li><li>Privacy Policy</li><li>FAQs</li></ul>
-          </div>
-          <div className="footer-block">
-            <h4>Contact Us</h4>
-            <p>info@bodymine.com</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
     </div>
   );

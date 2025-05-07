@@ -1,15 +1,17 @@
 // src/pages/SignUpPage.jsx
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../assets/SignUpPage.css';
 
 import connectImg from '../images/connect.png';
 import bodyMineLogo  from '../images/logobodymine.png';
 import { FiHome, FiSearch } from 'react-icons/fi';
 import { useUser } from '../components/UserContext';
+import Footer from '../components/Footer';
 
 export default function SignUpPage() {
-    const { updateUser } = useUser();
+    const { updateUser, setToken } = useUser();
+  const [remember, setRemember] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -79,10 +81,11 @@ export default function SignUpPage() {
       }
   
       // Récupérer les données du nouvel utilisateur créé
-      const newUser = await res.json();
+      const data = await res.json();
   
       // Mettre à jour le contexte utilisateur
-      updateUser(newUser, true); // true pour se souvenir dans localStorage
+      updateUser(data.user,  true);   // ← stocke + déclenche le re-render
+      setToken (data.token, true);    // ← idem pour le JWT
   
       // Rediriger vers /home
       navigate('/home');
@@ -93,12 +96,14 @@ export default function SignUpPage() {
   };
   
 
-  return (<div className="home-wrapper">
+  return (
+    <div className='login'>
+  <div className="home-wrapper">
 
     <div className="page">
      <header className="navbar">
                    <div className="logo">
-                     <img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" />
+                     <Link to={"/"}><img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" /></Link>
                    </div>
            
                    <nav className="main-nav">
@@ -124,6 +129,7 @@ export default function SignUpPage() {
         </section>
 
         <section className="signin">
+        <div className="signin-card">
           <form onSubmit={handleSubmit}>
             {error && <div className="form-error">{error}</div>}
 
@@ -314,10 +320,7 @@ export default function SignUpPage() {
                 onChange={e => setAgree(e.target.checked)}
                 required
               />
-              I agree with{' '}
-              <a href="/terms" target="_blank" rel="noreferrer">Terms</a>{' '}
-              and{' '}
-              <a href="/privacy" target="_blank" rel="noreferrer">Privacy policy</a>.
+              I agree with Terms and Privacy policy.
             </label>
 
             <button type="submit" className="btn primary">
@@ -329,39 +332,12 @@ export default function SignUpPage() {
               <a href="/login">Sign in</a>
             </p>
           </form>
+          </div>
         </section>
       </main>
 
-      <footer className="footer">
-        <p>
-          Bodymine is the leading directory to help you find the perfect surgeon
-          or clinic, anywhere in the world.
-        </p>
-        <div className="footer-cols">
-          <div>
-            <h4>Home</h4>
-            <ul>
-              <li>Menu</li>
-              <li>Chat</li>
-              <li>Search</li>
-            </ul>
-          </div>
-          <div>
-            <h4>Info</h4>
-            <ul>
-              <li>Terms & Conditions</li>
-              <li>Privacy Policy</li>
-              <li>FAQ's</li>
-            </ul>
-          </div>
-          <div>
-            <h4>Contact Us</h4>
-            <ul>
-              <li>info@bodymine.com</li>
-            </ul>
-          </div>
-        </div>
-      </footer>
+      <Footer />
+    </div>
     </div>
     </div>
   );

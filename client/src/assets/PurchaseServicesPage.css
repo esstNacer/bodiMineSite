@@ -96,7 +96,7 @@
 }
 .pure .side-links li.active,
 .pure .side-links li:hover {
-  background: var(--pro-bg);
+  background: #379dd1;
   color: var(--pro-blue-dark); font-weight: 600;
 }
 .pure .btn.logout {

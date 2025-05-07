@@ -1,6 +1,10 @@
 // src/models/patients.js
 import pool from '../db.js';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'votre_secret_ici';
+const JWT_EXPIRES_IN = '2h';
 
 export const Patients = {
   findAll: async () => {
@@ -24,11 +28,11 @@ export const Patients = {
       blood_group, height_cm, weight_kg,
       gender, favorite_specialization
     } = data;
-
+  
     // 1) Hacher le mot de passe
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // 2) Insérer en base avec le mot de passe haché
+  
+    // 2) Insérer l'utilisateur
     const [result] = await pool.query(
       `INSERT INTO patients
         (first_name, last_name, photo_url, birth_date,
@@ -45,7 +49,7 @@ export const Patients = {
         city,
         country,
         email,
-        hashedPassword,          // ← on utilise le hash ici
+        hashedPassword,
         phone_number,
         allergies_to_medicine,
         blood_group,
@@ -55,9 +59,25 @@ export const Patients = {
         favorite_specialization
       ]
     );
-
-    return { insertId: result.insertId };
+  
+    // 3) Récupérer l'utilisateur créé
+    const [rows] = await pool.query(
+      'SELECT * FROM patients WHERE patient_id = ?',
+      [result.insertId]
+    );
+    const user = rows[0];
+  
+    // 4) Générer un token JWT
+    const token = jwt.sign(
+      { sub: user.patient_id, role: 'patient' },
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
+    );
+  
+    // 5) Retourner l'utilisateur + token (pas envoyer res.json ici)
+    return { token, user };
   },
+  
 
   update: async (id, data) => {
     const fields = [];

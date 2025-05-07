@@ -17,8 +17,7 @@ export default function ProfInfo() {
   const [values, setValues] = useState({
     full_name: '',
     email: '',
-    phone_country: '+213',
-    phone_rest: '',
+   phone_number: '',
     clinic_address: '',
     country: '',
     specialization: ''
@@ -29,12 +28,10 @@ export default function ProfInfo() {
   /* ---------- sync contexte → formulaire ---------- */
   useEffect(() => {
     if (!professional) return;
-    const phoneMatch = professional.phone_number?.match(/^(\+\d{1,3})\s*(.*)$/);
     setValues({
       full_name:      professional.full_name         ?? '',
       email:          professional.email             ?? '',
-      phone_country:  phoneMatch?.[1]               ?? '+213',
-      phone_rest:     phoneMatch?.[2]               ?? '',
+     phone_number: professional.phone_number         ?? '',
       clinic_address: professional.clinic_address   ?? '',
       country:        professional.country           ?? '',
       specialization: professional.specialization    ?? ''
@@ -56,7 +53,7 @@ export default function ProfInfo() {
     const payload = {
       full_name:      values.full_name,
       email:          values.email,
-      phone_number:   `${values.phone_country} ${values.phone_rest}`,
+      phone_number:   `${values.phone_number}`,
       clinic_address: values.clinic_address,
       country:        values.country,
       specialization: values.specialization
@@ -152,21 +149,10 @@ export default function ProfInfo() {
             Numero
           </Typography>
           <Grid container spacing={2}>
-            <Grid xs={4}>
-              <TextField
-                fullWidth size="small" select
-                value={values.phone_country}
-                onChange={handleChange('phone_country')}
-              >
-                {['+33', '+213', '+1'].map(code => (
-                  <MenuItem key={code} value={code}>{code}</MenuItem>
-                ))}
-              </TextField>
-            </Grid>
             <Grid xs={8}>
               <TextField
                 fullWidth size="small"
-                value={values.phone_rest}
+                value={values.phone_number}
                 onChange={handleChange('phone_rest')}
               />
             </Grid>

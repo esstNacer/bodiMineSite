@@ -27,6 +27,8 @@ import {
 } from 'react-icons/fi'
 import { BsDot } from 'react-icons/bs'
 import { UserContext, useUser } from '../components/UserContext'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 interface Project {
   project_id: number
@@ -92,6 +94,13 @@ export default function MyBodyProjectPage() {
     comments: '',
     chosenDoctor: ''
   })
+    const [slide, setSlide] = useState(0);
+  
+   const carousel = [
+        { src: clinic1, alt: "New Clinic Dental Care" },
+        { src: clinic2, alt: "Cosmetic Surgery" },
+        { src: clinic3, alt: "New Cosmetic Surgery Website" },
+      ];
 
   useEffect(() => {
     if (!user?.patient_id) return
@@ -265,43 +274,17 @@ export default function MyBodyProjectPage() {
       )}
 
       {/* NAVBAR */}
-      <header className="navbar">
-        <div className="logo">
-          <img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" />
-        </div>
-        <nav className="main-nav">
-          <a href="/home"><FiHome /> Home</a>
-          <a href="/chat"><FiSearch /> Chat</a>
-          <a href="/search"><FiSearch /> Search</a>
-        </nav>
-        <div className="profile-mini">
-          <span className="lang">EN ▾</span>
-          <img
-            className="profile-avatar"
-            src="https://i.pravatar.cc/40?img=12"
-            alt="Profile"
-          />
-          <span className="profile-name">
-            {user?.first_name} {user?.last_name}
-            <span className="status-dot">●</span>
-          </span>
-        </div>
-      </header>
+      <Header className="navbar"/>
+
 
       {/* CAROUSEL */}
-      <div className="banner-carousel">
-        <img src={banners[currentSlide]} alt="" />
-        <div className="dots">
-          {banners.map((_, i) => (
-            <BsDot
-              key={i}
-              size={18}
-              className={currentSlide === i ? 'active' : ''}
-              onClick={() => setCurrentSlide(i)}
-            />
+      <section className="home carousel">
+        <div className="home carousel-inner">
+          {carousel.map((item, i) => (
+            <img key={i} src={item.src} alt={item.alt} className={i === slide ? "active" : ""} />
           ))}
         </div>
-      </div>
+      </section>
 
       {/* CONTENU PRINCIPAL */}
       <main className="content-grid">
@@ -535,33 +518,7 @@ export default function MyBodyProjectPage() {
       </main>
 
       {/* FOOTER */}
-      <footer className="footer">
-        <div className="footer-wrap">
-          <div className="footer-brand">
-            <img src={bodyMineLogo} alt="BodyMine" />
-            <p>
-              Bodymine is the leading directory to help you find the perfect
-              surgeon or clinic, anywhere in the world.
-            </p>
-          </div>
-          <div className="footer-col">
-            <h4>Home</h4>
-            <ul><li>Menu</li><li>Chat</li><li>Search</li></ul>
-          </div>
-          <div className="footer-col">
-            <h4>Info</h4>
-            <ul>
-              <li>Terms &amp; Conditions</li>
-              <li>Privacy Policy</li>
-              <li>FAQs</li>
-            </ul>
-          </div>
-          <div className="footer-col">
-            <h4>Contact Us</h4>
-            <p>info@bodymine.com</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
     </div>
   )

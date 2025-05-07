@@ -154,28 +154,21 @@ export default function PurchaseServicesPage() {
 
   // UI principale
   return (
+    <div className='pro'>
     <div className="pure">
       <TopbarPro />
 
       {/* Carousel */}
-      <section className="carousel">
-        <button className="nav prev" onClick={prev}>‹</button>
-        <div className="carousel-strip" style={{ transform: `translateX(-${slide * 100}%)` }}>
-          {carousel.map((src, i) => <img key={i} src={src} alt={`slide ${i+1}`} />)}
-        </div>
-        <button className="nav next" onClick={next}>›</button>
-        <div className="carousel-dots">
-          {carousel.map((_, i) => (
-            <span key={i}
-                  className={i === slide ? 'dot active' : 'dot'}
-                  onClick={() => setSlide(i)}
-            />
-          ))}
-        </div>
-      </section>
+      <br />
+              {/* ░░ Carousel ░░ */}
+              <section className="partner-strip">
+                        <img src={strip1} alt="Partner 1" />
+                        <img src={strip2} alt="Partner 2" />
+                        <img src={strip3} alt="Partner 3" />
+                      </section>
 
       <main className="grid">
-        <SidebarPro active="Purchase Services" />
+        <SidebarPro active="Purchase" />
         <div className="content">
 
           {/* 1) Liste des services */}
@@ -258,6 +251,7 @@ export default function PurchaseServicesPage() {
       </main>
 
       <FooterPro />
+    </div>
     </div>
   )
 }

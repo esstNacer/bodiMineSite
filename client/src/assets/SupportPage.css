@@ -137,16 +137,17 @@
   .support-layout {
     flex: 1;
   }
-  .support-header {
+  .support-header2 {
     background: #ecfafa;
     border-radius: 12px;
     padding: 2rem;
     text-align: left;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
+    z-index: 1;
   }
-  .support-header h2 {
+  .support-header2 h2 {
     font-size: 1.8rem;
     font-weight: 700;
   }
@@ -158,6 +159,8 @@
   .support-img {
     height: 170px;
     margin-right: 2rem;
+    z-index: 2;
+
   }
   
   /* FORM SECTION */
@@ -310,7 +313,22 @@
   display:flex;justify-content:space-between;align-items:center;
   background:#fff;border-radius:16px;padding:24px 32px;box-shadow:0 4px 14px rgb(0 0 0 / .05);
 }
-.support-hero{width:180px;max-width:40%;}
+.support-hero2{width:450px;max-width:100%;z-index: 2;}
+.support-doctor-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.support-doctor-wrapper::before {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle at center, #92ded9 0%, #eefaff 100%);
+  border-radius: 50% 50% 40% 60% / 60% 40% 60% 50%;
+  z-index: 1;
+}
 
 .support-grid{
   display:grid;grid-template-columns:1fr 260px;gap:28px;

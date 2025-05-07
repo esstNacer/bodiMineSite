@@ -21,13 +21,13 @@ export default function CompleteInfo() {
     { day: 'Sunday', active: false, from: '', to: '' },
   ]);
 
-  const handleDayToggle = (index, active) => {
+  const handleDayToggle = (index: number, active: boolean) => {
     const updatedHours = [...workingHours];
     updatedHours[index].active = active;
     setWorkingHours(updatedHours);
   };
 
-  const handleTimeChange = (index, field, value) => {
+  const handleTimeChange = (index: number, field: string, value: string) => {
     const updatedHours = [...workingHours];
     updatedHours[index][field] = value;
     setWorkingHours(updatedHours);

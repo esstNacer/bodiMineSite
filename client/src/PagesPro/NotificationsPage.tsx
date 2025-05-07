@@ -85,15 +85,18 @@ export default function NotificationsPage() {
   )
 
   return (
+    <div className="pro">
     <div className="pure">
       <TopbarPro />
 
       {/* Hero carousel */}
-      <Carousel
-        items={heroItems}
-        height="160px"
-        style={{ margin: "0 auto 24px" }}
-      />
+      <br />
+              {/* ░░ Carousel ░░ */}
+              <section className="partner-strip">
+                        <img src={strip1} alt="Partner 1" />
+                        <img src={strip2} alt="Partner 2" />
+                        <img src={strip3} alt="Partner 3" />
+                      </section>
 
       <main className="grid">
         <SidebarPro active="Notifications" />
@@ -171,6 +174,7 @@ export default function NotificationsPage() {
       </main>
 
       <FooterPro />
+    </div>
     </div>
   )
 }

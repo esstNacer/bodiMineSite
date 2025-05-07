@@ -112,15 +112,17 @@ export default function ProfessionalLoginPage() {
             </h2>
   
             <p>
-              Join our exclusive directory to connect with a highly targeted audience actively
-              searching for trusted aesthetic experts. Showcase your skills, share verified patient
-              reviews and engage directly with potential clients in a community focused on quality care.
+            Bodymine is the premier platform designed to elevate the visibility of aesthetic surgery professionals.
             </p>
   
             <p>
-              Bodymine helps you build credibility, grow your patient base and stand out in a
-              competitive market.
+            By joining our exclusive directory, you connect with a highly targeted audience actively searching for trusted aesthetic experts. 
+            Showcase your skills, share verified patient reviews, and engage directly with potential clients in a community focused on quality care. 
             </p>
+
+            <p>Bodymine helps you build credibility, grow your patient base, and stand out in a competitive market. 
+            Whether you're a clinic or solo practitioner, our platform empowers your online presence and reputation. 
+            Join Bodymine today and turn your expertise into a powerful patient attraction tool.</p>
           </article>
   
           {/* — Carte login — */}
@@ -165,7 +167,7 @@ export default function ProfessionalLoginPage() {
   
             <div className="divider">OR</div>
   
-            <Link to="/" className="btn primary full">
+            <Link to="/" className="btn primary2 full">
               Patient Access
             </Link>
           </aside>
@@ -180,13 +182,14 @@ export default function ProfessionalLoginPage() {
   
         {/* ░░ FOOTER ░░ */}
         <footer className="footer">
+          <div>
           <img src={logo} alt="BodyMine" className="footer-logo" />
   
           <p className="baseline">
             Bodymine is the leading directory to help you find the perfect surgeon or clinic,
             anywhere in the world.
           </p>
-  
+  </div>
           <div className="footer-cols">
             <div>
               <h4>Home</h4>

@@ -20,12 +20,13 @@ export async function getById(req, res, next) {
   }
 }
 
-export async function create(req, res, next) {
+export async function create(req, res) {
   try {
-    const result = await Patients.create(req.body);
-    res.status(201).json(result);
-  } catch (err) {
-    next(err);
+    const { token, user } = await Patients.create(req.body);
+    res.status(201).json({ token, user });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur lors de l\'inscription' });
   }
 }
 

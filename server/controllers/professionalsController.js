@@ -15,6 +15,14 @@ export async function getAll(req, res, next) {
     next(err);
   }
 }
+export async function getDoctor(req, res, next) {
+  try {
+    const rows = await Professionals.findDoctor();
+    res.json(rows);
+  } catch (err) {
+    next(err);
+  }
+}
 
 export async function getById(req, res, next) {
   try {
@@ -51,6 +59,19 @@ export const filterProfessionals = async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };
+  export const filterClinics = async (req, res) => {
+    try {  
+      const [rows] = await pool.query(
+        `SELECT * FROM professionals WHERE
+          (type = "clinic")`
+      );
+  
+      res.json(rows);
+    } catch (err) {
+      console.error('❌ Error in filterProfessionals:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
 
 export async function loginProfessional(req, res, next) {
   try {
@@ -59,10 +80,11 @@ export async function loginProfessional(req, res, next) {
     /* 1) Chercher le pro + hash en une seule requête */
     const [rows] = await pool.query(
       `SELECT professional_id          AS professional_id,
-              full_name, clinic_address, city, country,
+              full_name, clinic_name, city, country,
               email, phone_number, specialization,
               practice_tenure, practice_start_date,
               is_premium,
+              type,
               password                   AS hashedPassword
        FROM professionals
        WHERE email = ?`,

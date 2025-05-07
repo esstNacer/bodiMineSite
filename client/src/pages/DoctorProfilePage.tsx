@@ -15,6 +15,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import bodyMineLogo from '../images/logobodymine.png'
 import '../assets/DoctorProfilePage.css'
 import { UserContext } from '../components/UserContext'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 interface Professional {
   professional_id: number
@@ -164,32 +166,8 @@ export default function DoctorProfilePage() {
   return (
     <div className="doctor-profile-page">
       {/* NAVBAR */}
-     <header className="navbar">
-             <div className="navbar-left">
-               <div className="logo">
-                 <img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" />
-               </div>
-               <nav className="nav-links">
-                 <Link to="/home"><FiHome /> Home</Link>
-                 <button className="nav-btn" onClick={() => handleProtectedNavigation("/chat")}><FiMessageCircle /> Chat</button>
-                 <button className="nav-btn" onClick={() => handleProtectedNavigation("/search")}><FiSearch /> Search</button>
-                 <Link to="/login" className="nav-btn login-mobile">Login</Link>
+           <Header className="navbar"/>
      
-               </nav>
-             </div>
-       
-             <div className="navbar-right">
-               <span className="lang">EN ▾</span>
-               {user ? (
-                 <Link to="/editProfile" className="profile">
-                   <img className="avatar" src="https://i.pravatar.cc/40?img=12" alt="User Avatar" />
-                   <span className="name">{user.first_name} {user.last_name} <span className="status">●</span></span>
-                 </Link>
-               ) : (
-                 <Link to="/login" className="nav-btn login-desktop">Login</Link>
-               )}
-             </div>
-           </header>
 
       {/* MAIN CONTENT */}
       <main className="profile-main">
@@ -371,39 +349,7 @@ export default function DoctorProfilePage() {
       </main>
 
       {/* FOOTER */}
-      <footer className="footer">
-             <div className="footer-content">
-               <div className="footer-block">
-                 <img src={bodyMineLogo} alt="BodyMine" className="footer-logo" />
-                 <p>
-                   Bodymine is the leading directory to help you find the perfect surgeon or clinic, anywhere in the world.
-                 </p>
-                 <div className="social-icons">
-                   <span>🔵</span><span>🐦</span><span>▶️</span>
-                 </div>
-               </div>
-               <div className="footer-block">
-                 <h4>Home</h4>
-                 <ul>
-                   <li>Menu</li>
-                   <li>Chat</li>
-                   <li>Search</li>
-                 </ul>
-               </div>
-               <div className="footer-block">
-                 <h4>Info</h4>
-                 <ul>
-                   <li>Terms & Conditions</li>
-                   <li>Privacy Policy</li>
-                   <li>FAQs</li>
-                 </ul>
-               </div>
-               <div className="footer-block">
-                 <h4>Contact Us</h4>
-                 <p>info@bodymine.com</p>
-               </div>
-             </div>
-           </footer>
+      <Footer />
     </div>
   )
 }

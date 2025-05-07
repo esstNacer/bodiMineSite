@@ -14,6 +14,7 @@ import {
   export interface Professional {
     professional_id?: number;
     full_name?: string;
+    type?: string;
     clinic_address?: string;
     city?: string;
     country?: string;

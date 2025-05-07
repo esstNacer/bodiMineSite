@@ -110,26 +110,13 @@ export default function ProfessionalDashboard() {
       <div className="pro-dash">
         {/* ░░ Top-bar ░░ */}
         <TopbarPro/>
-
+<br />
         {/* ░░ Carousel ░░ */}
-        <section className="carousel">
-          <button className="nav prev" onClick={prev}>
-            ‹
-          </button>
-          <div className="carousel-strip">
-            {carousel.map((c, i) => (
-              <img
-                key={i}
-                src={c.src}
-                alt={c.alt}
-                style={{ opacity: i === slide ? 1 : 0.4 }}
-              />
-            ))}
-          </div>
-          <button className="nav next" onClick={next}>
-            ›
-          </button>
-        </section>
+        <section className="partner-strip">
+                  <img src={strip1} alt="Partner 1" />
+                  <img src={strip2} alt="Partner 2" />
+                  <img src={strip3} alt="Partner 3" />
+                </section>
 
         {/* ░░ Layout ░░ */}
         <main className="grid">

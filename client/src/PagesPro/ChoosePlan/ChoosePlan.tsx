@@ -12,6 +12,9 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Radio } from '@mui/material';
+import strip1 from "../../images/strip1.png"
+import strip2 from "../../images/strip2.png"
+import strip3 from "../../images/strip3.png"
 
 export default function ChoosePlan() {
   const [step, setStep] = useState(1);
@@ -50,24 +53,29 @@ export default function ChoosePlan() {
   ];
 
   return (
+    <div className='pro'>
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       {/* Header */}
       <div className='pure'>
       <TopBarPro />
 </div>
+<br />
+       {/* ░░ Carousel ░░ */}
+      <section className="partner-strip">
+      <img src={strip1} alt="Partner 1" />
+       <img src={strip2} alt="Partner 2" />
+       <img src={strip3} alt="Partner 3" />
+       </section>
       {/* Main Content */}
       <Container maxWidth="lg" sx={{ mt: 2 }}>
         <Grid container spacing={2}>
           {/* Header Images (full width) */}
-          <Grid item xs={12}>
-            <ImageHeaderPro />
-          </Grid>
 
           {/* Main Content */}
           <Grid container spacing={2} sx={{ mt: 2 }}>
             {/* Sidebar */}
             <Grid item xs={12} md={3}>
-              <SidebarPro />
+              <SidebarPro active='Plan'/>
             </Grid>
 
             {/* Steps Content */}
@@ -403,5 +411,6 @@ export default function ChoosePlan() {
       {/* Footer */}
       <FooterPro />
     </Box>
+    </div>
   );
 }

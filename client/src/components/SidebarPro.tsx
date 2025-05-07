@@ -110,7 +110,7 @@ export default function SidebarPro({
     { id: "Dashboard", label: "Dashboard",          icon: <Menu size={16}/>,       to: "/pro/dashboard"         },
     { id: "Edit",      label: "Edit Profile",       icon: <User size={16}/>,       to: "/pro/edit"              },
     { id: "Plan",      label: "Your Plan",          icon: <Star size={16}/>,       to: "/pro/plan"              },
-    { id: "DoctorEst", label: "Doctor list",        icon: <Notebook size={16}/>,   to: "/pro/doctor-est"        },
+    {id: "DoctorEst", label: "Doctor list",        icon: <Notebook size={16}/>,   to: "/pro/doctor-est"        },
     { id: "Purchase",  label: "Purchase Services",  icon: <FaMoneyBill size={16}/>,to: "/pro/purchase-services" },
     { id: "Password",  label: "Change Password",    icon: <Lock size={16}/>,       to: "/pro/password"          },
     { id: "Terms",     label: "Terms & Conditions", icon: <Paperclip size={16}/>,  to: "/pro/CGU"               },

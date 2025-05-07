@@ -17,6 +17,10 @@ import License from './License';
 import Media from './Media';
 import FooterPro from '../../components/FooterPro';
 import ImageHeaderPro from '../../components/ImageHeaderPro';
+import strip1 from "../../images/strip1.png"
+import strip2 from "../../images/strip2.png"
+import strip3 from "../../images/strip3.png"
+
 
 function BodyMineProfilePage() {
   const [tabValue, setTabValue] = useState(0);
@@ -26,7 +30,7 @@ function BodyMineProfilePage() {
   };
 
   return (
-    <> <div className='pure'>
+    <> <div className='pro'>
       <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         {/* Header */}
         <div className="pro">
@@ -34,18 +38,22 @@ function BodyMineProfilePage() {
         <TopbarPro />
 </div>
 </div>
+<br />
+                          {/* ░░ Carousel ░░ */}
+                          <section className="partner-strip">
+                                    <img src={strip1} alt="Partner 1" />
+                                    <img src={strip2} alt="Partner 2" />
+                                    <img src={strip3} alt="Partner 3" />
+                                  </section>
         {/* Main Content */}
         <Container maxWidth="lg" sx={{ mt: 2 }}>
           <Grid container spacing={2}>
-            {/* Header Images (full width) */}
-           <ImageHeaderPro />
-
             {/* Profile Content */}
             <Container maxWidth="lg" sx={{ mt: 4 }}>
               <Grid container spacing={2}>
                 {/* Sidebar */}
                 
-                <SidebarPro />
+                <SidebarPro active='Edit'/>
 
                 {/* Main Content */}
                 <Grid item xs={12} md={9}>

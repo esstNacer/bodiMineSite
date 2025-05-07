@@ -25,6 +25,8 @@ import clinic2 from '../images/clinic2.png';
 import clinic3 from '../images/clinic3.png';
 import helpImage   from '../images/help.png';
 import { useUser } from '../components/UserContext';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function SupportPage() {
   const { user } = useUser();
@@ -38,37 +40,17 @@ export default function SupportPage() {
 
     <div className="mybody-page">
       {/* ▬▬▬ NAVBAR ▬▬▬ */}
-      <header className="navbar">
-        <div className="logo">
-          <img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" />
-        </div>
-
-        <nav className="main-nav">
-          <a href="/home">
-            <FiHome /> Home
-          </a>
-          <a href="/chat">
-            <FiSearch /> Chat
-          </a>
-          <a href="/search">
-            <FiSearch /> Search
-          </a>
-        </nav>
-
-        <div className="profile-mini">
-          <span className="lang">EN ▾</span>
-          <Link to="/editProfile" style={{ display: 'flex', gap: 8 }}>
-            <img
-              className="profile-avatar"
-              src="https://i.pravatar.cc/40?img=12"
-              alt="avatar"
-            />
-            <span className="profile-name">
-              {user?.first_name} {user?.last_name} <span className="status-dot">●</span>
-            </span>
-          </Link>
-        </div>
-      </header>
+            <Header className="navbar"/>
+      
+      <div className="support-header2">
+            <div>
+              <h2>How can we help you ?</h2>
+              <p>We're here to support you anytime. Choose the best way to reach us.</p>
+            </div>
+            <div className='support-doctor-wrapper'>
+            <img src={helpImage} className="support-hero2" alt="help" />
+            </div>
+          </div>
 
       {/* ▬▬▬ BANNIÈRE ▬▬▬ */}
 
@@ -111,14 +93,6 @@ export default function SupportPage() {
 
         {/* -------- ZONE SUPPORT -------- */}
         <section className="support-zone">
-          {/* entête */}
-          <div className="support-header">
-            <div>
-              <h2>How can we help you ?</h2>
-              <p>We're here to support you anytime. Choose the best way to reach us.</p>
-            </div>
-            <img src={helpImage} className="support-hero" alt="help" />
-          </div>
 
           {/* grille 2 colonnes */}
           <div className="support-grid">
@@ -167,29 +141,7 @@ export default function SupportPage() {
       </main>
 
       {/* ▬▬▬ FOOTER ▬▬▬ */}
-      <footer className="footer">
-        <div className="footer-wrap">
-          <div className="footer-brand">
-            <img src={bodyMineLogo} alt="BodyMine" />
-            <p>Bodymine is the leading directory to help you find the perfect surgeon or clinic, anywhere in the world.</p>
-          </div>
-
-          <div className="footer-col">
-            <h4>Home</h4>
-            <ul><li>Menu</li><li>Chat</li><li>Search</li></ul>
-          </div>
-
-          <div className="footer-col">
-            <h4>Info</h4>
-            <ul><li>Terms &amp; Conditions</li><li>Privacy Policy</li><li>FAQs</li></ul>
-          </div>
-
-          <div className="footer-col">
-            <h4>Contact Us</h4>
-            <p>info@bodymine.com</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
     </div>
   );

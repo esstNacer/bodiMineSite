@@ -10,6 +10,8 @@ import clinic2 from '../images/clinic2.png'
 import clinic3 from '../images/clinic3.png'
 import { useUser } from '../components/UserContext'
 import { Link } from 'react-router-dom'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 interface Photo {
   photo_id: number
@@ -25,15 +27,39 @@ export default function ChatPage() {
   const [selectedDoctorId, setSelectedDoctorId] = useState<number | null>(null)
   const [doctors, setDoctors] = useState<any[]>([])
   const [messages, setMessages] = useState<any[]>([])
+    const [slide, setSlide] = useState(0);
+  
+  const carousel = [
+        { src: clinic1, alt: "New Clinic Dental Care" },
+        { src: clinic2, alt: "Cosmetic Surgery" },
+        { src: clinic3, alt: "New Cosmetic Surgery Website" },
+      ];
+
+  function uniqueByDoctor(list: any[]) {
+    const seen = new Set<number>();
+    return list.filter(item => {
+      if (seen.has(item.professional_id)) return false;
+      seen.add(item.professional_id);
+      return true;
+    });
+  }
 
   // 1) Charger la liste des médecins avec lesquels on a déjà conversé
-  useEffect(() => {
-    if (!user?.patient_id) return
+ useEffect(() => {
+    if (!user?.patient_id) return;
+
     axios
       .get(`/api/chats/conversations/${user.patient_id}`)
-      .then(res => setDoctors(res.data))
-      .catch(err => console.error('Error fetching doctor conversations:', err))
-  }, [user?.patient_id])
+      .then(res => {
+        const uniq = uniqueByDoctor(res.data);   // <— déduplication
+        setDoctors(uniq);
+      })
+      .catch(err =>
+        console.error('Error fetching doctor conversations:', err)
+      );
+  }, [user?.patient_id]);
+
+
 
   // 2) Pour chaque médecin sans photo, charger sa photo "profile"
   useEffect(() => {
@@ -101,44 +127,16 @@ export default function ChatPage() {
   return (
     <div className='chat'>
     <div className="page">
-      <header className="navbar">
-        <div className="logo">
-          <img src={bodyMineLogo} alt="BodyMine Cosmetic Surgery" />
+            <Header className="navbar"/>
+      
+
+      <section className="home carousel">
+        <div className="home carousel-inner">
+          {carousel.map((item, i) => (
+            <img key={i} src={item.src} alt={item.alt} className={i === slide ? "active" : ""} />
+          ))}
         </div>
-
-        <nav className="main-nav">
-          <a href="/home">
-            <FiHome /> Home
-          </a>
-          <a href="/chat">
-            <FiSearch /> Chat
-          </a>
-          <a href="/search">
-            <FiSearch /> Search
-          </a>
-        </nav>
-
-        <div className="profile-mini">
-          <span className="lang">EN ▾</span>
-          <Link to="/editProfile">
-            <img
-              className="profile-avatar"
-              src={user?.photo_url || 'https://i.pravatar.cc/40'}
-              alt={`${user?.first_name} ${user?.last_name}`}
-            />
-            <span className="profile-name">
-              {user?.first_name} {user?.last_name}{' '}
-              <span className="status-dot">●</span>
-            </span>
-          </Link>
-        </div>
-      </header>
-
-      <div className="carousel">
-        <img src={clinic1} alt="Clinic 1" />
-        <img src={clinic2} alt="Clinic 2" />
-        <img src={clinic3} alt="Clinic 3" />
-      </div>
+      </section>
 
       <main className="chat-layout">
         <aside className="chat-sidebar">
@@ -238,42 +236,7 @@ export default function ChatPage() {
         </section>
       </main>
 
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-block">
-            <img
-              src={bodyMineLogo}
-              alt="BodyMine"
-              className="footer-logo"
-            />
-            <p>
-              Bodymine is the leading directory to help you find the
-              perfect surgeon or clinic, anywhere in the world.
-            </p>
-            <div className="social-icons">🔵 🔮 ▶️</div>
-          </div>
-          <div className="footer-block">
-            <h4>Home</h4>
-            <ul>
-              <li>Menu</li>
-              <li>Chat</li>
-              <li>Search</li>
-            </ul>
-          </div>
-          <div className="footer-block">
-            <h4>Info</h4>
-            <ul>
-              <li>Terms & Conditions</li>
-              <li>Privacy Policy</li>
-              <li>FAQs</li>
-            </ul>
-          </div>
-          <div className="footer-block">
-            <h4>Contact Us</h4>
-            <p>info@bodymine.com</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
     </div>
   )

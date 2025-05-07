@@ -28,7 +28,7 @@
   }
   
   .logo img {
-    height: 40px;
+    height: 55px;
   }
   
   .menu a {
@@ -92,6 +92,20 @@
     gap: 32px;
     flex: 1;
     background: #ecfafa;
+  }
+  .support-header2 {
+    background: #ecfafa;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: left;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    z-index: 1;
+  }
+  .support-header2 h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
   }
   
   /* Sidebar */
@@ -255,7 +269,7 @@
 
   
   /* Responsive */
-  @media (max-width: 768px) {
+  @media (max-width: 600px) {
     .main {
       flex-direction: column;
       padding: 24px;

@@ -7,13 +7,17 @@ import {
   update,
   remove,
   filterProfessionals,
-  loginProfessional          // <── nouveau contrôleur
+  loginProfessional,
+  filterClinics,
+  getDoctor        // <── nouveau contrôleur
 } from '../controllers/professionalsController.js';
 
 const router = Router();
 
 /* ───── filtres & CRUD ───── */
 router.get ('/filter', filterProfessionals);
+router.get ('/clinics', filterClinics);
+router.get ('/doctors', getDoctor);
 router.get ('/',        getAll);
 router.get ('/:id',     getById);
 router.post('/',        create);

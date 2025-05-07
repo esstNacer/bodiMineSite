@@ -6,11 +6,14 @@ import heroDoctor from '../images/doctor-hero.png';
 import strip1 from '../images/strip1.png';
 import strip2 from '../images/strip2.png';
 import strip3 from '../images/strip3.png';
+import success from "../images/success.png"
 import { usePro } from '../components/ProContext';
 import '../assets/ProfessionalSignup.css';
+import '../assets/ProfessionalLoginPage.css'
 
 interface ProForm {
   full_name: string;
+  type: string;
   email: string;
   clinic_address: string;
   city: string;
@@ -25,6 +28,7 @@ interface ProForm {
 
 const init: ProForm = {
   full_name: '',
+  type: '',
   email: '',
   clinic_address: '',
   city: '',
@@ -114,8 +118,7 @@ export default function ProfessionalSignup() {
   }
   
 
-  return (
-    <div className="pro">
+  return (  <div className='paro'>
       <div className="pro-signup">
         <header className="pro-nav">
           <Link to="/">
@@ -128,69 +131,167 @@ export default function ProfessionalSignup() {
             </Link>
           </div>
         </header>
-
+    
         <section className="hero">
-          <div className="hero-copy">
-            <h1>Grow your patient base<br />with <span>Bodymine</span></h1>
-            <p className="lead">Bodymine is the leading platform for aesthetic surgery professionals...</p>
-            <div className="cta-row">
-              <Link to="/loginPro" className="btn primary">Log in</Link>
-              <Link to="/professional/sign-up" className="btn outline">New profil</Link>
-            </div>
-          </div>
-          <div className="hero-aside">
-            <div className="hero-visual">
-              <img src={heroDoctor} alt="Aesthetic surgeon" />
-            </div>
-            <h4 className="how-title">How BodyMine Works</h4>
-            <ul className="how-works">
-              <li>Add your profile, showcase your expertise</li>
-              <li>Interact directly with potential patients</li>
-              <li>Grow your patient base</li>
-            </ul>
-          </div>
-        </section>
-
+                  {/* — Colonne gauche : texte + boutons — */}
+                  <div className="hero-copy">
+                    <h1>
+                      Grow your patient base <br />
+                      with <span>Bodymine</span>
+                    </h1>
+          
+                    <p className="lead">
+                      Bodymine is the leading platform for aesthetic surgery professionals looking to
+                      enhance their visibility and attract new patients. By joining our directory, you
+                      provide your practice or clinic with an optimised presence to a targeted audience
+                      seeking quality care.
+                    </p>
+          
+                    <div className="cta-row">
+                      <Link to="/loginPro" className="btn primary">Log in</Link>
+                      <Link to="/professional/sign-up" className="btn outline-profile">New profil</Link>
+                    </div>
+                  </div>
+          
+                  {/* — Colonne droite : visuel + explication — */}
+                  <div className="hero-aside">
+                    <div className="hero-visual">
+                      <img src={heroDoctor} alt="Aesthetic surgeon" />
+                    </div>
+          
+                    <div className="how-block">
+                      <h4 className="how-title">How BodyMine Works</h4>
+          
+                      <ul className="how-works">
+                        <li>Add your profile, showcase your expertise</li>
+                        <li>Interact directly with potential patients</li>
+                        <li>Growth your patient base</li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
         {/* --- Wizard Card --- */}
         <section className="double">
-          <section className="wizard-card">
+        <article className="pitch">
+            <h2>
+              <span>Boost</span> Your Aesthetic <br />
+              Surgery Practice with <br />
+              <span>Bodymine</span>
+            </h2>
+  
+            <p>
+            Bodymine is the premier platform designed to elevate the visibility of aesthetic surgery professionals.
+            </p>
+  
+            <p>
+            By joining our exclusive directory, you connect with a highly targeted audience actively searching for trusted aesthetic experts. 
+            Showcase your skills, share verified patient reviews, and engage directly with potential clients in a community focused on quality care. 
+            </p>
+
+            <p>Bodymine helps you build credibility, grow your patient base, and stand out in a competitive market. 
+            Whether you're a clinic or solo practitioner, our platform empowers your online presence and reputation. 
+            Join Bodymine today and turn your expertise into a powerful patient attraction tool.</p>
+          </article>
+          
             {step === 1 && (
+              <section className="login-card">
               <form onSubmit={e => { e.preventDefault(); next(); }}>
                 <h3>Create your Account</h3>
-                <input name="full_name" placeholder="Full Name" value={data.full_name} onChange={handle} required />
-                <input name="email" placeholder="Email Address" type="email" value={data.email} onChange={handle} required />
-                <input name="clinic_address" placeholder="Clinic Address" value={data.clinic_address} onChange={handle} required />
-                <input name="city" placeholder="City" value={data.city} onChange={handle} />
-                <input name="country" placeholder="Country" value={data.country} onChange={handle} />
-                <input name="phone_number" placeholder="Phone Number" value={data.phone_number} onChange={handle} />
-                <select name="specialization" value={data.specialization} onChange={handle}>
-                  <option value="">Select Specialization</option>
-                  <option>Dermatology</option>
-                  <option>Plastic surgery</option>
+                <label > Full Name</label>
+                <input name="full_name" placeholder="John John" value={data.full_name} onChange={handle} required />
+                <label > Type</label>
+                <select name="type" value={data.type} onChange={handle} required>
+                  <option value="">Select Type</option>
+                  <option >Clinic</option>
+                  <option >Professional</option>
                 </select>
-                <input name="practice_tenure" placeholder="Practice Tenure" value={data.practice_tenure} onChange={handle} />
-                <input name="practice_start_date" type="date" value={data.practice_start_date} onChange={handle} />
+                <label> Email</label>
+                <input name="email" placeholder="john@example.com" type="email" value={data.email} onChange={handle} required />
+                <label > Clinic Address</label>
+                <input name="clinic_address" placeholder="15205 North Kierland Blvd. Suite " value={data.clinic_address} onChange={handle} required />
+                <label > Country</label>
+                <select name="country" value={data.country} onChange={handle} required>
+                <option value="">Select Country</option>
+                <option>Albania</option>
+                <option>Andorra</option>
+                <option>Armenia</option>
+                <option>Austria</option>
+                <option>Azerbaijan</option>
+                <option>Belarus</option>
+                <option>Belgium</option>
+                <option>Bulgaria</option>
+                <option>Croatia</option>
+                <option>Cyprus</option>
+                <option>Czech Republic</option>
+                <option>Denmark</option>
+                <option>Estonia</option>
+                <option>Finland</option>
+                <option>France</option>
+                <option>Georgia</option>
+                <option>Germany</option>
+                <option>Greece</option>
+                <option>Hungary</option>
+                <option>Iceland</option>
+                <option>Ireland</option>
+                <option>Italy</option>
+                <option>Lithuania</option>
+                <option>Luxembourg</option>
+                <option>Malta</option>
+                <option>Moldova</option>
+                <option>Monaco</option>
+                <option>Montenegro</option>
+                <option>North Macedonia</option>
+                <option>Norway</option>
+                <option>Poland</option>
+                <option>Portugal</option>
+                <option>Romania</option>
+                <option>Serbia</option>
+                <option>Turkey</option>
+                </select>
+                <label > City</label>
+                <input name="city" placeholder="city" value={data.city} onChange={handle} required/>
+                <label > Phone Number</label>
+                <input name="phone_number" placeholder="Phone Number" type="number" value={data.phone_number} onChange={handle} required/>
+                <label > Specialization</label>
+                <select name="specialization" value={data.specialization} onChange={handle} required>
+                  <option value="">Select Specialization</option>
+                  <option >Breast surgery</option>
+                  <option >Facial surgery</option>
+                  <option >Liposuction</option>
+                  <option >Abdominoplasty</option>
+                  <option >Dental care</option>
+                  <option>Buttock surgery</option>
+                  <option >Hair surgery</option>
+                  <option>Hand Surgery</option>
+                  <option>Ear surgery</option>
+                  <option>Intimate surgery</option>
+                  <option>Reconstructive surgery</option>
+                  <option >Non surgical treatments</option>
+                </select>
+                <label > Practice Tenure</label>
+                <input name="practice_tenure" placeholder="3 years" type="number" value={data.practice_tenure} onChange={handle} required/>
+                <label > Practice Start Date</label>
+                <input name="practice_start_date" type="date" value={data.practice_start_date} onChange={handle} required/>
                 {error && <p className="form-error">{error}</p>}
                 <button className="btn primary full">Next</button>
               </form>
+              </section>
             )}
 
             {step === 2 && (
+              <section className="login-card2">
               <form onSubmit={e => { e.preventDefault(); next(); }}>
                 <h3>Create your Password</h3>
-                <div className="pwd-wrapper">
                   <input
                     name="password"
-                    type={showPwd ? 'text' : 'password'}
+                    type={'password'}
                     placeholder="Password"
                     value={data.password}
                     onChange={handle}
                     required
                   />
-                  <span onClick={() => setShowPwd(s => !s)}>{showPwd ? <EyeOff size={16} /> : <Eye size={16} />}</span>
-                </div>
-
-                <div className="pwd-wrapper">
+                  
+                  
                   <input
                     name="confirm"
                     type={showPwd ? 'text' : 'password'}
@@ -199,18 +300,18 @@ export default function ProfessionalSignup() {
                     onChange={handle}
                     required
                   />
-                  <span onClick={() => setShowPwd(s => !s)}>{showPwd ? <EyeOff size={16} /> : <Eye size={16} />}</span>
-                </div>
-
                 {error && <p className="form-error">{error}</p>}
-                <div className="row btns">
+                <div className='back-next'>
                   <button type="button" onClick={back} className="btn outline">Back</button>
-                  <button className="btn primary">Next</button>
-                </div>
+                  <button className="btn-primary">Next</button>
+                  </div>
               </form>
+              </section>
             )}
 
             {step === 3 && (
+              <section className="login-card2">
+
               <form onSubmit={e => { e.preventDefault(); next(); }}>
                 <h3>Upload your Profile Picture</h3>
 
@@ -231,14 +332,16 @@ export default function ProfessionalSignup() {
 
                 {error && <p className="form-error">{error}</p>}
 
-                <div className="row btns">
+                <div className="back-next">
                   <button type="button" onClick={back} className="btn outline">Back</button>
-                  <button className="btn primary">Next</button>
+                  <button className="btn-primary">Next</button>
                 </div>
               </form>
+              </section>
             )}
 
             {step === 4 && (
+                            <section className="login-card2">
                <form onSubmit={submit}>
                <h3>Terms &amp; Conditions — Healthcare Professionals</h3>
    
@@ -311,28 +414,31 @@ export default function ProfessionalSignup() {
    
                <label className="agree">
                  <input type="checkbox" required /> I’ve read &amp; accept the&nbsp;
-                 <Link to="#">terms &amp; conditions</Link>.
+                 terms &amp; conditions.
                </label>
    
                {error && <p className="form-error">{error}</p>}
    
-               <div className="row btns">
+               <div className="back-next">
                   <button type="button" onClick={back} className="btn outline">Back</button>
-                  <button className="btn primary">Create Account</button>
+                  <button className="btn-primary">Create Account</button>
                 </div>
              </form>
+             </section>
             )}
             {step === 5 && (
+            <section className="login-card3">
+
           <div className="success">
-            <CheckCircle size={60} color="#70b7e2"/>
+            <img src={success} alt="" />
             <h3>Great!</h3>
             <p>You have successfully created your doctor account on BODYMINE.</p>
             <button className="btn primary full" onClick={()=>navigate('/pro/dashboard')}>
               Continue to Dashboard
             </button>
           </div>
-        )}
           </section>
+        )}
         </section>
 
         <section className="partner-strip">
@@ -342,14 +448,29 @@ export default function ProfessionalSignup() {
         </section>
 
         <footer className="footer">
-          <img src={logo} alt="BodyMine" className="footer-logo" />
-          <p className="baseline">Bodymine helps you find the perfect surgeon or clinic, worldwide.</p>
-          <div className="footer-cols">
-            <div><h4>Home</h4><ul><li>Menu</li><li>Chat</li><li>Search</li></ul></div>
-            <div><h4>Info</h4><ul><li>Terms & Conditions</li><li>Privacy Policy</li><li>FAQs</li></ul></div>
-            <div><h4>Contact Us</h4><p>info@bodymine.com</p></div>
+                  <div>
+                  <img src={logo} alt="BodyMine" className="footer-logo" />
+          
+                  <p className="baseline">
+                    Bodymine is the leading directory to help you find the perfect surgeon or clinic,
+                    anywhere in the world.
+                  </p>
           </div>
-        </footer>
+                  <div className="footer-cols">
+                    <div>
+                      <h4>Home</h4>
+                      <ul><li>Menu</li><li>Chat</li><li>Search</li></ul>
+                    </div>
+                    <div>
+                      <h4>Info</h4>
+                      <ul><li>Terms &amp; Conditions</li><li>Privacy Policy</li><li>FAQs</li></ul>
+                    </div>
+                    <div>
+                      <h4>Contact Us</h4>
+                      <p>info@bodymine.com</p>
+                    </div>
+                  </div>
+                </footer>
       </div>
     </div>
   );

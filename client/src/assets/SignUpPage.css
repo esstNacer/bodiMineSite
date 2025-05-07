@@ -23,17 +23,182 @@
 .signin form {
   gap: 14px; /* un peu moins d’espace vertical */
 }
+/* Card qui contient le formulaire */
+.signin-card {
+  background: #fff; /* fond blanc */
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;  /* largeur max */
+  max-height: 90vh; /* hauteur max */
+  overflow-y: auto; /* scroll vertical si besoin */
+}
+
+/* Scrollbar légère et propre */
+.signin-card::-webkit-scrollbar {
+  width: 6px;
+}
+.signin-card::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+.signin-card::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Espacement entre les champs du formulaire */
+.signin-card form label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* Espacement et design des inputs */
+.signin-card input,
+.signin-card select {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Style du bouton */
+.signin-card .btn.primary {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 1rem;
+  background-color: #19c7c7;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.signin-card .btn.primary:hover {
+  background-color: #7ddbdc;
+}
+
+/* Texte "Already have an account" */
+.signin-card .small {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
 
 /* ----- Checkbox mieux alignée ----- */
-.checkbox-row {
+.signin .checkbox-row {
   display: flex;
   align-items: center;
   font-size: 13px;
   gap: 4px;
 }
-.checkbox-row input {
+.signin .checkbox-row input {
   margin: 0;
 }
 
 /* ----- Responsive identique ----- */
 /* (déjà présent dans LoginPage.css) */
+/* =========================================================
+   📱  SIGN-UP – Responsive max-width : 600 px
+========================================================= */
+@media (max-width: 600px) {
+
+  /* — 1. Variables utilitaires — */
+  .home-wrapper { --gap-sm: 1.2rem; }
+
+  /* — 2. NAVBAR — */
+  .navbar {
+    flex-direction: column;
+    gap: var(--gap-sm);
+    height: auto;
+    padding: 0.75rem 1rem;
+    text-align: center;
+  }
+  .main-nav {
+    width: 100%;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: nowrap;
+    font-size: .85rem;
+  }
+
+  /* — 3. CONTENU PRINCIPAL empilé — */
+  .content {
+    flex-direction: column;
+    gap: var(--gap-sm);
+    padding: 0 1rem;
+    max-width: 480px;          /* lecture confortable */
+    margin: 40px auto;
+  }
+
+  /* --- 3-a. CAROUSEL --- */
+  .carousel {
+    order: 1;                  /* apparaît en premier */
+    max-width: 100%;
+    padding: 1.8rem 0 0;
+    text-align: center;
+  }
+  .slide-img          { width: 82%; max-height: 200px; height: auto; }
+  .slide-title        { font-size: 1.4rem; }
+  .slide-subtitle     { font-size: .95rem; max-width: 260px; margin: 0 auto 20px; }
+  .dots               { gap: 6px; }
+
+  /* --- 3-b. FORMULAIRE d’inscription --- */
+  .signin             { order: 2; max-width: 100%; margin-top: .5rem; }
+  .signin form        { gap: 16px; }
+  .signin input,
+  .signin select,
+  .btn,
+  .btn.primary        { width: 100%; }
+  .btn.primary {
+    width: 100%;             /* pleine largeur */
+    padding: 14px 0;         /* zone de clic plus généreuse */
+    font-size: 1rem;         /* lisibilité 👍 */
+    border-radius: 8px;
+    margin-top: .6rem;       /* aère au-dessus du texte “Already have…” */
+  }
+
+  /* — .checkbox-row (label) —––––––––––––––––––––– */
+  .checkbox-row {
+    display: flex;
+    flex-direction: row;     /* texte + liens sur une même ligne */
+    flex-wrap: wrap;         /* autorise le retour à la ligne si besoin */
+    justify-content: center; /* centrage horizontal */
+    gap: 6px;                /* petit espace régulier */
+    text-align: center;      /* centre aussi l’intérieur des <a> */
+    line-height: 1.4;
+  }
+
+  /* on garde l’input bien aligné */
+  .checkbox-row input {
+    margin-top: 0;
+  }
+
+  /* champ “code” éventuel */
+  .code-row .code-input { gap: 6px; }
+  .code-row input[type="text"] { width: 100%; }
+
+  /* bouton “Send code” pleine largeur si trop long */
+  .btn.send-code        { flex: 0 0 auto; white-space: nowrap; }
+
+  /* Checkbox + liens */
+  .checkbox-row {
+    flex-wrap: wrap;
+    gap: 6px;
+    line-height: 1.4;
+  }
+
+  /* — 4. FOOTER — */
+  .footer {
+    padding: 2.4rem 1rem;
+    text-align: center;
+  }
+  .footer-cols {
+    flex-direction: column;
+    gap: var(--gap-sm);
+  }
+  .footer p { margin: 0 auto 1rem; }
+
+}

@@ -31,15 +31,16 @@ CREATE TABLE patients (
 CREATE TABLE professionals (
   professional_id INT PRIMARY KEY AUTO_INCREMENT,
   full_name VARCHAR(150) NOT NULL,
-  clinic_address VARCHAR(255),
+  clinic_name VARCHAR(255),
   city VARCHAR(100),
   country VARCHAR(100),
   email VARCHAR(255) NOT NULL UNIQUE,
   `password` VARCHAR(255) NOT NULL,
-  phone_number VARCHAR(15),
+  phone_number INT(12),
   specialization VARCHAR(255),
-  practice_tenure VARCHAR(50),
+  practice_tenure INT(2),
   practice_start_date DATE,
+  `type` VARCHAR(50),
   is_premium BOOLEAN DEFAULT FALSE,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

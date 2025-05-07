@@ -11,6 +11,8 @@ import trustLogo from '../images/trust.png';
 import bodyMine  from '../images/logobodymine.png';
 import { FiHome, FiSearch } from 'react-icons/fi';
 import { UserContext } from '../components/UserContext';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 export default function HowItWorksPage() {
   const { user } = useContext(UserContext) || { user: null };
@@ -29,43 +31,8 @@ export default function HowItWorksPage() {
 
     <div className="how-page">
       {/* ===== Navbar ===== */}
-      <header className="navbar">
-                    <div className="logo">
-                      <img src={bodyMine} alt="BodyMine Cosmetic Surgery" />
-                    </div>
-            
-                    <nav className="main-nav">
-                      <a href="/home">
-                        <FiHome /> Home
-                      </a>
-                      <button className="nav-btn" onClick={() => handleProtectedNavigation("/chat")}>
-                                  <FiSearch /> Chat
-                                </button>
-                                <button className="nav-btn" onClick={() => handleProtectedNavigation("/search")}>
-                                  <FiSearch /> Search
-                                </button>
-                    </nav>
-            
-                    <div className="profile-mini">
-                      <span className="lang">EN ▾</span>
-                      {user ? (
-                                  <Link to="/editProfile">
-                                    <img
-                                      className="profile-avatar"
-                                      src="https://i.pravatar.cc/40?img=12"
-                                      alt="User Avatar"
-                                    />
-                                    <span className="profile-name">
-                                      {user.first_name} {user.last_name} <span className="status-dot">●</span>
-                                    </span>
-                                  </Link>
-                                ) : (
-                                  <Link to="/login" className="login-btn">
-                                    Login
-                                  </Link>
-                                )}
-                    </div>
-                  </header>
+           <Header className="navbar"/>
+     
 
       {/* ===== Main Content ===== */}
       <main className="how-content-wrapper">
@@ -197,42 +164,7 @@ export default function HowItWorksPage() {
       </main>
 
       {/* ===== Footer ===== */}
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-block">
-            <img src={bodyMine} alt="BodyMine" className="footer-logo" />
-            <p>
-              Bodymine is the leading directory to help you find the perfect surgeon
-              or clinic, anywhere in the world.
-            </p>
-            <div className="social-icons">
-              <span>🔵</span>
-              <span>🐦</span>
-              <span>▶️</span>
-            </div>
-          </div>
-          <div className="footer-block">
-            <h4>Home</h4>
-            <ul>
-              <li>Menu</li>
-              <li>Chat</li>
-              <li>Search</li>
-            </ul>
-          </div>
-          <div className="footer-block">
-            <h4>Info</h4>
-            <ul>
-              <li>Terms & Conditions</li>
-              <li>Privacy Policy</li>
-              <li>FAQs</li>
-            </ul>
-          </div>
-          <div className="footer-block">
-            <h4>Contact Us</h4>
-            <p>info@bodymine.com</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
     </div>
   );

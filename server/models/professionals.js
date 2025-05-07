@@ -8,6 +8,11 @@ export const Professionals = {
     return rows;
   },
 
+  findDoctor: async () => {
+    const [rows] = await pool.query('SELECT * FROM professionals WHERE type="Professional"');
+    return rows;
+  },
+
   findById: async (id) => {
     const [rows] = await pool.query(
       'SELECT * FROM professionals WHERE professional_id = ?',
@@ -36,7 +41,8 @@ export const Professionals = {
       specialization,
       practice_tenure,
       practice_start_date,
-      is_premium = false  // valeur par défaut si non fournie
+      is_premium = false,
+      type  // valeur par défaut si non fournie
     } = data;
   
     // Hachage du mot de passe
@@ -45,9 +51,9 @@ export const Professionals = {
     // Insertion dans la table professionals
     const [result] = await pool.query(
       `INSERT INTO professionals (
-        full_name, clinic_address, city, country, email, password,
-        phone_number, specialization, practice_tenure, practice_start_date, is_premium
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        full_name, clinic_name, city, country, email, password,
+        phone_number, specialization, practice_tenure, practice_start_date, is_premium, type
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         full_name,
         clinic_address,
@@ -59,7 +65,8 @@ export const Professionals = {
         specialization,
         practice_tenure,
         practice_start_date,
-        is_premium
+        is_premium,
+        type
       ]
     );
   

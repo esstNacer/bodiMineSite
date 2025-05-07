@@ -141,23 +141,29 @@
   }
   
   .doctor-card h4 {
+    margin-left: 5px;
     font-size: 1.2rem;
     font-weight: 600;
     color: #033300;
-    margin: 0;
   }
   
   .doctor-card p {
+    margin-left: 5px;
     font-size: 0.85rem;
     font-weight: 550;
-    margin: 0;
+    color: #666;
+  }
+  .doctor-card span {
+    margin-left: 5px;
+    font-size: 0.85rem;
+    font-weight: 550;
     color: #666;
   }
   .doctor-card h1 {
+    margin-left: 5px;
     font-size: 0.85rem;
     font-weight: 550;
     text-align: left;
-    margin: 0;
     color: #666;
   }
   
@@ -168,6 +174,7 @@
     font-size: 0.9rem;
     font-weight: 600;
     margin-top: 0rem;
+    margin-left: 5px;
   }
   
   .doctor-card .chat-btn {
@@ -232,4 +239,90 @@
     font-size: 1.2rem;
     margin-top: 12px;
   }
-  
+  /* =========================================================
+   📱  DOCTOR-LIST – Responsive (≤ 600 px)  v2
+   Remplace ou fusionne ce bloc avec l’ancien.
+========================================================= */
+@media (max-width: 600px) {
+
+  /* — 0. MISE EN PAGE GÉNÉRALE — */
+  .page { display: flex; flex-direction: column; }
+
+  /* — 1. NAVBAR — */
+  .navbar {
+    position: relative;          /* pour placer l’avatar en absolu */
+    flex-direction: column;
+    gap: .8rem;
+    padding: 1rem 1.2rem 1.8rem; /* padding bas ↑ laisse respirer */
+    height: auto;
+    text-align: center;
+  }
+  .main-nav {
+    width: 100%;
+    justify-content: center;
+    gap: 1rem;
+    font-size: .85rem;
+  }
+
+  /* Avatar ⇒ coin haut-droite, plus petit */
+  .profile-mini {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .profile-avatar { width: 36px; height: 36px; border-radius: 50%; }
+  .profile-name   { display: none; }      /* on masque le texte */
+  .status-dot     { display: none; }      /* dot vert inutile ici */
+
+  /* — 2. ZONE FILTRES — */
+  .filters-wrapper {
+    margin: 1rem;
+    padding: 1rem;
+    gap: 1rem;
+  }
+  .filter-row {
+    flex-direction: column;
+    gap: .7rem;
+  }
+  .filters-wrapper input,
+  .filters-wrapper select,
+  .filters-wrapper .react-select,
+  .filters-wrapper .search-btn {
+    width: 100%;
+    min-width: 0;
+  }
+  .filters-wrapper .search-btn { padding: .85rem 0; font-size: .95rem; }
+
+  /* — 3. GRILLE DOCTEURS — */
+  .doctor-grid {
+    padding: 0 .7rem;
+    grid-template-columns: repeat(2, 1fr); /* ➜ 2 cartes par ligne */
+    gap: .8rem;
+  }
+  .doctor-card img { height: 140px; }
+  .doctor-card h4  { font-size: 1rem; }
+  .doctor-card p,
+  .doctor-card h1  { font-size: .8rem; }
+  .doctor-card .rating { font-size: .8rem; }
+
+  /* bouton Chat compact */
+  .doctor-card .chat-btn {
+    width: 100%;
+    margin: .6rem auto;
+    font-size: .75rem;
+  }
+
+  /* — 4. FOOTER — */
+  .footer {
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+  }
+  .footer-block p { margin: 0 auto 1rem; }
+}

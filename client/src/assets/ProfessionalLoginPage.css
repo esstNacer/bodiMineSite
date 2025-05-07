@@ -48,6 +48,17 @@
     cursor: pointer;
     background: var(--turquoise-dark);
     color: #fff;
+  }
+  .paro .btn.primary2 {
+    border: none;
+    padding: 12px;
+    border-radius: 30px;
+    font-weight: bold;
+    justify-content: center;
+    width: 35%;
+    cursor: pointer;
+    background: #19c7c7;
+    color: #fff;
   }  .paro .btn.primary:hover{background:#12b0b0}
   .paro .btn.outline-patient {
     background: #19c7c7;
@@ -60,7 +71,7 @@
     color: var(--turquoise-dark);
   }
   .paro .btn.outline:hover{background:var(--turquoise-dark);color:#fff}
-  .paro .btn.small        {padding:.45rem 1.4rem;font-size:.8rem;border-width:2px}
+  .paro .btn.small        {background: #19c7c7 ;padding:.45rem 1.4rem;font-size:.8rem;border-width:2px}
   
   /*═══════════════════════════════════════════════════════
     3. Barre supérieure
@@ -182,18 +193,21 @@
     5. Pitch + Login
   ═══════════════════════════════════════════════════════*/
   .paro .double{
-    display:grid;grid-template-columns:1fr 430px;gap:74px;
+    display:grid;grid-template-columns:350px 430px;gap:200px;
     max-width:1280px;margin:10px auto 84px;padding:0 44px;
   }
   .paro .pitch h2{
-    font-size:1.84rem;line-height:1.34;margin-bottom:22px;font-weight:700;
+    font-size:1.84rem;line-height:1.34;margin-bottom:22px;font-weight:500;
+  }
+  .paro .pitch h1{
+    font-size:1.84rem;font-weight:500;
   }
   .paro .pitch h2 span{color:var(--turquoise-dark)}
-  .paro .pitch p     {color:var(--grey);line-height:1.57;margin-bottom:18px}
+  .paro .pitch p     {color:black;line-height:1.57;margin-bottom:18px}
   
   .paro .login-card{
     background:#fff;border-radius:var(--radius-card);box-shadow:var(--shadow);
-    padding:38px 34px;
+    padding:38px 40px;
   }
   .paro .login-card h3{
     font-size:1.46rem;text-align:center;margin-bottom:24px;font-weight:700
@@ -210,8 +224,15 @@
     content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border)
   }
   .paro .divider::before{left:0}.paro .divider::after{right:0}
-  .paro .login-card form{display:flex;flex-direction:column;gap:18px}
+  .paro .login-card form{display:flex;flex-direction:column;gap:6px}
+  .paro .login-card label{
+    font-size: 1rem;gap: 0px; font-weight: 600;color: #03363d;
+  }
   .paro .login-card input{
+    padding:.78rem 1.05rem;border:1px solid var(--border);
+    border-radius:var(--radius-card);font-size:.9rem
+  }
+  .paro .login-card select{
     padding:.78rem 1.05rem;border:1px solid var(--border);
     border-radius:var(--radius-card);font-size:.9rem
   }
@@ -225,35 +246,310 @@
     background:#ffecec;color:#b22;border-radius:var(--radius-card);
     padding:.6rem;text-align:center
   }
-  
+  /* Card principale */
+  .paro .login-card2 { 
+    background: #fff;
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow);
+    padding: 30px 20px;
+    width: 100%;
+    max-width: 440px;
+    height: 90vh; /* Donne une hauteur fixe visible à l'écran */
+    overflow: hidden; /* Empêche la card de déborder */
+    display: flex;
+    flex-direction: column;
+  }
+
+/* Formulaire */
+.paro .login-card2 form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  flex: 1;
+  overflow-y: auto; /* Scroll vertical uniquement pour le formulaire */
+  padding-right: 10px; /* Petit espace pour que la scrollbar n’écrase pas le texte */
+}
+.paro .login-card2 form::-webkit-scrollbar {
+  width: 6px;
+}
+.paro .login-card2 form::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+.paro .agree {
+  display: ruby;
+  align-items: center;
+  gap: 10px; /* Espace entre la case et le texte */
+  font-size: 0.9rem;
+  color: #555;
+  cursor: pointer;
+}
+
+.paro .agree input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0; /* Annule les marges par défaut du navigateur */
+}
+
+/* Titre */
+.paro .login-card2 form h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: left;
+  margin-bottom: 10px;
+}
+.paro .login-card2 input{
+  padding:.78rem 1.05rem;border:1px solid var(--border);
+  border-radius:var(--radius-card);font-size:.9rem
+}
+
+/* Wrapper input + icône œil */
+.paro .pwd-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.paro .pwd-wrapper input {
+  width: 100%;
+  padding: 12px 14px;
+  padding-right: 40px; /* Laisse de la place pour l’icône œil */
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+}
+
+/* Icône œil */
+.paro .pwd-wrapper span {
+  position: absolute;
+  right: 12px;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+/* Erreurs */
+.paro .form-error {
+  color: red;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Boutons */
+.paro .login-card2 .back-next .btn.outline {
+  width: 50%;
+  justify-content: center;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background: none;
+  border: 1px solid #7db4e6;
+  color: #7db4e6;
+  gap: 2px;
+}
+
+/* Bouton Next */
+.paro .login-card2 .back-next .btn-primary {
+  width: 50%;
+  justify-content: center;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #7db4e6;
+  color: #fff;
+  border: none;
+  margin-top: 16px;
+}
+
+.paro .login-card2 .back-next .btn-primary:hover {
+  background-color: #68a2d8;
+}
+
+
+.paro .login-card2 .back-next .btn.outline:hover {
+  background-color: #7db4e6;
+  color: #fff;
+}
+
+/* Alignement boutons */
+.paro .row.btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Checkbox ligne */
+.paro .checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  line-height: 1.4;
+  color: #666;
+}
+
+/* Liens dans checkbox */
+.paro .checkbox-row a {
+  color: #7db4e6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.paro .checkbox-row a:hover {
+  text-decoration: underline;
+}
+.paro .login-card3 {
+  background: #ffffff;
+  border-radius: var(--radius-card); /* ta variable pour l'arrondi */
+  box-shadow: var(--shadow); /* ta variable pour l'ombre légère */
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.paro .success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+/* L'image */
+.paro .success img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+/* Le titre "Great!" */
+.paro .success h3 {
+  font-size: 1.8rem;
+  color: #7db4e6; /* bleu pastel doux */
+  font-weight: 700;
+  margin: 0;
+}
+
+/* Le sous-texte */
+.paro .success p {
+  font-size: 1rem;
+  color: #666666;
+  max-width: 300px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Le bouton */
+.paro .success .btn.primary.full {
+  background-color: #7db4e6;
+  color: #ffffff;
+  padding: 12px 0;
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.paro .success .btn.primary.full:hover {
+  background-color: #68a2d8;
+}
+
   /*═══════════════════════════════════════════════════════
     6. Bande « Partner »
   ═══════════════════════════════════════════════════════*/
   .paro .partner-strip{
-    max-width:1280px;margin:0 auto 88px;padding:0 44px;
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px
+    max-width:100%;margin:0 auto 20px;padding:0px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px
   }
   .paro .partner-strip img{
-    width:100%;height:180px;object-fit:cover;border-radius:var(--radius-card)
+    width:100%;height:250px;object-fit:cover;border-radius:var(--radius-card)
   }
   
   /*═══════════════════════════════════════════════════════
     7. Footer
   ═══════════════════════════════════════════════════════*/
-  .paro .footer{
-    background:var(--turquoise);color:#fff;text-align:center;
-    padding:56px 44px;display:flex;flex-direction:column;align-items:center;gap:30px
+  .paro .footer {
+    background-color: #70B7E2; /* bleu clair plus proche du footer maquette */
+    color: #ffffff;
+    padding: 56px 44px;
+    display: flex;
+    flex-direction: row;
+    
+    flex-wrap: wrap;
+    gap: 200px;
+    align-items: flex-start;
+    text-align: left; /* très important: plus de centré ! */
   }
-  .paro .footer-logo{height:46px}
-  .paro .baseline{font-size:.96rem;max-width:450px;line-height:1.54}
-  .paro .footer-cols{
-    display:flex;gap:86px;flex-wrap:wrap;justify-content:center
+  
+  .paro .footer-logo {
+    height: 46px;
+    margin-bottom: 16px;
   }
-  .paro .footer-cols h4{
-    font-size:1.02rem;margin-bottom:10px;font-weight:700
+  
+  .paro .baseline {
+    font-size: 0.96rem;
+    max-width: 450px;
+    line-height: 1.54;
+    margin-bottom: 20px;
   }
-  .paro .footer-cols ul{list-style:none;font-size:.9rem;line-height:1.9;padding:0}
-  .paro .footer-cols li{color:#eaffff}
+  
+  .paro .social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+  }
+  
+  .paro .social-icons span {
+    font-size: 22px;
+    cursor: pointer;
+  }
+  
+  .paro .footer-cols {
+    display: flex;
+    gap: 86px;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* important pour aligner les colonnes à gauche */
+  }
+  
+  .paro .footer-cols h4 {
+    font-size: 1.02rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  
+  .paro .footer-cols ul {
+    list-style: none;
+    padding: 0;
+    font-size: 0.9rem;
+    line-height: 1.9;
+    margin: 0;
+  }
+  
+  .paro .footer-cols li {
+    color: #eaffff; /* blanc légèrement bleu/gris clair */
+  }
+  
   
   /*═══════════════════════════════════════════════════════
     8. Responsive

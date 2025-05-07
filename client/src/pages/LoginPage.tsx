@@ -9,6 +9,7 @@ import connectImg from '../images/connect.png';
 import bodyMine   from '../images/logobodymine.png';
 import { FiHome, FiSearch } from 'react-icons/fi';
 import { useUser } from '../components/UserContext';
+import Footer from '../components/Footer';
 
 interface Slide {
   title: string;
@@ -64,6 +65,9 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     setError(err.message);
   }
 };
+const handleGoogleLogin = () => {
+  window.location.href = '/api/auth/google'; // Redirige vers ton backend qui gère Google login
+};
 
 
 return (
@@ -73,7 +77,8 @@ return (
       <header className="navbar">
         {/* Logo centré */}
         <div className="logo">
-          <img src={bodyMine} alt="BodyMine Cosmetic Surgery" />
+          <Link to={"/"}>
+          <img src={bodyMine} alt="BodyMine Cosmetic Surgery" /></Link>
         </div>
 
         {/* Liens de navigation horizontalement alignés */}
@@ -140,7 +145,9 @@ return (
                   onChange={e => setRemember(e.target.checked)}
                 /> Keep me signed in
               </label>
+              <div className='small'>
               <a href="#forgot">Forgot Password?</a>
+              </div>
             </div>
 
             <button type="submit" className="btn primary">Sign in</button>
@@ -152,11 +159,8 @@ return (
             <p className="divider">Or continue with</p>
 
             <div className="oauth">
-              <button type="button" className="btn oauth google">
+              <button type="button" className="btn oauth google" onClick={handleGoogleLogin}>
                 <img src="https://unpkg.com/simple-icons@latest/icons/google.svg" alt="Google" /> Sign in with Google
-              </button>
-              <button type="button" className="btn oauth apple">
-                <img src="https://unpkg.com/simple-icons@latest/icons/apple.svg" alt="Apple" /> Sign in with Apple
               </button>
             </div>
 
@@ -167,39 +171,7 @@ return (
         </section>
       </main>
 
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-block">
-            <img src={bodyMine} alt="BodyMine" className="footer-logo" />
-            <p>
-              Bodymine is the leading directory to help you find the perfect surgeon or clinic, anywhere in the world.
-            </p>
-            <div className="social-icons">
-              <span>🔵</span><span>🐦</span><span>▶️</span>
-            </div>
-          </div>
-          <div className="footer-block">
-            <h4>Home</h4>
-            <ul>
-              <li>Menu</li>
-              <li>Chat</li>
-              <li>Search</li>
-            </ul>
-          </div>
-          <div className="footer-block">
-            <h4>Info</h4>
-            <ul>
-              <li>Terms & Conditions</li>
-              <li>Privacy Policy</li>
-              <li>FAQs</li>
-            </ul>
-          </div>
-          <div className="footer-block">
-            <h4>Contact Us</h4>
-            <p>info@bodymine.com</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   </div>
   </div>

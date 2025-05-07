@@ -88,7 +88,7 @@
   
   .carousel-inner img {
     width: 100%;
-    max-width: 300px;
+    max-width: 100%;
     border-radius: 12px;
     object-fit: cover;
     flex-shrink: 0;
@@ -280,4 +280,162 @@
     margin-top: 12px;
     font-size: 18px;
   }
-  
+  /* =========================================================
+   📱  EDIT-PROFILE  –  Responsive max-width : 600 px
+   (colle ce bloc tout en bas de src/assets/EditProfile.css)
+========================================================= */
+@media (max-width: 600px) {
+
+  /* 0 ▸ Structure verticale claire */
+  .page { display: flex; flex-direction: column; }
+
+  /* 1 ▸ NAVBAR – avatar discret coin haut-droite */
+  .navbar {
+    position: relative;             /* pour positionner l’avatar */
+    flex-direction: column;
+    gap: .8rem;
+    padding: 1rem 1rem 1.6rem;
+    height: auto;
+    text-align: center;
+  }
+  .main-nav {
+    width: 100%;
+    justify-content: center;
+    gap: 1rem;
+    font-size: .85rem;
+  }
+  .profile-mini {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .profile-avatar { width: 36px; height: 36px; border-radius: 50%; }
+  .profile-name, .status-dot { display: none; }  /* on masque le texte */
+
+  /* 2 ▸ CAROUSEL – pleine largeur swipeable */
+  .banner-carousel {
+    margin: .5rem 0 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+  .banner-carousel img {
+    width: 90%;
+    height: 150px;
+    border-radius: 12px;
+    scroll-snap-align: start;
+  }
+  .banner-carousel .dots { gap: 4px; }
+
+  /* 3 ▸ CONTENU PRINCIPAL empilé */
+  .content-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem 1.5rem;
+  }
+
+  /* 3-a ▸ SIDEBAR / menu */
+  .side-menu {
+    order: 2;                        /* sous le formulaire sur mobile */
+    width: 100%;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  .hello-card      { flex-direction: row; gap: 12px; }
+  .hello-avatar    { width: 48px; height: 48px; }
+
+  /* menu links pleine largeur */
+  .menu-links li a { padding: .75rem 1rem; font-size: .9rem; }
+
+  .danger-btn,
+  .logout-btn      { width: 100%; }
+
+  /* 3-b ▸ FORMULAIRE */
+  .profile-editor {
+    order: 1;
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  .profile-editor h1 { font-size: 1.35rem; }
+
+  /* tabs empilés si nécessaire */
+  .tabs { flex-direction: column; }
+  .tab  { padding: .6rem; }
+
+  /* grille passe à 1 colonne */
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  input, select { font-size: .9rem; }
+
+  .save-btn { width: 100%; margin-top: 1.2rem; }
+
+  /* 4 ▸ FOOTER – colonne unique */
+  .footer { padding: 2rem 1rem; text-align: center; }
+  .footer-wrap { display: flex; flex-direction: column; gap: 1.4rem; }
+  .footer-brand img { width: 120px; }
+  .footer-col ul    { line-height: 1.8; }
+}
+/* =========================================================
+   📱  EDIT-PROFILE  –  correctif “sidebar sous le carrousel”
+   (ajoute ces quelques lignes APRÈS le bloc mobile existant)
+========================================================= */
+@media (max-width: 600px) {
+
+  /* --- Empile proprement : 1) Carousel  2) Sidebar  3) Formulaire --- */
+  .banner-carousel { order: 0; }
+  .side-menu       { order: 1; }   /* passe juste après la bannière */
+  .profile-editor  { order: 2; }
+
+  /* --- Conteneur principal : bloc plutôt que flex pour éviter tout débordement --- */
+  .content-grid {
+    display: block;                /* force la pile verticale nette */
+    padding: 0 1rem 1.5rem;
+  }
+
+  /* --- Sidebar pleine largeur + légère “carte” centrée --- */
+  .side-menu {
+    width: 100%;
+    max-width: 480px;              /* limite raisonnable */
+    margin: 0 auto 1.2rem;
+    padding: 1rem;
+    border-radius: 12px;
+    background: var(--white);
+    box-shadow: 0 4px 12px rgb(0 0 0 / .06);
+  }
+
+  /* titre & avatar de la carte “Hello…” centrés */
+  .hello-card {
+    justify-content: flex-start;
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+  .hello-avatar { width: 48px; height: 48px; }
+
+  /* liens du menu : bordure fine pour bien se détacher */
+  .menu-links li a {
+    padding: .75rem 1rem;
+    border: 1px solid #e5f3f3;
+    border-radius: 8px;
+    font-size: .9rem;
+  }
+
+  /* boutons Delete / Logout pleine largeur */
+  .danger-btn,
+  .logout-btn {
+    width: 100%;
+    margin-top: .6rem;
+  }
+
+  /* --- Formulaire occupe toute la largeur dispo --- */
+  .profile-editor {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+}
