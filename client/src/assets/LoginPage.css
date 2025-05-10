@@ -39,14 +39,14 @@
 }
 
 .login .navbar {
-  background: #7ddbdc;
+  background: #96DCD7;
   color: #fff;
   height: 90px;
   display: flex;
   gap: 2rem;
   align-items: center;
   justify-content: start;
-  padding: 0 2.5rem;
+  padding: 0 4.5rem;
 }
 
 .login .nav-left {
@@ -160,7 +160,7 @@
 }
 .login .btn.primary {
   justify-content: center;
-  background-color: #19c7c7; /* bleu turquoise pastel clair */
+  background-color: #96DCD7; /* bleu turquoise pastel clair */
   color: #ffffff;
   border: none;
   border-radius: 8px; /* arrondi des coins */
@@ -298,6 +298,7 @@
 }
 
 .login .divider {
+  margin-bottom: 4px;
   font-size: 13px;
   text-align: center;
   color: var(--grey);
@@ -330,7 +331,7 @@
    Footer
 --------------------------------------- */
 .login .footer {
-  background: var(--turquoise);
+  background: #96DCD7;
   padding: 3.5rem 5%;
   color: #fff;
   margin-top: auto;
@@ -395,33 +396,34 @@
 /* ---------------------------------------
    FULL RESPONSIVE FOR LOGIN PAGE
 --------------------------------------- */
-@media (max-width: 768px) {
+@media (max-width: 991px) {
   /* 1. Full-screen background */
 .login.mobile {
   position: relative;
   width: 100%;
   height: 100vh;
-  background: url('/assets/bg-doctor.jpg') center/cover no-repeat;
+  background: url('../images/bg-doctor.png') center/cover no-repeat;
   display: flex;
   flex-direction: column;
 }
 
 /* 2. Centrer le card */
 .login-card {
-  margin: auto;
+  margin: auto auto 50px;
   width: 90%;
   max-width: 400px;
-  background: rgba(255, 255, 255, 0.95);
+  background: white;
   border-radius: 20px;
   padding: 24px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  text-align: start;
 }
 
 /* 3. Logo */
 .login-card__logo {
-  width: 120px;
-  margin-bottom: 16px;
+  justify-self: center;
+  width: 150px;
+  margin-bottom: 5px;
 }
 
 /* 4. Titres */
@@ -433,7 +435,7 @@
 
 .login-card__subtitle {
   font-size: 14px;
-  margin-bottom: 24px;
+  margin-bottom: 4px;
   color: #4A555C;
 }
 
@@ -508,11 +510,13 @@
 }
 
 .btn.primary {
+  margin-bottom: 4px;
   background-color: #75D5CC;
   color: #fff;
 }
 
 .btn.secondary.professional {
+  margin-bottom: 0px;
   background-color: #4DA6C0;
   color: #fff;
 }
@@ -579,6 +583,31 @@
   height: 20px;
   margin-right: 8px;
 }
+.login.mobile {
+  position: relative; /* déjà présent, mais nécessaire pour le pseudo */
+}
 
+.login.mobile::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* ajuste selon l’intensité souhaitée */
+  /* gradient du turquoise BodyMine vers transparent vers le haut */
+  background: linear-gradient(
+    to top,
+    rgba(153, 218, 211, 0.8) 0%,
+    rgba(255,255,255,0) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* on remonte la card au-dessus du gradient */
+.login-card {
+  position: relative;
+  z-index: 1;
+}
 
 }

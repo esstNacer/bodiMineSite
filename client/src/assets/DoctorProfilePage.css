@@ -12,7 +12,7 @@ img{display:block;max-width:100%}
 body,html,.doctor-profile-page{background:var(--bg);color:var(--txt);font-family:"Segoe UI",sans-serif}
 
 /* ========== NAVBAR ========= */
-.navbar{background:#7ddbdc;color:#fff;height:90px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem}
+.navbar{background:#96DCD7;color:#fff;height:90px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem}
 .navbar nav a{color:#fff;font-weight:600;margin:0 1.2rem;text-decoration:none;position:relative}
 .navbar nav a:hover::after,.navbar nav a.active::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:#fff}
 
@@ -86,7 +86,7 @@ body,html,.doctor-profile-page{background:var(--bg);color:var(--txt);font-family
 .recommended-card button{margin-top:.6rem;font-size:.78rem}
 
 /* ========= FOOTER ========= */
-.footer{background:#7ddbdc;color:#fff;text-align:center;font-size:.9rem;padding:2rem;margin-top:0}
+.footer{background:#96DCD7;color:#fff;text-align:center;font-size:.9rem;padding:2rem;margin-top:0}
 
 /* ========= MediaQueries rapide ========= */
 @media(max-width:850px){

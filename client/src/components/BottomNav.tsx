@@ -42,6 +42,7 @@ export default function BottomNav() {
       onClick={() => navigate("/search")}
     >
       <FiSearch className="icon" />
+      <span className="label">Search</span>
     </button>
 
     {/* Chat */}
@@ -51,6 +52,7 @@ export default function BottomNav() {
       onClick={() => handleProtectedNavigation("/chat")}
     >
       <FiMessageCircle className="icon" />
+      <span className="label">Chat</span>
     </button>
 
     {/* More / Menu */}
@@ -60,6 +62,7 @@ export default function BottomNav() {
       onClick={() => handleProtectedNavigation("/menu")}
     >
       <FiMenu className="icon" />
+      <span className="label">Profile</span>
     </button>
   </nav>
   );

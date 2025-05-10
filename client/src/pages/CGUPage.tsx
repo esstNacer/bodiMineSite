@@ -17,7 +17,7 @@ import { BsDot } from 'react-icons/bs';
 import '../assets/MyBodyProjectPage.css';   // ↳ barre latérale · bannière · footer
 import '../assets/FaqPage.css';             // ↳ juste le scroll interne
 
-import bodyMineLogo from '../images/logobodymine.png';
+import bodyMineLogo from '../images/logobodymine.svg';
 import clinic1 from '../images/clinic1.png';
 import clinic2 from '../images/clinic2.png';
 import clinic3 from '../images/clinic3.png';

@@ -235,14 +235,12 @@ return (
 
         {/* Remember + forgot */}
         <div className="row remember">
-          <label>
             <input
               type="checkbox"
               checked={remember}
               onChange={e => setRemember(e.target.checked)}
-            />
-            Keep me signed in
-          </label>
+            /> Keep me signed in
+           
           <a href="#forgot" className="forgot-link">
             Forgot password?
           </a>

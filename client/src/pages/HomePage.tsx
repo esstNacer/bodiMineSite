@@ -7,7 +7,8 @@ import {
   FiHeart, FiSmile, FiScissors, FiActivity, FiUser, 
   FiThumbsUp, FiScissors as FiHairCut, FiBriefcase, 
   FiUserCheck, FiRefreshCw, FiAward, 
-  FiChevronLeft, FiChevronRight, FiMessageCircle
+  FiChevronLeft, FiChevronRight, FiMessageCircle,
+  FiGlobe
 } from "react-icons/fi";
 import { useLocation } from 'react-router-dom';
 import { useUser } from '../components/UserContext'; // très important
@@ -22,8 +23,9 @@ import clinic1 from "../images/clinic1.png";
 import clinic2 from "../images/clinic2.png";
 import clinic3 from "../images/clinic3.png";
 import bodyMine from "../images/logobodymine.png";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaHeartbeat, FaRegHeart, FaUserMd } from "react-icons/fa";
 import Footer from "../components/Footer";
+import { IoFilterSharp } from "react-icons/io5";
 
 interface Professional {
   professional_id: number;
@@ -48,6 +50,13 @@ export default function HomePage() {
   const { user, updateUser, setToken } = useUser();  const navigate = useNavigate();
   const [slide, setSlide] = useState(0);
   const [openedSections, setOpenedSections] = useState<string[]>([]);
+
+  const [query,       setQuery]       = useState('');
+  const [localisation,    setLocation]    = useState('');
+  const [speciality,  setSpeciality]  = useState('');
+  const [country,     setCountry]     = useState('');
+  const [activity,    setActivity]    = useState('');
+  const [sortBy,      setSortBy]      = useState('relevance');
 
   const specialityRef = useRef<HTMLDivElement>(null!);
   const doctorsRef = useRef<HTMLDivElement>(null!);
@@ -74,10 +83,25 @@ export default function HomePage() {
     { name: "Reconstructive Surgery", icon: <FiRefreshCw /> },
     { name: "Non-Surgical Treatments", icon: <FiAward /> },
   ];
+  const specialitie = [
+    'Breast surgery','Facial surgery','Liposuction','Abdominoplasty',
+    'Dental care','Buttock surgery','Hair surgery','Hand Surgery',
+    'Ear surgery','Intimate surgery','Reconstructive surgery',
+    'Non surgical treatments',
+  ];
+  
+  const countries = [
+    'Albania','Andorra','Armenia','Austria','Azerbaijan','Belarus','Belgium',
+    'Bulgaria','Croatia','Cyprus','Czech Republic','Denmark','Estonia','Finland',
+    'France','Georgia','Germany','Greece','Hungary','Iceland','Ireland','Italy',
+    'Lithuania','Luxembourg','Malta','Moldova','Monaco','Montenegro',
+    'North Macedonia','Norway','Poland','Portugal','Romania','Serbia','Turkey',
+  ];
 
   const [clinics, setClinics] = useState<any[]>([]);
   const [articles, setArticles] = useState<any[]>([]);
   const [doctors, setDoctors] = useState<Professional[]>([]);
+  const isMobile = useBreakpoint();
 
   const toggleSection = (sectionName: string) => {
     setOpenedSections((prev) =>
@@ -103,6 +127,14 @@ export default function HomePage() {
       }
     }
   }, [location]);
+    // auto-slide sur mobile
+    useEffect(() => {
+      if (!isMobile) return;
+      const interval = setInterval(() => {
+        setSlide(prev => (prev + 1) % carousel.length);
+      }, 3000);
+      return () => clearInterval(interval);
+    }, [isMobile, carousel.length, setSlide]);
   
   
     /** 1) Fetch initial list */
@@ -220,7 +252,6 @@ export default function HomePage() {
       console.error("Error starting chat:", err);
     }
   };
-  const isMobile = useBreakpoint();
   return (
     <>
     {!isMobile && (
@@ -235,7 +266,7 @@ export default function HomePage() {
           <h1>Find the Right Care,<br /><span>Anywhere in the World</span></h1>
           <p>Connect with top-rated cosmetic surgeons and clinics.<br />Your journey to confidence starts here.</p>
           <div className="hero-buttons">
-            <button className="btn-hero secondary" onClick={() => handleProtectedNavigation("/search")}>Find a Doctor</button>
+            <button className="btn-hero secondary" onClick={() => handleProtectedNavigation("/search")}>Explore</button>
           </div>
         </div>
         <div className="doctor-wrapper">
@@ -256,26 +287,104 @@ export default function HomePage() {
   
       {/* Searchbar */}
       <section className="searchbar">
-        <div className="search-row">
-          <div className="input-group">
-            <FiSearch className="icon" />
-            <input type="text" placeholder="Doctor, Hospital, Dental" />
-          </div>
-          <div className="input-group-location">
-            <FiMapPin className="icon" />
-            <input type="text" placeholder="Location" />
-          </div>
-          <button className="search-btn" onClick={() => handleProtectedNavigation("/search")}>Search</button>
-          <button className="filter-btn"><FiSliders /></button>
+      {/* ───────── Ligne 1 ───────── */}
+      <div className="search-row">
+        {/* Recherche « Doctor, Hospital… » */}
+        <div className="input-group">
+          <FiSearch className="icon" />
+          <input
+            type="text"
+            placeholder="Doctor, Hospital, Dental"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+          />
         </div>
-  
-        <div className="filter-row">
-          <select><option>Speciality</option></select>
-          <select><option>Country</option></select>
-          <select><option>Activity</option></select>
-          <select><option>Sort By: Relevance</option></select>
+
+        {/* Localisation */}
+          <div className="loc">
+          <FiMapPin className="icon" />
+          <input
+            type="text"
+            placeholder="Location"
+            value={localisation}
+            onChange={e => setLocation(e.target.value)}
+          />
+          </div>
+
+        {/* Bouton Search */}
+        <button
+          className="search-btn"
+          onClick={() => handleProtectedNavigation('/search')}
+        >
+          Search
+        </button>
+
+        {/* Bouton filtre (layout/affichage) */}
+        <button className="filter-btn">
+          <IoFilterSharp className="icon" />
+        </button>
+      </div>
+
+      {/* ───────── Ligne 2 : filtres déroulants ───────── */}
+      <div className="filter-row">
+        {/* Speciality */}
+        <div className="select-group">
+          <FaUserMd className="icon" />
+          <select
+            value={speciality}
+            onChange={e => setSpeciality(e.target.value)}
+          >
+            <option value="">Speciality</option>
+            {specialitie.map(sp => (
+              <option key={sp} value={sp}>{sp}</option>
+            ))}
+          </select>
         </div>
-      </section>
+
+        {/* Country */}
+        <div className="select-group">
+          <FiGlobe className="icon" />
+          <select
+            value={country}
+            onChange={e => setCountry(e.target.value)}
+          >
+            <option value="">Country</option>
+            {countries.map(c => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Activity */}
+        <div className="select-group">
+          <FaHeartbeat className="icon" />
+          <select
+            value={activity}
+            onChange={e => setActivity(e.target.value)}
+          >
+            <option value="">Activity</option>
+            <option value="clinic">Clinic</option>
+            <option value="hospital">Hospital</option>
+            <option value="doctor">Doctor</option>
+          </select>
+        </div>
+
+        {/* Sort By */}
+        <div className="select-group sort-group">
+  <label htmlFor="sortBy">Sort&nbsp;By</label>
+  <select
+    id="sortBy"
+    value={sortBy}
+    onChange={e => setSortBy(e.target.value)}
+  >
+    <option value="relevance">Relevance</option>
+    <option value="speciality">Speciality</option>
+    <option value="reviews">Reviews</option>
+    <option value="reviews">popularity</option>
+  </select>
+</div>
+      </div>
+    </section>
   
       {/* Carousel */}
       <section className="home carousel">

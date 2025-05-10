@@ -16,7 +16,7 @@
     max-width:510px;
     height:64px;
   
-    background:var(--nav-bg);
+    background:#96DCD7;
     border-radius:15px;
     display:flex;justify-content:space-around;align-items:center;
     box-shadow:0 4px 12px rgba(0,0,0,.10);

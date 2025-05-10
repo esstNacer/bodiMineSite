@@ -2,7 +2,9 @@
    📎  Add-ons spécifiques au footer (icônes réseaux, liens)
 ------------------------------------------------------------------ */
 
-  
+  .footer{
+    background: #96DCD7;
+  }
   .social-icons a:hover {
     background:rgba(255,255,255,.30);
   }
@@ -39,4 +41,32 @@
   .socialfoot-icons a:hover{
     background:rgba(255,255,255,.30);
   }
-  
+  /* ──────────────────────────────────────────────
+   Colonnes de liens (Home / Info / Contact Us)
+   ────────────────────────────────────────────── */
+
+/* 1 ▸ conteneur des trois blocs de liens */
+.footer-links {   
+  text-align: start;              /* ↖︎ mets cette classe sur le wrapper <div> */
+  display: flex;                /* alignement horizontal          */
+  flex-wrap: wrap;              /* passe à la ligne sur mobile    */
+  gap: 6rem 4rem;               /* col 6 rem, ligne 4 rem         */
+  justify-content: flex-start;  /* blocs collés côté gauche       */
+}
+
+/* 2 ▸ chaque colonne (ul + titre h5/h6) */
+.footer-block {
+  text-align: justify;
+  flex: 0 0 150px;              /* largeur mini fixe              */
+}
+
+/* 3 ▸ listes sans puce et marges propres */
+.footer-block ul {
+  list-style: none;
+  padding: 0;
+  margin: .8rem 0 0;            /* petit espace sous le titre     */
+}
+
+.footer-block li { margin-bottom: .6rem; }
+
+/* (les couleurs/hovers restent ceux que tu as déjà) */
