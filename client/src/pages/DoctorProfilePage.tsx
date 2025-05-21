@@ -12,7 +12,7 @@ import { BsCheckCircleFill } from 'react-icons/bs'
 import { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
-import bodyMineLogo from '../images/logobodymine.png'
+import bodyMineLogo from '../images/LogoBODYMINE.png'
 import '../assets/DoctorProfilePage.css'
 import { UserContext } from '../components/UserContext'
 import Header from '../components/Header'

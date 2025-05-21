@@ -8,6 +8,9 @@
     display: flex;
     flex-direction: column;
   }
+  .html, .body{
+    overflow: scroll;
+  }
   .styled-select {
     padding: 8px 12px;
     border-radius: 10px;
@@ -269,7 +272,8 @@
 .page, 
 html, 
 body {
-  height: 100vh;
+  min-height: 100dvh;
+  height: 100%;
   margin: 0;
 }
 
@@ -280,10 +284,9 @@ body {
   position: relative;
   z-index: 20;
 }
-
 /* ─── 3. Le conteneur des filtres est fixé entre header et bottom ─────────── */
 .filters-wrapper {
-  margin-bottom: 80px;
+  margin-bottom: 5px;
   margin-top: 50px;
   left: 0;
   right: 0;
@@ -307,6 +310,9 @@ body {
 
   /* on laisse défiler uniquement si vraiment besoin à l’intérieur (ici non) */
   overflow: hidden;
+}
+.main-content{
+  padding: 0;
 }
 
 /* ─── 4. Récupération de votre layout interne ─────────────────────────────── */
@@ -541,11 +547,12 @@ body {
 .doctor-card {
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+   box-sizing: border-box;
 }
 .no-results {
   grid-column: 1 / -1;

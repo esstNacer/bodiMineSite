@@ -71,6 +71,7 @@ img {
   color: var(--text);
 }
 .nav-btn {
+  position: relative;
   background: transparent;
   color: white;
   border: none;
@@ -86,17 +87,15 @@ img {
 .nav-btn:hover {
   color: #d1e0ff;
 }
-.navbar nav a.active::after,
-.navbar nav a:hover::after {
+.nav-btn.active::after {
   content: "";
   position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 100%;
+  left: 10%;            /* trait un peu plus court que la largeur totale */
+  right: 10%;
+  bottom: -4px;         /* colle au bord inférieur du bouton */
   height: 2px;
-  background: var(--primary);
-  border-radius: 4px;
-  transition: .3s;
+  border-radius: 2px;
+  background: #ffffff;  /* blanc pure – change si navbar claire */
 }
 .navbar-right {
   display: flex;
@@ -186,7 +185,7 @@ img {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 20px 30px;
+  padding: 15px 40px;
   font-size: 1.5rem;
   border: none;
   border-radius: 200px;
@@ -360,7 +359,8 @@ img {
     background: #fff;
     padding: 1.5rem 2rem;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    flex-direction: row;
     gap: 1rem;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,.08);
@@ -370,7 +370,21 @@ img {
     position: relative;
     z-index: 10;
   }
-  
+  .field-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;        /* distance verticale interne */
+}
+
+/* Rangée interne Speciality + Country */
+.field-row {
+  display: flex;
+  gap: 0.75rem;        /* distance horizontale entre les 2 selects */
+}
+
+.field-row > * {
+  flex: 1;             /* chaque select prend exactement 50 % du bloc */
+}
   /* ❷ Première ligne (inputs + bouton + filtre) */
   .search-row {
     display: flex;
@@ -421,7 +435,7 @@ img {
   }
   
  .loc input {
-    width: 94%;
+    width: 100%;
     padding: .75rem 1rem .75rem 2.7rem;   /* place pour l’icône */
     border: 1px solid #ccdede;
     border-radius: 10px;
@@ -431,6 +445,9 @@ img {
   /* menus déroulants */
   .select-group select {
     width: 100%;
+     appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
     padding: .75rem 1rem .75rem 2.8rem;
     border: 1px solid #ccdede;
     border-radius: 10px;
@@ -441,16 +458,20 @@ img {
   }
   
   /* flèche custom */
-  .select-group::after {
-    content: "V";
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    transform: translateY(-52%);
-    font-size: .7rem;
-    color: black;
-    pointer-events: none;
-  }
+ .select-group::after {
+  content: "";
+  pointer-events: none;     /* la souris « passe à travers » */
+  position: absolute;
+  right: 14px;
+  top: 55%;
+  transform: translateY(-50%);
+  width: 12px;              /* largeur de la flèche */
+  height: 7px;              /* hauteur */
+
+  /* SVG « chevron » (épais, bords arrondis) encodé en data-URI */
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23212121' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+              no-repeat center / contain;
+}
   
   .search-btn {
     background: linear-gradient(90deg, #19d2cc, #01c0e3);
@@ -489,7 +510,8 @@ img {
   display: flex;               /* label + select côte-à-côte   */
   align-items: center;
   gap: .8rem;                  /* espace entre label et menu   */
-  position: relative;          /* pour la flèche ::after        */
+  position: relative;  
+  margin-top: 0;        /* pour la flèche ::after        */
 }
 
 .sort-group label {
@@ -504,23 +526,14 @@ img {
 .sort-group select {
   font-size: 0.88rem;          /* texte plus grand             */
   min-width: 180px;
-  padding: .65rem 2.6rem .65rem 1rem;
-  border: 1px solid #c7ced4;
+    padding: .75rem 1rem .75rem 0.5rem;
+      border: 1px solid #c7ced4;
   border-radius: 8px;
   color: #2c2c2c;
 }
 
 /* flèche ▼ personnalisée */
-.sort-group::after {
-  content: "⌄";
-  position: absolute;
-  right: 18px;
-  top: 50%;
-  transform: translateY(-52%);
-  font-size: .75rem;
-  color: #2c2c2c;
-  pointer-events: none;
-}
+
 
 /* retire la flèche native sous Edge/IE */
 .sort-group select::-ms-expand { display: none; }

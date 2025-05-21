@@ -18,7 +18,6 @@
 .login * {
   box-sizing: border-box;
   margin: 0;
-  padding: 0;
 }
 
 .login body {
@@ -116,8 +115,12 @@
   width: 100%;
   max-width: 1180px;
   margin: 48px auto;
-  padding: 0 24px;
-  gap: 56px;
+  align-items: center;
+  gap: 10rem;
+}
+.login.carousel,
+.signin {
+  flex: 1 1 0;            /* grow = 1, shrink = 1, basis = 0           */
 }
 
 .login .content .carousel,
@@ -132,14 +135,11 @@
    Carousel (left)
 --------------------------------------- */
 .login .carousel {
-  min-height: 400px;
+ padding: 2rem 1rem;     /* marge intérieure plus légère             */
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;/* centre le contenu verticalement          */
   text-align: center;
-  padding: 2rem 1rem;
-  max-width: 400px;
-  margin: 0 auto;
 }
 
 .login .slide-title {
@@ -178,9 +178,10 @@
 }
 
 .login .slide-img {
-  width: 2200px;
-  height: 550px;
-  margin-bottom: 16px;
+  width: 100%;             /* rétrécit proportionnellement             */
+  max-width: 1000px;       /* plafonne la largeur absolue              */
+  height: auto;           /* conserve le ratio                         */
+  margin: 0 auto 1.2rem;
 }
 
 .login .dots {
@@ -330,68 +331,6 @@
 /* ---------------------------------------
    Footer
 --------------------------------------- */
-.login .footer {
-  background: #96DCD7;
-  padding: 3.5rem 5%;
-  color: #fff;
-  margin-top: auto;
-}
-
-.login .footer p {
-  max-width: 360px;
-  margin: 0 0 24px;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.login .footer-cols {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 56px;
-}
-
-.login .footer h4 {
-  margin-bottom: 8px;
-  font-size: 16px;
-}
-
-.login .footer ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  line-height: 1.9;
-  font-size: 14px;
-}
-
-.login .footer-block img.footer-logo {
-  height: 32px;
-  margin-bottom: 1rem;
-}
-
-.login .footer-block h4 {
-  font-size: 1rem;
-  font-weight: 700;
-  margin-bottom: .75rem;
-}
-
-.login .footer-block p,
-.login .footer-block li {
-  font-size: .9rem;
-  color: #eafefe;
-  line-height: 1.6;
-}
-
-.login .footer-block ul {
-  list-style: none;
-  padding: 0;
-}
-
-.login .social-icons {
-  font-size: 1.3rem;
-  display: flex;
-  gap: .6rem;
-  margin-top: 1rem;
-}
 
 /* ---------------------------------------
    FULL RESPONSIVE FOR LOGIN PAGE

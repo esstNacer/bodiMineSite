@@ -27,9 +27,12 @@ import NotificationsPage from './PagesPro/NotificationsPage';
 import ProfessionalCGU from './PagesPro/ProfessionalCGU';
 import ProfessionalDataPrivicy from './PagesPro/ProfessionalDataPrivicy';
 import Faq from './pages/info/Faq';
+import MenuPageMobile from './pages/MenuPage';
 
 import AddBlogPage from './Admin/AddBlogPage';
 import BannerPage from './Admin/BannerPage';
+import ProfessionalPage from './Admin/ProfessionalPage';
+import AdminDashboard from './Admin/AdminDashboard';
 
 export default function App() {
   return (
@@ -60,15 +63,17 @@ export default function App() {
       <Route path="/pro/plan" element={<ChoosePlan />} />
       <Route path="/pro/purchase-services" element={<PurchaseServicesPage />} />
       <Route path="/pro/notifications" element={<NotificationsPage />} />
+      <Route path="/menu" element={<MenuPageMobile />} />
+
+
 
 
 
       <Route path="/admin/blog" element={<AddBlogPage />} />
 <Route path="/admin/banner/patient" element={<BannerPage variant="patient" />} />
 <Route path="/admin/banner/pro"     element={<BannerPage variant="pro" />} />
-
-
-
+<Route path="/admin/professionals"     element={<ProfessionalPage />} />
+<Route path="/admin/dashboard"     element={<AdminDashboard />} />
 
 
     </Routes>

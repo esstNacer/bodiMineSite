@@ -8,7 +8,7 @@ import ordLogo   from '../images/ordre.png';
 import sslLogo   from '../images/ssl.png';
 import rgpdLogo  from '../images/rgpd.png';
 import trustLogo from '../images/trust.png';
-import bodyMine  from '../images/logobodymine.png';
+import bodyMine  from '../images/LogoBODYMINE.png';
 import { FiHome, FiSearch } from 'react-icons/fi';
 import { UserContext } from '../components/UserContext';
 import Header from '../components/Header';

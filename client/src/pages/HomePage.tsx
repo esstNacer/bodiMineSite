@@ -22,7 +22,7 @@ import doctorImage from "../images/doctor.png";
 import clinic1 from "../images/clinic1.png";
 import clinic2 from "../images/clinic2.png";
 import clinic3 from "../images/clinic3.png";
-import bodyMine from "../images/logobodymine.png";
+import bodyMine from "../images/LogoBODYMINE.png";
 import { FaHeart, FaHeartbeat, FaRegHeart, FaUserMd } from "react-icons/fa";
 import Footer from "../components/Footer";
 import { IoFilterSharp } from "react-icons/io5";
@@ -287,104 +287,106 @@ export default function HomePage() {
   
       {/* Searchbar */}
       <section className="searchbar">
-      {/* ───────── Ligne 1 ───────── */}
-      <div className="search-row">
-        {/* Recherche « Doctor, Hospital… » */}
-        <div className="input-group">
-          <FiSearch className="icon" />
-          <input
-            type="text"
-            placeholder="Doctor, Hospital, Dental"
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-          />
-        </div>
 
-        {/* Localisation */}
-          <div className="loc">
-          <FiMapPin className="icon" />
-          <input
-            type="text"
-            placeholder="Location"
-            value={localisation}
-            onChange={e => setLocation(e.target.value)}
-          />
-          </div>
+  {/* ─────────── Bloc 1 : Doctor + (Speciality & Country) ─────────── */}
+  <div className="field-col">
+    {/* Doctor */}
+    <div className="input-group">
+      <FiSearch className="icon" />
+      <input
+        type="text"
+        placeholder="Doctor, Hospital, Dental"
+        value={query}
+        onChange={e => setQuery(e.target.value)}
+      />
+    </div>
 
-        {/* Bouton Search */}
-        <button
-          className="search-btn"
-          onClick={() => handleProtectedNavigation('/search')}
+    {/* Speciality + Country (½–½) */}
+    <div className="field-row">
+      <div className="select-group">
+        <FaUserMd className="icon" />
+        <select
+          value={speciality}
+          onChange={e => setSpeciality(e.target.value)}
         >
-          Search
-        </button>
-
-        {/* Bouton filtre (layout/affichage) */}
-        <button className="filter-btn">
-          <IoFilterSharp className="icon" />
-        </button>
+          <option value="">Speciality</option>
+          {specialities.map(sp => (
+            <option key={sp.name} value={sp.name}>{sp.icon}</option>
+          ))}
+        </select>
       </div>
 
-      {/* ───────── Ligne 2 : filtres déroulants ───────── */}
-      <div className="filter-row">
-        {/* Speciality */}
-        <div className="select-group">
-          <FaUserMd className="icon" />
-          <select
-            value={speciality}
-            onChange={e => setSpeciality(e.target.value)}
-          >
-            <option value="">Speciality</option>
-            {specialitie.map(sp => (
-              <option key={sp} value={sp}>{sp}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Country */}
-        <div className="select-group">
-          <FiGlobe className="icon" />
-          <select
-            value={country}
-            onChange={e => setCountry(e.target.value)}
-          >
-            <option value="">Country</option>
-            {countries.map(c => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Activity */}
-        <div className="select-group">
-          <FaHeartbeat className="icon" />
-          <select
-            value={activity}
-            onChange={e => setActivity(e.target.value)}
-          >
-            <option value="">Activity</option>
-            <option value="clinic">Clinic</option>
-            <option value="hospital">Hospital</option>
-            <option value="doctor">Doctor</option>
-          </select>
-        </div>
-
-        {/* Sort By */}
-        <div className="select-group sort-group">
-  <label htmlFor="sortBy">Sort&nbsp;By</label>
-  <select
-    id="sortBy"
-    value={sortBy}
-    onChange={e => setSortBy(e.target.value)}
-  >
-    <option value="relevance">Relevance</option>
-    <option value="speciality">Speciality</option>
-    <option value="reviews">Reviews</option>
-    <option value="reviews">popularity</option>
-  </select>
-</div>
+      <div className="select-group">
+        <FiGlobe className="icon" />
+        <select
+          value={country}
+          onChange={e => setCountry(e.target.value)}
+        >
+          <option value="">Country</option>
+          {countries.map(c => (
+            <option key={c} value={c}>{c}</option>
+          ))}
+        </select>
       </div>
-    </section>
+    </div>
+  </div>
+
+  {/* ─────────── Bloc 2 : Location + Activity ─────────── */}
+  <div className="field-col">
+    {/* Location */}
+    <div className="loc">
+      <FiMapPin className="icon" />
+      <input
+        type="text"
+        placeholder="Location"
+        value={localisation}
+        onChange={e => setLocation(e.target.value)}
+      />
+    </div>
+
+    {/* Activity */}
+    <div className="select-group">
+      <FaHeartbeat className="icon" />
+      <select
+        value={activity}
+        onChange={e => setActivity(e.target.value)}
+      >
+        <option value="">Activity</option>
+        <option value="clinic">Clinic</option>
+        <option value="hospital">Hospital</option>
+        <option value="doctor">Doctor</option>
+      </select>
+    </div>
+  </div>
+
+  {/* ─────────── Bloc 3 : Sort By + Search ─────────── */}
+  <div className="field-col">
+    {/* Sort By */}
+    <div className="select-group sort-group">
+      <label htmlFor="sortBy">Sort&nbsp;By</label>
+      <select
+        id="sortBy"
+        value={sortBy}
+        onChange={e => setSortBy(e.target.value)}
+      >
+        <option value="relevance">Relevance</option>
+        <option value="speciality">Speciality</option>
+        <option value="reviews">Reviews</option>
+        <option value="popularity">Popularity</option>
+      </select>
+    </div>
+
+    {/* Search button */}
+    <button
+      className="search-btn"
+      onClick={() => handleProtectedNavigation('/search')}
+    >
+      Search
+    </button>
+  </div>
+
+</section>
+
   
       {/* Carousel */}
       <section className="home carousel">

@@ -1,7 +1,7 @@
 import { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CheckCircle, Eye, EyeOff, UploadCloud } from 'lucide-react';
-import logo from '../images/logobodymine.png';
+import logo from '../images/LogoBODYMINE.png';
 import heroDoctor from '../images/doctor-hero.png';
 import strip1 from '../images/strip1.png';
 import strip2 from '../images/strip2.png';

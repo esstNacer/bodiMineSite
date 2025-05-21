@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../assets/SignUpPage.css';
 
-import connectImg from '../images/connect.png';
-import bodyMineLogo  from '../images/logobodymine.png';
+import connectImg1 from '../images/connect.png';
+import connectImg from '../GIF/CONNECT.gif';
+
+import bodyMineLogo  from '../images/LogoBODYMINE.png';
 import bodyMineMobile from '../images/LogoMobile.png'
 
 import { FiHome, FiSearch } from 'react-icons/fi';

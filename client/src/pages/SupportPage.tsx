@@ -19,7 +19,7 @@ import { BsDot } from 'react-icons/bs';
 import '../assets/MyBodyProjectPage.css';   // même grille / sidebar / bannière
 import '../assets/SupportPage.css';         // (juste quelques règles pour le formulaire)
 
-import bodyMineLogo from '../images/logobodymine.png';
+import bodyMineLogo from '../images/LogoBODYMINE.png';
 import clinic1 from '../images/clinic1.png';
 import clinic2 from '../images/clinic2.png';
 import clinic3 from '../images/clinic3.png';

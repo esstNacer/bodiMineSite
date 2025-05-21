@@ -1,6 +1,6 @@
 // src/pages/EditProfilePage.tsx
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../assets/MyBodyProjectPage.css';          // on réutilise les styles
 import '../assets/EditProfile.css';                // (ta grille du formulaire)
 
@@ -15,9 +15,12 @@ import {
   FiTrash2,
   FiLogOut,
   FiCalendar,
+  FiArrowLeft,
+  FiCamera,
+  FiChevronDown,
 } from 'react-icons/fi';
 
-import bodyMineLogo from '../images/logobodymine.png';
+import bodyMineLogo from '../images/LogoBODYMINE.png';
 import clinic1 from '../images/clinic1.png';
 import clinic2 from '../images/clinic2.png';
 import clinic3 from '../images/clinic3.png';
@@ -26,10 +29,12 @@ import { UserContext, useUser } from '../components/UserContext';
 import { BsDot } from 'react-icons/bs';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import BottomNav from '../components/BottomNav';
+import useBreakpoint from '../hooks/useBreakpoint';
 
 export default function EditProfilePage() {
-  const { user, updateUser } =
-    useContext(UserContext) || ({ user: null, updateUser: () => {} } as any);
+  const { user, updateUser , token} =
+    useContext(UserContext) || ({ user: null, updateUser: () => {} } as any); const navigate = useNavigate();
     const { logout } = useUser();
   /* ------- carrousel ------- */
   const [slide, setSlide] = useState(0);
@@ -41,45 +46,97 @@ export default function EditProfilePage() {
     ];
 
   /* ------- formulaire ------- */
-  const [tab, setTab] = useState<'personal' | 'bmi'>('personal');
-  const [form, setForm] = useState({
+  const [tab, setTab] = useState<'personal'|'bmi'>('personal'); 
+    const [form, setForm] = useState({
     first_name: user?.first_name || '',
     last_name: user?.last_name || '',
     email: user?.email || '',
     address: user?.address || '',
     phone_number: user?.phone_number || '',
+    photo_url: user?.photo_url || '',
+    gender: user?.gender || '',
     birth_date: user?.birth_date || '',
     country: user?.country || '',
     blood_group: user?.blood_group || '',
     height_cm: user?.height_cm || '',
     weight_kg: user?.weight_kg || '',
-  });
+    favorite_specialization: user?.favorite_specialization || '',
+    });
+    const isMobile = useBreakpoint();
+  
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSave = async () => {
-    try {
-      if (!user?.patient_id) throw new Error('User ID not found');
+const handleSave = async () => {
+  try {
+    if (!user?.patient_id) throw new Error('User ID not found');
 
-      const res = await fetch(`/api/patients/${user.patient_id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+    /* ---------------- Token pour les requêtes protégées ---------------- */
+const authHeader: HeadersInit = {};
+console.log(token);
+if (token) authHeader['Authorization'] = `Bearer ${token}`;
+
+    /* ---------------- 1)  Upload de la photo (si modifiée) ------------- */
+    if (avatarFile) {
+      const fd = new FormData();
+      fd.append('photo', avatarFile);
+
+      const photoRes = await fetch('/api/patients/photo', {
+        method: 'POST',
+        headers: authHeader,      // NE PAS fixer Content-Type → FormData gère tout
+        body: fd,
       });
-      if (!res.ok) throw new Error((await res.json()).error || 'Update error');
 
-      const updated = await res.json();
-      updateUser(updated);
-      alert('Profile updated ✔️');
-    } catch (err: any) {
-      alert(err.message);
+      if (!photoRes.ok) {
+        const { error } = await photoRes.json();
+        throw new Error(error || 'Photo upload error');
+      }
     }
-  };
+
+    /* ---------------- 2)  Mise à jour des autres champs ---------------- */
+    const infoRes = await fetch(`/api/patients/${user.patient_id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...authHeader,
+      },
+      body: JSON.stringify(form),
+    });
+
+    if (!infoRes.ok) {
+      const { error } = await infoRes.json();
+      throw new Error(error || 'Update error');
+    }
+
+    /* ---------------- 3)  Contexte utilisateur à jour ------------------ */
+    const updated = await infoRes.json();
+    updateUser(updated);          // contexte / Redux / Zustand, etc.
+    alert('Profile updated ✔️');
+  } catch (err: any) {
+    alert(err.message);
+  }
+};
+
+
+
+  const [photoPreview, setPhotoPreview] = useState(form.photo_url);
+const [avatarFile, setAvatarFile] = useState(null);
+
+function handlePhotoChange(e:any) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  setAvatarFile(file);                         // tu l’enverras dans handleSave
+  setPhotoPreview(URL.createObjectURL(file));  // preview immédiat
+}
 
   /* ===================================================================== */
   return (
+
+    <>
+    {!isMobile && (
     <div className="home-wrapper">
 
     <div className="mybody-page">
@@ -156,7 +213,24 @@ export default function EditProfilePage() {
         {/* ——— FORMULAIRE ——— */}
         <section className="profile-editor">
           <h1>Edit Profile</h1>
+    {/* ────── Photo + bouton caméra ────── */}
+    <div className="profile-photo-row">
+      <div className="profile-photo">
+        <img src={photoPreview} alt="Profile" />
+      </div>
 
+      {/* input file caché + icône clickable */}
+      <input
+        id="photo-upload"
+        type="file"
+        accept="image/*"
+        hidden
+        onChange={handlePhotoChange}
+      />
+      <label htmlFor="photo-upload" className="photo-upload-btn" title="Change photo">
+        <FiCamera />
+      </label>
+    </div>
           <div className="tabs">
             <div
               className={tab === 'personal' ? 'tab active' : 'tab'}
@@ -300,5 +374,193 @@ export default function EditProfilePage() {
       <Footer />
     </div>
     </div>
+     )}
+    {isMobile && (
+  <div className="edit-profile-mobile">
+
+    {/* ───── header ───── */}
+    <header className="ep-header">
+      <button className="back-btn" onClick={() => navigate(-1)}>
+        <FiArrowLeft />
+      </button>
+
+      <div>
+        <h1>Account Settings</h1>
+        <p className="hint">
+          *Your profile is confidential. No one except you, can see your profile.
+        </p>
+      </div>
+    </header>
+
+    {/* ───── tabs ───── */}
+    <div className="ep-tabs">
+      <button
+        className={tab === 'personal' ? 'tab active' : 'tab'}
+        onClick={() => setTab('personal')}
+      >
+        Personal
+      </button>
+      <button
+        className={tab === 'bmi' ? 'tab active' : 'tab'}
+        onClick={() => setTab('bmi')}
+      >
+        BMI
+      </button>
+    </div>
+
+    {/* ───── avatar + bouton photo ───── */}
+    {tab === 'personal' && (
+      <div className="avatar-block">
+        <img
+          src={/*form.photo_url ||*/ 'https://i.pravatar.cc/96?u=patient'}
+          className="avatar"
+          alt="avatar"
+        />
+        <button className="photo-btn" /*onClick={handleChangePhoto /* à toi }*/>
+          <FiCamera />  Change Profile Picture
+        </button>
+      </div>
+    )}
+
+    {/* ───── formulaire ───── */}
+    <form className="ep-form">
+      {tab === 'personal' ? (
+        <>
+          <label className="ep-field">
+            <span className="ep-legend">First Name</span>
+            <input
+              name="first_name"
+              value={form.first_name}
+              onChange={handleChange}
+            />
+          </label>
+
+          <label className="ep-field">
+            <span className="ep-legend">Last Name</span>
+            <input
+              name="last_name"
+              value={form.last_name}
+              onChange={handleChange}
+            />
+          </label>
+
+          <label className="ep-field">
+            <span className="ep-legend">Email</span>
+            <input
+              name="email"
+              value={form.email}
+              disabled
+            />
+          </label>
+
+          {/* phone avec indicatif */}
+          {<label className="phone-field">
+            <span className="ep-legend">Phone Number</span>
+            <input
+              name="phone_number"
+              value={form.phone_number}
+              onChange={handleChange}
+              placeholder="81313782626"
+            />
+          </label>}
+
+          <label className="ep-field">
+            <span className="ep-legend">Address</span>
+            <input
+              name="address"
+              value={form.address}
+              onChange={handleChange}
+            />
+          </label>
+
+          <label className="ep-field">
+            <span className="ep-legend">Country</span>
+            <input
+              name="country"
+              value={form.country}
+              onChange={handleChange}
+            />
+          </label>
+
+          <label className="ep-field">
+            <span className="ep-legend">Birth Date</span>
+            <input
+              type="date"
+              name="birth_date"
+              value={
+                form.birth_date instanceof Date
+                  ? form.birth_date.toISOString().split('T')[0]
+                  : form.birth_date
+              }
+              onChange={handleChange}
+            />
+          </label>
+        </>
+      ) : (
+        /* ==== BMI TAB ==== */
+        <>
+         
+
+          <label className="ep-field">
+            <span className="ep-legend">Blood Group</span>
+            <input
+              name="blood_group"
+              value={form.blood_group}
+              onChange={handleChange}
+            />
+          </label>
+
+          <label className="ep-field">
+            <span className="ep-legend">Height (in cm)</span>
+            <input
+              type="number"
+              name="height_cm"
+              value={form.height_cm}
+              onChange={handleChange}
+            />
+          </label>
+
+          <label className="ep-field">
+            <span className="ep-legend">Weight (in kg)</span>
+            <input
+              type="number"
+              name="weight_kg"
+              value={form.weight_kg}
+              onChange={handleChange}
+            />
+          </label>
+
+          <label className="ep-field">
+            <span className="ep-legend">Gender</span>
+            <input
+              name="gender"
+              value={form.gender}
+              onChange={handleChange}
+            />
+          </label>
+
+          <label className="ep-field">
+            <span className="ep-legend">Favorite Specialization</span>
+            <select
+              name="favorite_specialization"
+              value={form.favorite_specialization}
+              onChange={handleChange}
+            >
+              <option value="Dentist">Dentist</option>
+              <option value="Dermatology">Dermatology</option>
+              <option value="Cardiology">Cardiology</option>
+            </select>
+          </label>
+        </>
+      )}
+    </form>
+
+    <button className="save-btn" onClick={handleSave}>
+      Save Changes
+    </button>
+
+  </div>
+)}
+             </>
   );
 }

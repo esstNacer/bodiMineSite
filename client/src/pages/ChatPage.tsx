@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import '../assets/ChatPage.css'
-import { FiHome, FiPhoneCall, FiSearch } from 'react-icons/fi'
+import { FiArrowLeft, FiCamera, FiHome, FiInfo, FiMoreVertical, FiPaperclip, FiPhoneCall, FiSearch, FiVideo } from 'react-icons/fi'
 import { IoSend } from 'react-icons/io5'
-import bodyMineLogo from '../images/logobodymine.png'
+import bodyMineLogo from '../images/LogoBODYMINE.png'
 import clinic1 from '../images/clinic1.png'
 import clinic2 from '../images/clinic2.png'
 import clinic3 from '../images/clinic3.png'
@@ -12,6 +12,9 @@ import { useUser } from '../components/UserContext'
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import useBreakpoint from '../hooks/useBreakpoint'
+import BottomNav from '../components/BottomNav'
+import MobileNavbar from '../components/MobileNavbar'
 
 interface Photo {
   photo_id: number
@@ -28,6 +31,10 @@ export default function ChatPage() {
   const [doctors, setDoctors] = useState<any[]>([])
   const [messages, setMessages] = useState<any[]>([])
     const [slide, setSlide] = useState(0);
+      const isMobile = useBreakpoint();
+      const [tab, setTab] = useState<'active' | 'ended'>('active');   // NEW
+
+    
   
   const carousel = [
         { src: clinic1, alt: "New Clinic Dental Care" },
@@ -125,6 +132,8 @@ export default function ChatPage() {
   )
 
   return (
+    <>
+    {!isMobile && (
     <div className='chat'>
     <div className="page">
             <Header className="navbar"/>
@@ -239,5 +248,186 @@ export default function ChatPage() {
       <Footer />
     </div>
     </div>
+        )}
+    {isMobile && (
+  <div className="chat-mobile">
+
+    {/* ───────── ÉCRAN 1 : LISTE DES CONVERSATIONS ───────── */}
+    {!selectedDoctorId && (
+      <>
+
+      <div className="list-screen">
+        <header className="mobile-header">
+          <h2>Chat</h2>
+        </header>
+
+        {/* barre recherche avec icône */}
+        <div className="search-wrapper">
+            <FiSearch className="search-icon" />
+            <input
+              type="text"
+              placeholder="Search conversation"
+              className="search-input"
+            />
+          </div>
+
+           {/* onglets ACTIVE / ENDED */}
+           <nav className="tabs">
+            <button
+              className={tab === 'active' ? 'current' : ''}
+              onClick={() => setTab('active')}
+            >
+              ACTIVE
+            </button>
+            <button
+              className={tab === 'ended' ? 'current' : ''}
+              onClick={() => setTab('ended')}
+            >
+              ENDED
+            </button>
+          </nav>
+
+        <ul className="chat-list">
+          {doctors.map(doc => (
+            <li
+              key={doc.professional_id}
+              className={`chat-item${
+                selectedDoctorId === doc.professional_id ? ' active' : ''
+              }`}
+              onClick={() => setSelectedDoctorId(doc.professional_id)}
+            >
+              <img
+                src={
+                  doc.photo_url ||
+                  `https://i.pravatar.cc/46?u=${doc.professional_id}`
+                }
+                alt={doc.full_name}
+              />
+              <div className="info">
+                <strong>Dr.{doc.full_name}</strong>
+                <span>{doc.specialization || 'Specialist'}</span>
+              </div>
+
+              {/* — méta : heure + badge non-lus (si dispo) — */}
+              <div className="meta">
+                <span className="time">
+                  {doc.lastMessageTime
+                    ? new Date(doc.lastMessageTime).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })
+                    : ''}
+                </span>
+                {!!doc.unread && <span className="badge">{doc.unread}</span>}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <BottomNav />
+      </>
+    )
+    }
+
+    {/* ───────── ÉCRAN 2 : DÉTAIL D’UN CHAT ───────── */}
+    {selectedDoctorId && selectedDoctor && (
+      <div className="detail-screen">
+        <header className="detail-header">
+          <button
+            className="back-btn"
+            onClick={() => setSelectedDoctorId(null)}
+          >
+            <FiArrowLeft />
+          </button>
+
+          <div className="info">
+            <img
+              src={
+                selectedDoctor.photo_url ||
+                `https://i.pravatar.cc/42?u=${selectedDoctor.professional_id}`
+              }
+              alt={selectedDoctor.full_name}
+            />
+            <div>
+              <strong>{selectedDoctor.full_name}</strong>
+              <p>{selectedDoctor.specialization || 'General Physician'}</p>
+            </div>
+          </div>
+
+          <div className="header-actions">
+  <button
+    className="menu-btn"
+    /* onClick={handleMoreOptions}  // si tu gères un menu */
+  >
+    <FiMoreVertical />
+  </button>
+</div>
+        </header>
+
+        <div className="chat-messages">
+          {messages.map((msg, i) => (
+            <div
+              key={i}
+              className={`message ${msg.sender === 'patient' ? 'right' : 'left'}`}
+            >
+              <div className="bubble">{msg.message}</div>
+              <span className="message-time">
+                {new Date(msg.timestamp).toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </span>
+            </div>
+          ))}
+        </div>
+
+     {/* ───────── zone de saisie ───────── */}
+<div className="chat-footer">
+  <div className="input-wrapper">
+    {/* icône appareil-photo (ex. ouvrir galerie ou caméra) */}
+    <button
+      type="button"
+      className="icon-btn"
+      //onClick={handleOpenCamera /* à créer si besoin */}
+    >
+      <FiCamera />
+    </button>
+
+    {/* icône trombone (joindre fichier) */}
+    <button
+      type="button"
+      className="icon-btn"
+      //onClick={handleAttach /* à créer si besoin */}
+    >
+      <FiPaperclip />
+    </button>
+
+    {/* champ texte */}
+    <input
+      type="text"
+      className="message-input"
+      placeholder="Send a Message ..."
+      value={message}
+      onChange={e => setMessage(e.target.value)}
+      disabled={!selectedDoctorId}
+    />
+
+    {/* envoi */}
+    <button
+      type="button"
+      className="send-btn"
+      onClick={handleSend}
+      disabled={!message.trim()}
+    >
+      <IoSend />
+    </button>
+  </div>
+</div>
+
+      </div>
+    )}
+  </div>
+)}
+             </>
   )
 }

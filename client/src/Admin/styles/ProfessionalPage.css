@@ -1,0 +1,180 @@
+/* —— Zone principale —— */
+/* 1 ▸ le viewport : 100% (pas 100vh) */
+html, body {
+  height: 100vh;
+  margin: 0;
+}
+
+/* 2 ▸ wrapper en flex plein écran */
+.admin-wrapper {
+  display: flex;
+  height: 100vh;                   /* ← obligatoire */
+}
+
+/* 3 ▸ sidebar fixe (+ scroll interne si longue) */
+.admin-sidebar {                  /* ← classe de ton composant */
+  width: 250px;                   /* par ex. */
+  flex-shrink: 0;                 /* ne pas se tasser */
+  height: 100vh;
+  overflow-y: auto;               /* elle peut défiler en interne */
+}
+
+/* 4 ▸ zone centrale qui peut défiler */
+/* 4 ▸ zone centrale qui peut défiler */
+.admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;          /* ← indispensable pour autoriser la réduction */
+  min-width: 0;           /* évite le débordement horizontal           */
+  height: 100vh;
+  padding: 24px;
+  background: #f9fafb;
+  overflow-y: auto;       /* seul vrai scroll                         */
+  overflow-x: hidden;
+}
+
+
+/* —— Fil d’Ariane —— */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #777;
+  margin-bottom: 16px;
+}
+.breadcrumb a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* —— Titre de page —— */
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #222;
+}
+
+/* —— Cartes génériques —— */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+/* —— Titre du formulaire —— */
+.add-banner-form h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+/* —— Labels & champs —— */
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.85rem;
+  color: #555;
+  font-weight: 600;
+}
+.form-input,
+.form-input[type="date"] {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 1.5px solid #d9d9d9;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+}
+.form-input:focus {
+  outline: none;
+  border-color: #4f46e5;
+}
+
+/* —— Case à cocher premium —— */
+.form-label.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+/* —— Disposition deux colonnes —— */
+.two-cols {
+  display: flex;
+  gap: 16px;
+}
+.two-cols > div {
+  flex: 1;
+}
+
+/* —— Barre d’actions (Save / Cancel) —— */
+.save-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* —— Boutons —— */
+.btn {
+  padding: 10px 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.btn.primary {
+  background: #4f46e5;
+  color: #fff;
+}
+.btn.primary:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.btn.light {
+  background: #f3f3f3;
+  color: #333;
+}
+
+/* —— Boutons du tableau —— */
+.tbl-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  margin: 0 4px;
+  color: #555;
+  transition: color 0.2s ease;
+}
+.tbl-btn.edit:hover { color: #0d9488; }   /* vert/teal */
+.tbl-btn.del:hover  { color: #dc2626; }   /* rouge */
+
+/* —— Tableau liste des pros —— */
+.banner-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.banner-table th,
+.banner-table td {
+  border-bottom: 1px solid #f1f1f1;
+  padding: 12px 8px;
+  font-size: 0.9rem;
+}
+.banner-table th {
+  text-align: left;
+  font-weight: 600;
+  color: #444;
+}
+.banner-table tbody tr:hover {
+  background: #fafafa;
+}

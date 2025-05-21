@@ -1,7 +1,7 @@
 // src/pages/DoctorListPage.tsx
 import React, { useState, useEffect } from 'react';
 import '../assets/Search.css';
-import bodyMineLogo from '../images/logobodymine.png';
+import bodyMineLogo from '../images/LogoBODYMINE.png';
 import { useUser } from '../components/UserContext';
 import { FiChevronDown, FiGlobe, FiHome, FiMapPin, FiSearch } from 'react-icons/fi';
 import { FaCircle, FaGlobe, FaHeart, FaHeartbeat, FaRegHeart, FaUserMd } from 'react-icons/fa';

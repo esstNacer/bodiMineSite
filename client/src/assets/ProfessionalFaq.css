@@ -11,6 +11,9 @@
   grid-template-columns: 240px 1fr;   /* sidebar | contenu */
   gap: 28px;
 }
+ html,body{
+    overflow: auto;
+  }
 
 /* -------- carte scrollable -------- */
 .faq-card{

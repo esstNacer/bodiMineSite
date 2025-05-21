@@ -1,6 +1,6 @@
 // src/components/MobileNavbar.tsx
 import { Link } from "react-router-dom";
-import bodyMine from "../images/logobodymine.png";
+import bodyMine from "../images/LogoBODYMINE.png";
 import "../assets/Home.css";
 
 interface MobileNavbarProps {

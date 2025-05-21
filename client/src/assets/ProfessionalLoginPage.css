@@ -18,6 +18,9 @@
   
     font-family:'Inter','Segoe UI',Arial,sans-serif;
   }
+  html,body{
+    overflow: auto;
+  }
   
   /* portée limitée au conteneur .paro ───────────────────*/
   .paro *,

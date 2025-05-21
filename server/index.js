@@ -16,6 +16,7 @@ import chatRoutes from './routes/chats.js';
 import notificationRoutes from './routes/notifications.js';
 import projectRouter from './routes/projects.js';
 import ProfessionalsPhotoRouter from './routes/professionalPhotos.js'
+import adminRouter from './routes/admin.routes.js';
 import path from 'path'
 
 function generateJWT(user) {
@@ -104,6 +105,9 @@ app.use('/api/chats', chatRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/projects', projectRouter);
 app.use('/api/photos', ProfessionalsPhotoRouter);
+app.use('/api/photos', ProfessionalsPhotoRouter);
+app.use('/api/admin', adminRouter);
+
 //app.use('/api/premium_subscriptions', paymentsRoutes);
 
 

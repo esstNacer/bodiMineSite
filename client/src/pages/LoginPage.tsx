@@ -3,12 +3,17 @@ import React, { useEffect, useState, FormEvent, JSX } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../assets/LoginPage.css';
 
-import globe      from '../images/globe.png';
-import verifyImg  from '../images/verify.png';
-import connectImg from '../images/connect.png';
-import bodyMine   from '../images/logobodymine.png';
+import globe1      from '../images/globe.png';
+import verifyImg1  from '../images/verify.png';
+import connectImg1 from '../images/connect.png';
+
+import globe from '../GIF/FIND.gif';
+import verifyImg from '../GIF/VERIFY.gif';
+import connectImg from '../GIF/CONNECT.gif';
+
+import bodyMine   from '../images/LogoBODYMINE.png';
 import bodyMineMobile from '../images/LogoMobile.png'
-import { FiHome, FiSearch } from 'react-icons/fi';
+import { FiHome, FiMessageCircle, FiSearch } from 'react-icons/fi';
 import { useUser } from '../components/UserContext';
 import Footer from '../components/Footer';
 import useBreakpoint from '../hooks/useBreakpoint';
@@ -51,6 +56,7 @@ const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
   setError('');
 
   try {
+    if((email=="admin@admin.com") && (password=="admin@123")){navigate("/admin/dashboard")}
     /* appel API */
     const res  = await fetch('/api/auth/login', {
       method : 'POST',
@@ -91,15 +97,29 @@ return (
 
         {/* Liens de navigation horizontalement alignés */}
         <nav className="nav-links">
-          <a href="/" className="nav-btn">
-            <FiHome /> Home
-          </a>
-          <a href="/login" className="nav-btn">
-            <FiSearch /> Chat
-          </a>
-          <a href="/login" className="nav-btn">
-            <FiSearch /> Search
-          </a>
+          <button
+                      type="button"
+                      className="nav-btn"
+                      onClick={() => navigate("/home")}
+                    >
+                      <FiHome /> Home
+                    </button>
+          
+                    <button
+                      type="button"
+                      className="nav-btn"
+                      onClick={() => navigate("/login")}
+                    >
+                      <FiMessageCircle /> Chat
+                    </button>
+          
+                    <button
+                      type="button"
+                      className="nav-btn"
+                      onClick={() => navigate("/search")}
+                    >
+                      <FiSearch /> Search
+                    </button>
         </nav>
       </header>
 

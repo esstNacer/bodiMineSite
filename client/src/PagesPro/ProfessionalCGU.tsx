@@ -6,7 +6,7 @@ import TopbarPro   from "../components/TopbarPro";
 import SidebarPro  from "../components/SidebarPro";
 
 import heroPic     from "../images/help.png";
-import logoBodyMine from "../images/logobodymine.png";
+import logoBodyMine from "../images/LogoBODYMINE.png";
 
 import "../assets/ProfessionalDashboard.css";   // variables + top/footer
 import "../assets/ProfessionalSupport.css";     // hero + grid de base

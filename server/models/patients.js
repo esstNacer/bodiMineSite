@@ -106,6 +106,21 @@ export const Patients = {
     );
     return result;
   },
+ updatePhoto: async (patient_id, photo_url) => {
+  await pool.query(
+    `UPDATE patients
+     SET photo_url = ?
+     WHERE patient_id = ?`,
+    [photo_url, patient_id]
+  );
+  const [rows] = await pool.query(
+  'SELECT photo_url FROM patients WHERE patient_id = ?',
+  [patient_id]
+);
+console.log('✅ Nouvelle photo enregistrée :', rows[0]);
+
+  return { patient_id, photo_url };
+},
   
 
   delete: async (id) => {

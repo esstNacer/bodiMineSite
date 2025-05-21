@@ -7,7 +7,7 @@ import TopbarPro   from "../components/TopbarPro";
 import SidebarPro  from "../components/SidebarPro";
 
 import heroPic      from "../images/help.png";
-import logoBodyMine from "../images/logobodymine.png";
+import logoBodyMine from "../images/LogoBODYMINE.png";
 
 import "../assets/ProfessionalDashboard.css";   /* styles communs (top-bar/foot) */
 import "../assets/ProfessionalSupport.css";     /* styles spécifiques Support   */

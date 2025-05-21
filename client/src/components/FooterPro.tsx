@@ -1,6 +1,6 @@
 // src/components/layout/Footer.tsx
 import { Link } from 'react-router-dom';          // or remove if you don’t use React-Router
-import logoBodyMine from '../images/logobodymine.png';  // adjust relative path if needed
+import logoBodyMine from '../images/LogoBODYMINE.png';  // adjust relative path if needed
 import '../assets/Footer.css';                            // optional global / module CSS
 
 const Footer: React.FC = () => (

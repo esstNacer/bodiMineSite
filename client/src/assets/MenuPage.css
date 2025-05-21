@@ -1,0 +1,96 @@
+@media (max-width: 991px) {
+
+    /* conteneur plein viewport (pas de scroll global) */
+    .menu-mobile {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0 1rem 70px;  /* 70px ≈ hauteur BottomNav */
+      background: #fff;
+      height: 100dvh;
+      overflow: hidden;
+      overflow-y: auto;                 /* ← autorise le scroll interne */
+      -webkit-overflow-scrolling: touch;/* scroll fluide iOS */
+      overscroll-behavior: contain;     /* évite le “rebond” global */
+    }
+    @supports not (height: 100dvh) {
+      .menu-mobile { height: -webkit-fill-available; }
+    }
+  
+    /* titre */
+    .page-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 1.2rem 0;
+    }
+  
+    /* bloc avatar */
+    .user-block {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0rem;
+    }
+    .avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .username { font-size: 1.2rem; font-weight: 600; }
+  
+    /* listes */
+    .menu-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .menu-list li {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+      cursor: pointer;
+    }
+    .menu-list li + li { border-top: 1px solid #f1f1f1; }
+  
+    /* icône carrée turquoise */
+    .icon-square {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      background: #C5F7F1;
+      display: grid; place-items: center;
+      font-size: 1.25rem;
+      color: #009d8b;
+      flex-shrink: 0;
+    }
+  
+    /* texte + flèche */
+    .label { flex: 1; font-size: 1rem; color: #0f1a25; }
+    .arrow { font-size: 1rem; color: #6c6c6c; }
+  
+    /* séparateur entre blocs */
+    .divider {
+      height: 1px;
+      border: none;
+      background: #f1f1f1;
+      margin: 1rem 0;
+    }
+  
+    /* bouton logout */
+    .logout-btn {
+      margin-top: auto;          /* colle en bas, au-dessus de la nav */
+      width: 100%;
+      height: 54px;
+      background: #fff;
+      border: 1px solid #f2f2f2;
+      border-radius: 12px;
+      color: #f44336;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 20px 10px;
+    }
+  
+    /* bottom nav déjà fixé ailleurs, mais on sécurise */
+  }
+  

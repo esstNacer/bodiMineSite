@@ -136,9 +136,10 @@
   }
   
   .greeting {
+    justify-content: space-between;
     display: flex; align-items: center; gap: 12px;
-    background: #fff; padding: 18px 22px;
-    border-radius: var(--radius); box-shadow: var(--shadow);
+    background: transparent; padding: 18px 22px;
+    border-radius: var(--radius); box-shadow: transparent;
   }
   .greet-avatar { width: 36px; height: 36px; border-radius: 50%; }
   
@@ -187,13 +188,7 @@
   .footer-col h4 { margin-bottom: 8px; font-size: 1rem; }
   .footer-col ul { list-style: none; line-height: 1.8; font-size: .9rem; }
   
-  /* ============ Responsive ============ */
-  @media (max-width: 950px) {
-    .content-grid { grid-template-columns: 1fr; }
-    .side-menu { flex-direction: row; overflow-x: auto; }
-    .menu-links, .hello-card { min-width: 200px; }
-    .projects-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-  }
+
   /* Confirmation overlay covering entire viewport */
 .confirm-overlay {
   position: fixed;
@@ -554,3 +549,319 @@
   background: #e74c3c;
   color: #fff;
 }
+/* =======================================================
+   MOBILE < 991 px – MyBodyProject  (version maquette finale)
+   ======================================================= */
+@media (max-width: 991px) {
+
+  /* —— Wrapper général —— */
+  .mobile-wrapper {
+    min-height: 100vh;
+    background: #F7F7F7;               /* gris très clair du fond */
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* —— Header dégradé + découpe arrondie —— */
+  .mobile-header-project {
+   position: relative;      /* crée un contexte empilé */
+    z-index: 1;              /* couche la plus basse */
+    background: #96DCD7;
+    padding: 30px 20px 120px;/* ↑ 120px pour que la carte puisse mordre dessus */
+    border-bottom-left-radius: 0px;
+    color:black;
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .header-inner .avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffffff;
+  }
+  .header-inner h2 {
+    font-size: 18px;
+    font-weight: 700;
+  }
+    .projects-card {
+    position: relative;      /* sort du flux mais conserve la place */
+    z-index: 10;             /* passe DEVANT le header */
+    margin-top: -100px;       /* chevauche généreusement le header */
+    background:#F9F9F9;
+    border-top-left-radius: 80px;   /* ↖ même rayon que sur la maquette */
+    padding: 20px 20px 100px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,.04);
+    min-height: calc(100vh - 180px);
+    overflow: hidden;  
+  }
+
+  /* —— Label “My body project” —— */
+  .section-label {
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 26px;             /* espace sous le label */
+    font-size: 15px;
+    font-weight: 700;
+    color: #000000;
+  }
+  .title-icon {
+        color: #00A99B;
+    font-size: 25px;
+    background: #C3F8F3;
+    padding: 2px 3px;
+    border-radius: 6px;
+  }
+
+  /* —— Bouton “Add new project” —— */
+  .add-project-btn {
+     display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    padding: 12px 26px;
+    border: 1px solid #DCDCDC;
+    border-radius: 16px;
+    background: #ffffff;
+    font-weight: 600;
+    font-size: 15px;
+    color: #2B2B2B;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  /* —— Liste des cartes —— */
+  .project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 0 0px 100px;
+  }
+  .project-card {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #ECECEC;
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .project-icon {
+    flex: 0 0 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #13D0FF;              /* cercle tchoupi bleu clair comme sur le visuel */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #ffffff;
+    margin-right: 14px;
+  }
+  .project-info h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 2px;
+    color: #2B2B2B;
+  }
+  .proj-type {
+    font-size: 12px;
+    color: #909090;
+  }
+  .proj-desc { display: none; }        /* non présent sur la maquette */
+  .proj-date { display: none; }        /* idem */
+
+  /* —— Actions —— */
+  .project-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .project-actions .act {
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .act-edit { color: #6F6F6F; }
+  .act-del  { color: #F44336; }
+  .view-link { display: none; }        /* pas visible dans la maquette mobile */
+
+  /* —— Pop-up confirmation —— */
+  .confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .confirm-box {
+    width: 82%;
+    max-width: 320px;
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 26px 24px 24px;
+    text-align: center;
+  }
+  .confirm-buttons {
+    display: flex;
+    gap: 14px;
+    margin-top: 22px;
+  }
+  .confirm-buttons .btn {
+    flex: 1;
+    height: 44px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .confirm-buttons .cancel { background: #E0E0E0; color: #333333; }
+  .confirm-buttons .danger { background: #F44336; color: #ffffff; }
+  /* —— HEADER DU FORMULAIRE (flèche + titre + avatar) —— */
+.mobile-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  margin-top: 0px;        /* remonte pour chevaucher le header vert */
+  height: 100px;
+  background: #96DCD7;
+}
+.mobile-form-header .back-icon {
+  font-size: 22px;
+  color: #2B2B2B;
+}
+.mobile-form-header .form-title {
+  font-size: 17px;
+  font-weight: 600;
+  color: #2B2B2B;
+}
+.mobile-form-header .form-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+}
+
+/* —— CARTE BLANCHE CONTENANT LE FORMULAIRE —— */
+.form-card {
+  background: #F9F9F9;
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  padding: 20px;
+  margin-top: -16px;        /* petit recouvrement du header blanc */
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.04);
+}
+
+/* —— TABS INFO / FAVORITE DOCTOR —— */
+.modal-tabs {
+  border: none;
+  display: flex;
+  justify-content: center;
+  gap: 0px;
+  margin-bottom: 10px;
+}
+.modal-tabs button {
+  background: none;
+  border: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #909090;
+  padding: 6px 0;
+  position: relative;
+}
+.modal-tabs button.active {
+  color: #009688;
+  border: none;
+}
+.modal-tabs button.active::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: #009688;
+  border-radius: 50%;
+}
+
+/* —— CHAMPS DU FORMULAIRE —— */
+.input-group {
+  position: relative;
+  margin-bottom: 16px;
+}
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #CCCCCC;
+}
+.input-group input,
+.input-group select,
+.input-group textarea {
+  width: 100%;
+  padding: 12px 16px 12px 44px;
+  border: 1px solid #ECECEC;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #2B2B2B;
+  background: #F9F9F9;
+}
+.input-group.disabled input {
+  color: #CCCCCC;
+}
+.input-group.textarea textarea {
+  height: 100px;
+  resize: none;
+  padding-top: 12px;  /* aligne le texte */
+}
+
+/* —— OPTIONS DE MATCHING + BOUTON FERMER —— */
+.modal-footer {
+  margin-top: 24px;
+  padding: 0 20px 20px;
+}
+.modal-footer h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2B2B2B;
+  margin-bottom: 12px;
+}
+.option-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.opt-icon {
+  font-size: 20px;
+  color: #00A99B;
+}
+.close-project-btn {
+  width: 100%;
+  padding: 12px;
+  background: #FF5A5F;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 16px;
+}
+
+
+  /* —— (Les styles du formulaire / doctor cards fournis précédemment restent
+         valables ; on ne les répète pas ici car seuls les éléments visibles
+         sur la maquette de liste nécessitaient un ajustement.) —— */
+
+} /* —— fin @media —— */

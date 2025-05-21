@@ -9,6 +9,10 @@
   --pro-shadow     : 0 3px 8px rgba(0,0,0,.05);
   font-family:'Inter', Arial, sans-serif;
 }
+
+ html,body{
+    overflow: auto;
+  }
 .pro *{box-sizing:border-box;margin:0;padding:0}
 .pro img{display:block;max-width:100%}
 .pro ul{list-style:none}

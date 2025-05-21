@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { LogOut } from 'lucide-react'
 import { usePro } from './ProContext'
 
-import logo from '../images/logobodymine.png'
+import logo from '../images/LogoBODYMINE.png'
 import defaultAvatar from '../images/doctor-small.png'
 import '../assets/ProfessionalDashboard.css'
 

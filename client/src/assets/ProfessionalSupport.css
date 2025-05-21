@@ -9,6 +9,9 @@
     --border: #ccc;
     --highlight: #00bfbf;
   }
+   html,body{
+    overflow: auto;
+  }
   
   .page {
     display: flex;
@@ -265,6 +268,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 24px;
+    margin-left: 80px;
   }
   .footer-logo {
     height: 40px;

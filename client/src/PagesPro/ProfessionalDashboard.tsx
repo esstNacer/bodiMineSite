@@ -20,7 +20,7 @@ import {
 import { usePro } from "../components/ProContext";
 import "../assets/ProfessionalDashboard.css";
 
-import logoBodyMine from "../images/logobodymine.png";
+import logoBodyMine from "../images/LogoBODYMINE.png";
 import strip1 from "../images/strip1.png";
 import strip2 from "../images/strip2.png";
 import strip3 from "../images/strip3.png";

@@ -5,6 +5,9 @@
   .footer{
     background: #96DCD7;
   }
+  .footer-content {
+    margin-left: 80px;
+  }
   .social-icons a:hover {
     background:rgba(255,255,255,.30);
   }

@@ -31,8 +31,7 @@
   /* ──────────────────────  formulaire Add Banner  ────────────────────── */
   .add-banner-form {
     display: grid;
-    grid-template-columns: 1fr 220px;
-    gap: 32px;
+    gap: 3px;
   }
   
   .add-banner-form h3 {

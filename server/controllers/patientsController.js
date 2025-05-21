@@ -39,6 +39,44 @@ export async function update(req, res, next) {
     next(err);
   }
 }
+export async function uploadProfilePhoto(req, res) {
+  try {
+    const patient_id = req.user.patient_id;
+
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const photo_url = `/uploads/${req.file.filename}`;
+
+    await Patients.updatePhoto(patient_id, photo_url);
+    
+
+    res.status(200).json({ message: 'Profile photo updated', photo_url });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to upload photo' });
+  }
+}
+export async function uploadProfilePhotoPublic(req, res) {
+  try {
+    const { patient_id } = req.body;
+
+    if (!patient_id || !req.file) {
+      return res
+        .status(400)
+        .json({ error: 'Missing patient_id or file' });
+    }
+
+    const photo_url = `/uploads/${req.file.filename}`;
+    await Patients.updatePhoto(patient_id, photo_url);
+
+    res.status(201).json({ message: 'Profile photo saved', photo_url });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to upload photo publicly' });
+  }
+}
 
 export async function remove(req, res, next) {
   try {

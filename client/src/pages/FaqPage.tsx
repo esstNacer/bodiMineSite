@@ -10,7 +10,7 @@ import { BsDot } from 'react-icons/bs';
 import '../assets/MyBodyProjectPage.css';  // nav + sidebar + footer + banner
 import '../assets/FaqPage.css';            // zone scroll FAQ
 
-import bodyMineLogo from '../images/logobodymine.png';
+import bodyMineLogo from '../images/LogoBODYMINE.png';
 import clinic1 from '../images/clinic1.png';
 import clinic2 from '../images/clinic2.png';
 import clinic3 from '../images/clinic3.png';

@@ -236,6 +236,44 @@
   .save-btn:hover {
     background: #19c7c7;
   }
+  /* ­──── Container alignant l’avatar et l’icône caméra */
+.profile-photo-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;           /* même espacement que sur la maquette */
+  margin-bottom: 32px; /* distance avec les tabs */
+}
+
+/* ­──── Cercle contenant la photo */
+.profile-photo {
+  width: 120px;        /* ≈ visuel */
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.profile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ­──── Bouton caméra (icône seule) */
+.photo-upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;     /* taille de l’icône */
+  color: #063e4b;      /* même vert foncé que tes titres */
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+}
+.photo-upload-btn:hover {
+  opacity: 0.8;
+}
+
   
   .footer {
     background: var(--primary);
@@ -280,162 +318,212 @@
     margin-top: 12px;
     font-size: 18px;
   }
-  /* =========================================================
-   📱  EDIT-PROFILE  –  Responsive max-width : 600 px
-   (colle ce bloc tout en bas de src/assets/EditProfile.css)
-========================================================= */
-@media (max-width: 600px) {
+  @media (max-width: 991px) {
 
-  /* 0 ▸ Structure verticale claire */
-  .page { display: flex; flex-direction: column; }
+    /* conteneur scrollable */
+    .edit-profile-mobile {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0 1rem 80px;        /* 80 = place BottomNav */
+      background: #fff;
+      height: 100dvh;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  
+    /* header */
+    .ep-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+    .back-btn {
+      width: 40px; height: 40px;
+      border: none;
+      border-radius: 10px;
+      background: #9ee6e3;
+      color: #004f59;
+      font-size: 1.25rem;
+      display: grid;
+      place-items: center;
+    }
+    .ep-header h1 { margin: 0; font-size: 1.4rem; font-weight: 700; }
+    .hint {
+      margin-top: 0rem;
+      font-size: .6rem;
+      color: #666;
+    }
+  
+    /* tabs */
+/* ─── barre d’onglets ─────────────────────────────────────────── */
+.ep-tabs {
+  gap: 10px;
+  display: flex;
+  background: #ffffff;          /* fond blanc */
+  border-radius: 10px;          /* coins très arrondis */
+  padding: 10px;                 /* « marge intérieure » pour voir le pill turquoise */
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);  /* léger relief */
+  margin-bottom: 1.2rem;
+}
 
-  /* 1 ▸ NAVBAR – avatar discret coin haut-droite */
-  .navbar {
-    position: relative;             /* pour positionner l’avatar */
-    flex-direction: column;
-    gap: .8rem;
-    padding: 1rem 1rem 1.6rem;
-    height: auto;
-    text-align: center;
+/* chaque onglet */
+.ep-tabs .tab {
+  background: transparent;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  color: #838A93;              /* gris inactif */
+  border-radius: 10px;         /* pill interne */
+  transition: background 0.25s, color 0.25s;
+  padding: 0.5rem 0;          /* hauteur du pill */
+  cursor: pointer;
+}
+
+/* onglet sélectionné */
+.ep-tabs .tab.active {
+  background: #96DCD7;         /* turquoise du mock-up */
+  color: #04C2C2;              /* texte bleu-vert (pas blanc) */
+}
+
+  
+    /* avatar bloc */
+    .avatar-block {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+    }
+    .avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .photo-btn {
+      flex: 1;
+      height: 44px;
+      background: #fff;
+      border: 2px solid black;
+      border-radius: 8px;
+      color: #004f59;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+    }
+  
+    /* formulaire */
+    .ep-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+    .ep-form input,
+    .ep-form select {
+      width: 100%;
+      height: 48px;
+      padding: 0 .9rem;
+      border: 1.5px solid black;
+      border-radius: 5px;
+      font-size: .95rem;
+    }
+    .ep-form label.disabled input {
+      background: #f5f5f5;
+      color: #9b9b9b;
+    }
+     /* conteneur du champ */
+  .ep-field {
+    position: relative;
+    display: block;
+    border: 1.5px solid #6d6a7a;      /* couleur bordure */
+    border-radius: 5px;
+    padding-top: 0rem;              /* place pour le label */
+    margin-bottom: 1.1rem;            /* espace entre champs */
   }
-  .main-nav {
-    width: 100%;
-    justify-content: center;
-    gap: 1rem;
-    font-size: .85rem;
-  }
-  .profile-mini {
+
+  /* légende “flottante” */
+  .ep-legend {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .profile-avatar { width: 36px; height: 36px; border-radius: 50%; }
-  .profile-name, .status-dot { display: none; }  /* on masque le texte */
+    top: -0.7rem;                     /* chevauche la bordure */
+    left: .9rem;
+    padding: 0 .35rem;
+    background: #fff;                 /* même fond que la page */
+    font-size: .78rem;
+    font-weight: 500;
+    color: black;  }
 
-  /* 2 ▸ CAROUSEL – pleine largeur swipeable */
-  .banner-carousel {
-    margin: .5rem 0 1rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-  }
-  .banner-carousel img {
-    width: 90%;
-    height: 150px;
-    border-radius: 12px;
-    scroll-snap-align: start;
-  }
-  .banner-carousel .dots { gap: 4px; }
-
-  /* 3 ▸ CONTENU PRINCIPAL empilé */
-  .content-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 0 1rem 1.5rem;
-  }
-
-  /* 3-a ▸ SIDEBAR / menu */
-  .side-menu {
-    order: 2;                        /* sous le formulaire sur mobile */
+  /* l’input / select à l’intérieur du conteneur */
+  .ep-field input,
+  .ep-field select {
+    margin-top: 0;
     width: 100%;
-    padding: 1rem;
-    border-radius: 12px;
-  }
-  .hello-card      { flex-direction: row; gap: 12px; }
-  .hello-avatar    { width: 48px; height: 48px; }
-
-  /* menu links pleine largeur */
-  .menu-links li a { padding: .75rem 1rem; font-size: .9rem; }
-
-  .danger-btn,
-  .logout-btn      { width: 100%; }
-
-  /* 3-b ▸ FORMULAIRE */
-  .profile-editor {
-    order: 1;
-    padding: 1rem;
-    border-radius: 12px;
-  }
-  .profile-editor h1 { font-size: 1.35rem; }
-
-  /* tabs empilés si nécessaire */
-  .tabs { flex-direction: column; }
-  .tab  { padding: .6rem; }
-
-  /* grille passe à 1 colonne */
-  .form-grid {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-  input, select { font-size: .9rem; }
-
-  .save-btn { width: 100%; margin-top: 1.2rem; }
-
-  /* 4 ▸ FOOTER – colonne unique */
-  .footer { padding: 2rem 1rem; text-align: center; }
-  .footer-wrap { display: flex; flex-direction: column; gap: 1.4rem; }
-  .footer-brand img { width: 120px; }
-  .footer-col ul    { line-height: 1.8; }
-}
-/* =========================================================
-   📱  EDIT-PROFILE  –  correctif “sidebar sous le carrousel”
-   (ajoute ces quelques lignes APRÈS le bloc mobile existant)
-========================================================= */
-@media (max-width: 600px) {
-
-  /* --- Empile proprement : 1) Carousel  2) Sidebar  3) Formulaire --- */
-  .banner-carousel { order: 0; }
-  .side-menu       { order: 1; }   /* passe juste après la bannière */
-  .profile-editor  { order: 2; }
-
-  /* --- Conteneur principal : bloc plutôt que flex pour éviter tout débordement --- */
-  .content-grid {
-    display: block;                /* force la pile verticale nette */
-    padding: 0 1rem 1.5rem;
+    height: 46px;
+    padding: 0 .9rem;
+    border: none;                     /* la bordure est sur .ep-field */
+    font-size: 1rem;
+    background: transparent;
   }
 
-  /* --- Sidebar pleine largeur + légère “carte” centrée --- */
-  .side-menu {
-    width: 100%;
-    max-width: 480px;              /* limite raisonnable */
-    margin: 0 auto 1.2rem;
-    padding: 1rem;
-    border-radius: 12px;
-    background: var(--white);
-    box-shadow: 0 4px 12px rgb(0 0 0 / .06);
+  /* état désactivé (ex. email) */
+  .ep-field.disabled {
+    opacity: .6;
   }
 
-  /* titre & avatar de la carte “Hello…” centrés */
-  .hello-card {
-    justify-content: flex-start;
-    gap: 12px;
-    margin-bottom: 1rem;
-  }
-  .hello-avatar { width: 48px; height: 48px; }
+  /* variante select : petite flèche système */
+  .ep-field select { appearance: none; }
 
-  /* liens du menu : bordure fine pour bien se détacher */
-  .menu-links li a {
-    padding: .75rem 1rem;
-    border: 1px solid #e5f3f3;
-    border-radius: 8px;
-    font-size: .9rem;
+  /* optionnel : flèche custom */
+  .ep-field select::-ms-expand { display: none; }
+  
+    /* phone field */
+    .phone-field {
+      position: relative;
+    }
+    .intl-code {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 72px;
+      display: flex;
+      align-items: center;
+      padding-left: .6rem;
+      border-right: 1.5px solid #b7b7b7;
+    }
+    .intl-code select {
+      appearance: none;
+      border: none;
+      background: transparent;
+      font-size: .95rem;
+    }
+    .chevron {
+      margin-left: .3rem;
+      pointer-events: none;
+    }
+    .phone-field input {
+      padding-left: 80px;          /* place pour l’indicatif */
+    }
+  
+    /* bouton save */
+    .save-btn {
+      width: 100%;
+      height: 52px;
+      margin: 1.6rem 0;
+      background: #9ee6e3;
+      color: #004f59;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+    }
+  
+    /* bottom nav */
   }
-
-  /* boutons Delete / Logout pleine largeur */
-  .danger-btn,
-  .logout-btn {
-    width: 100%;
-    margin-top: .6rem;
-  }
-
-  /* --- Formulaire occupe toute la largeur dispo --- */
-  .profile-editor {
-    width: 100%;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-
-}
+  

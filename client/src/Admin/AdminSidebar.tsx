@@ -27,7 +27,7 @@ interface SidebarProps {
 const sections: Section[] = [
   {
     title: "Dashboard",
-    items: [{ to: "/admin", label: "Dashboard", icon: <FiHome /> }],
+    items: [{ to: "/admin/dashboard", label: "Dashboard", icon: <FiHome /> }],
   },
   {
     title: "Access Manage",
@@ -55,7 +55,7 @@ const sections: Section[] = [
   },
   {
     title: "Users",
-    items: [{ to: "/admin/users", label: "Users", icon: <FiUser /> }],
+    items: [{ to: "/admin/professionals", label: "professionals", icon: <FiUser /> }],
   },
 ];
 

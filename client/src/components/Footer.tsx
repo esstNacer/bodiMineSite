@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaTiktok, FaTwitter, FaYoutube } from "react-icons/fa";
-import bodyMine from "../images/logobodymine.png";
+import bodyMine from "../images/LogoBODYMINE.png";
 import "../assets/Home.css";          // tes variables + .footer existants
 import "./Footer.css";                // 10 lignes d’addons (ci-dessous)
 import { useUser } from "./UserContext";
