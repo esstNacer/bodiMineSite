@@ -73,10 +73,8 @@ const handleSave = async () => {
   try {
     if (!user?.patient_id) throw new Error('User ID not found');
 
-    /* ---------------- Token pour les requêtes protégées ---------------- */
-const authHeader: HeadersInit = {};
-console.log(token);
-if (token) authHeader['Authorization'] = `Bearer ${token}`;
+    const authHeader: HeadersInit = {};
+    if (token) authHeader['Authorization'] = `Bearer ${token}`;
 
     /* ---------------- 1)  Upload de la photo (si modifiée) ------------- */
     if (avatarFile) {
@@ -85,10 +83,11 @@ if (token) authHeader['Authorization'] = `Bearer ${token}`;
 
       const photoRes = await fetch('/api/patients/photo', {
         method: 'POST',
-        headers: authHeader,      // NE PAS fixer Content-Type → FormData gère tout
+        headers: authHeader,
         body: fd,
       });
-
+      const updatedPhoto = await photoRes.json();
+      form.photo_url=updatedPhoto.photo_url;
       if (!photoRes.ok) {
         const { error } = await photoRes.json();
         throw new Error(error || 'Photo upload error');
@@ -110,16 +109,22 @@ if (token) authHeader['Authorization'] = `Bearer ${token}`;
       throw new Error(error || 'Update error');
     }
 
-    /* ---------------- 3)  Contexte utilisateur à jour ------------------ */
-    const updated = await infoRes.json();
-    updateUser(updated);          // contexte / Redux / Zustand, etc.
+    /* ---------------- 3)  Re-fetch complet du profil ------------------ */
+    const finalRes = await fetch(`/api/patients/${user.patient_id}`, {
+      headers: authHeader,
+    });
+
+    if (!finalRes.ok) throw new Error('Failed to fetch updated profile');
+
+    const fullUpdatedUser = await finalRes.json();
+    console.log(fullUpdatedUser)
+    updateUser(fullUpdatedUser); // ✅ mise à jour complète du contexte
+
     alert('Profile updated ✔️');
   } catch (err: any) {
     alert(err.message);
   }
 };
-
-
 
   const [photoPreview, setPhotoPreview] = useState(form.photo_url);
 const [avatarFile, setAvatarFile] = useState(null);
@@ -131,6 +136,7 @@ function handlePhotoChange(e:any) {
   setAvatarFile(file);                         // tu l’enverras dans handleSave
   setPhotoPreview(URL.createObjectURL(file));  // preview immédiat
 }
+console.log(user?.photo_url)
 
   /* ===================================================================== */
   return (
@@ -159,7 +165,7 @@ function handlePhotoChange(e:any) {
         <aside className="side-menu">
           <div className="hello-card">
             <img
-              src="https://i.pravatar.cc/64?img=12"
+              src={user?.photo_url}
               className="hello-avatar"
               alt="avatar"
             />

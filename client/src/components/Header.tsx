@@ -37,7 +37,7 @@ export default function Header({
 
   // petit helper
   const isActive = (path: string) => location.pathname === path;
-
+console.log(user?.photo_url);
   return (
     <header className={`navbar ${className}`}>
       {/* ------- Logo + liens principaux ------- */}

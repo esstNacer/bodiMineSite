@@ -107,17 +107,13 @@ export const Patients = {
     return result;
   },
  updatePhoto: async (patient_id, photo_url) => {
+  console.log(patient_id);
   await pool.query(
     `UPDATE patients
-     SET photo_url = ?
+     SET first_name = ?
      WHERE patient_id = ?`,
     [photo_url, patient_id]
   );
-  const [rows] = await pool.query(
-  'SELECT photo_url FROM patients WHERE patient_id = ?',
-  [patient_id]
-);
-console.log('✅ Nouvelle photo enregistrée :', rows[0]);
 
   return { patient_id, photo_url };
 },

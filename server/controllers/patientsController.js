@@ -52,7 +52,7 @@ export async function uploadProfilePhoto(req, res) {
     await Patients.updatePhoto(patient_id, photo_url);
     
 
-    res.status(200).json({ message: 'Profile photo updated', photo_url });
+    res.status(200).json({photo_url});
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to upload photo' });
@@ -71,7 +71,7 @@ export async function uploadProfilePhotoPublic(req, res) {
     const photo_url = `/uploads/${req.file.filename}`;
     await Patients.updatePhoto(patient_id, photo_url);
 
-    res.status(201).json({ message: 'Profile photo saved', photo_url });
+    res.status(201).json({photo_url });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to upload photo publicly' });
