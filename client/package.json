@@ -13,6 +13,7 @@
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
     "axios": "^1.8.4",
+    "country-telephone-data": "^0.6.3",
     "ls": "^0.2.1",
     "lucide-react": "^0.503.0",
     "npm": "^11.3.0",

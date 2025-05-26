@@ -1,5 +1,5 @@
 // src/pages/EditProfilePage.tsx
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext,  useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../assets/MyBodyProjectPage.css';          // on réutilise les styles
 import '../assets/EditProfile.css';                // (ta grille du formulaire)
@@ -31,6 +31,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import BottomNav from '../components/BottomNav';
 import useBreakpoint from '../hooks/useBreakpoint';
+import { allCountries } from 'country-telephone-data'; 
 
 export default function EditProfilePage() {
   const { user, updateUser , token} =
@@ -62,9 +63,18 @@ export default function EditProfilePage() {
     weight_kg: user?.weight_kg || '',
     favorite_specialization: user?.favorite_specialization || '',
     });
+      const europeanCountries = [
+    'Albania', 'Andorra', 'Armenia', 'Austria', 'Azerbaijan',
+    'Belarus', 'Belgium', 'Bulgaria', 'Croatia', 'Cyprus',
+    'Czech Republic', 'Denmark', 'Estonia', 'Finland', 'France',
+    'Georgia', 'Germany', 'Greece', 'Hungary', 'Iceland',
+    'Ireland', 'Italy', 'Lithuania', 'Luxembourg', 'Malta',
+    'Moldova', 'Monaco', 'Montenegro', 'North Macedonia',
+    'Norway', 'Poland', 'Portugal', 'Romania', 'Serbia',
+    'Turkey'
+  ]
     const isMobile = useBreakpoint();
-  
-
+  const countryCodes = allCountries.map((c: any) => `+${c.dialCode}`);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -220,120 +230,160 @@ console.log(user?.photo_url)
         <section className="profile-editor">
           <h1>Edit Profile</h1>
     {/* ────── Photo + bouton caméra ────── */}
-    <div className="profile-photo-row">
-      <div className="profile-photo">
-        <img src={photoPreview} alt="Profile" />
-      </div>
-
-      {/* input file caché + icône clickable */}
-      <input
-        id="photo-upload"
-        type="file"
-        accept="image/*"
-        hidden
-        onChange={handlePhotoChange}
-      />
+   <div className="profile-photo-row">
+  {/* Avatar + bouton photo */}
+  <div className="photo-upload-wrapper">
+    <div className="profile-photo">
+      <img src={photoPreview} alt="Profile" />
       <label htmlFor="photo-upload" className="photo-upload-btn" title="Change photo">
         <FiCamera />
       </label>
     </div>
-          <div className="tabs">
-            <div
-              className={tab === 'personal' ? 'tab active' : 'tab'}
-              onClick={() => setTab('personal')}
-            >
-              Personal
-            </div>
-            <div
-              className={tab === 'bmi' ? 'tab active' : 'tab'}
-              onClick={() => setTab('bmi')}
-            >
-              BMI
-            </div>
-          </div>
+    <input
+      id="photo-upload"
+      type="file"
+      accept="image/*"
+      hidden
+      onChange={handlePhotoChange}
+    />
+  </div>
 
-          <form className="form-grid">
-            {tab === 'personal' && (
-              <>
-                <label>
-                  First Name
-                  <input
-                    name="first_name"
-                    value={form.first_name}
-                    onChange={handleChange}
-                    placeholder="Enter value"
-                  />
-                </label>
-                <label>
-                  Surname
-                  <input
-                    name="last_name"
-                    value={form.last_name}
-                    onChange={handleChange}
-                    placeholder="Enter value"
-                  />
-                </label>
-                <label>
-                  Address
-                  <input
-                    name="address"
-                    value={form.address}
-                    onChange={handleChange}
-                    placeholder="Enter address"
-                  />
-                </label>
-                <label>
-                  Email
-                  <input
-                    name="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="Enter value"
-                  />
-                </label>
-                <label>
-                  Date of birth
-                  <div className="with-icon">
-                    <input
-                      type="date"
-                      name="birth_date"
-                      value={
-                        form.birth_date instanceof Date
-                          ? form.birth_date.toISOString().split('T')[0]
-                          : form.birth_date
-                      }
-                      onChange={handleChange}
-                    />
-                    <FiCalendar className="icon" />
-                  </div>
-                </label>
-                <label>
-                  Phone Number
-                  <div className="phone-field">
-                    <span>+213</span>
-                    <input
-                      name="phone_number"
-                      value={form.phone_number}
-                      onChange={handleChange}
-                      placeholder="912000000"
-                    />
-                  </div>
-                </label>
-                <label>
-                  Country
-                  <select
-                    name="country"
-                    value={form.country}
-                    onChange={handleChange}
-                  >
-                    <option value="">Select</option>
-                    <option value="France">France</option>
-                    <option value="Germany">Germany</option>
-                    <option value="USA">USA</option>
-                  </select>
-                </label>
-              </>
-            )}
+  {/* Onglets */}
+  <div className="tabs-container">
+    <div className="tabs">
+      <div
+        className={tab === 'personal' ? 'tab active' : 'tab'}
+        onClick={() => setTab('personal')}
+      >
+        Personal
+      </div>
+      <div
+        className={tab === 'bmi' ? 'tab active' : 'tab'}
+        onClick={() => setTab('bmi')}
+      >
+        BMI
+      </div>
+    </div>
+  </div>
+</div>
+
+         <form className="form-grid">
+  {tab === 'personal' && (
+    <>
+      {/* ── Colonne de gauche ── */}
+      <div className="column personal-column">
+        <h3>Personal</h3>
+
+        {/* First Name + Surname côte-à-côte */}
+        <div className="two-inputs">
+          <label>
+            First Name
+            <input
+              name="first_name"
+              value={form.first_name}
+              onChange={handleChange}
+              placeholder="Enter value"
+            />
+          </label>
+          <label>
+            Surname
+            <input
+              name="last_name"
+              value={form.last_name}
+              onChange={handleChange}
+              placeholder="Enter value"
+            />
+          </label>
+        </div>
+
+        {/* Address plein largeur */}
+        <label>
+          Address
+          <input
+            name="address"
+            value={form.address}
+            onChange={handleChange}
+            placeholder="Enter address"
+          />
+        </label>
+
+        {/* Date of birth plein largeur */}
+        <label>
+          Date of birth
+            <input
+              type="date"
+              name="birth_date"
+              value={
+                form.birth_date instanceof Date
+                  ? form.birth_date.toISOString().split('T')[0]
+                  : form.birth_date
+              }
+              onChange={handleChange}
+            />
+            
+        </label>
+      </div>
+
+      {/* ── Colonne de droite ── */}
+      <div className="column contact-column">
+        <h3>Contact</h3>
+
+        {/* Email plein largeur */}
+        <label>
+          Email
+          <input
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="Enter value"
+          />
+        </label>
+
+        {/* Code pays + numéro côte-à-côte */}
+      <label>
+              Phone Number
+              <div className="phone-group">
+                <select
+                  name="phone_code"
+                  
+                  onChange={handleChange}
+                  className="phone-code"
+                >
+                  {countryCodes.map((code: any) => (
+                    <option key={code} value={code}>
+                      {code}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  name="phone_number"
+                  className="phone-input"
+                  value={form.phone_number}
+                  onChange={handleChange}
+                  placeholder="912000000"
+                />
+              </div>
+            </label>
+
+        {/* Country plein largeur */}
+            <label>
+              Country
+              <select
+                name="country"
+                value={form.country}
+                onChange={handleChange}
+              >
+                <option value="">Select</option>
+                {europeanCountries.map(name => (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </label>
+      </div>
+    </>
+  )}
 
             {tab === 'bmi' && (
               <>
@@ -418,11 +468,11 @@ console.log(user?.photo_url)
     {tab === 'personal' && (
       <div className="avatar-block">
         <img
-          src={/*form.photo_url ||*/ 'https://i.pravatar.cc/96?u=patient'}
+          src={photoPreview || 'https://i.pravatar.cc/96?u=patient'}
           className="avatar"
           alt="avatar"
         />
-        <button className="photo-btn" /*onClick={handleChangePhoto /* à toi }*/>
+        <button className="photo-btn" onClick={handlePhotoChange  }>
           <FiCamera />  Change Profile Picture
         </button>
       </div>
