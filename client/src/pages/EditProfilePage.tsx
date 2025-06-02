@@ -3,6 +3,7 @@ import React, { useState, useContext,  useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../assets/MyBodyProjectPage.css';          // on réutilise les styles
 import '../assets/EditProfile.css';                // (ta grille du formulaire)
+import ConfirmationModal from '../components/ConfirmationModal';
 
 import {
   FiHome,
@@ -37,6 +38,11 @@ export default function EditProfilePage() {
   const { user, updateUser , token} =
     useContext(UserContext) || ({ user: null, updateUser: () => {} } as any); const navigate = useNavigate();
     const { logout } = useUser();
+  
+  // États pour les modales de confirmation
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  
   /* ------- carrousel ------- */
   const [slide, setSlide] = useState(0);
   const banners = [clinic1, clinic2, clinic3];
@@ -143,15 +149,62 @@ function handlePhotoChange(e:any) {
   const file = e.target.files[0];
   if (!file) return;
 
-  setAvatarFile(file);                         // tu l’enverras dans handleSave
+  setAvatarFile(file);                         // tu l'enverras dans handleSave
   setPhotoPreview(URL.createObjectURL(file));  // preview immédiat
 }
+
+// Fonction pour supprimer le compte utilisateur
+const handleDeleteAccount = async () => {
+  try {
+    if (!user?.patient_id) throw new Error('User ID not found');
+
+    const authHeader: HeadersInit = {};
+    if (token) authHeader['Authorization'] = `Bearer ${token}`;
+
+    const response = await fetch(`/api/patients/${user.patient_id}`, {
+      method: 'DELETE',
+      headers: authHeader
+    });
+
+    if (!response.ok) {
+      const { error } = await response.json();
+      throw new Error(error || 'Delete account error');
+    }
+
+    // Déconnexion après suppression réussie
+    logout();
+  } catch (err: any) {
+    alert(err.message);
+  }
+};
+
+// Fonction pour gérer la déconnexion avec confirmation
+const handleLogoutConfirm = () => {
+  setShowLogoutModal(false);
+  logout();
+};
+
 console.log(user?.photo_url)
 
   /* ===================================================================== */
   return (
 
     <>
+    {/* Modaux de confirmation */}
+    <ConfirmationModal
+      isOpen={showLogoutModal}
+      type="logout"
+      onConfirm={handleLogoutConfirm}
+      onCancel={() => setShowLogoutModal(false)}
+    />
+
+    <ConfirmationModal
+      isOpen={showDeleteModal}
+      type="delete"
+      onConfirm={handleDeleteAccount}
+      onCancel={() => setShowDeleteModal(false)}
+    />
+    
     {!isMobile && (
     <div className="home-wrapper">
 
@@ -216,12 +269,10 @@ console.log(user?.photo_url)
                 <FiLifeBuoy /> Support
               </Link>
             </li>
-          </ul>
-
-          <button className="danger-btn">
+          </ul>          <button className="danger-btn" onClick={() => setShowDeleteModal(true)}>
             <FiTrash2 /> Delete Account
           </button>
-          <button className="logout-btn" onClick={logout}>
+          <button className="logout-btn" onClick={() => setShowLogoutModal(true)}>
             <FiLogOut /> Logout
           </button>
         </aside>

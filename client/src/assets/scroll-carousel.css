@@ -1,0 +1,130 @@
+/* Styles pour le composant ScrollCarousel */
+.scroll-carousel-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+/* Cache les barres de défilement tout en gardant la fonctionnalité */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE et Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari et Opera */
+}
+
+/* Optimisations pour le touch sur mobile */
+@media (max-width: 768px) {
+  .scroll-carousel-wrapper .carousel-arrow {
+    width: 44px !important;
+    height: 44px !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(0, 124, 138, 0.3) !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 999 !important; /* Augmenter pour s'assurer qu'ils sont au-dessus de tout */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+    opacity: 1 !important; /* Forcer l'affichage */
+    visibility: visible !important; /* S'assurer qu'ils sont visibles */
+    pointer-events: auto !important; /* S'assurer qu'ils sont cliquables */
+    touch-action: auto !important; /* Permettre les interactions tactiles */
+  }
+  
+  /* S'assurer que les flèches sont visibles dans les sections */
+  .section-speciality .carousel-arrow,
+  .section-doctors .carousel-arrow,
+  .section-clinics .carousel-arrow,
+  .section-articles .carousel-arrow {
+    display: flex !important;
+    opacity: 1 !important;
+  }
+  
+  /* Positionnement ajusté pour rester dans le cadre */
+  .scroll-carousel-wrapper .carousel-arrow.prev {
+    left: 4px !important; 
+    right: auto !important;
+  }
+
+  .scroll-carousel-wrapper .carousel-arrow.next {
+    right: 4px !important;
+    left: auto !important;
+  }
+  
+  /* Zone de toucher plus grande */
+  .scroll-carousel-wrapper .carousel-arrow::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+  }
+  
+  @keyframes gentle-pulse {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-50%) scale(1.05); }
+  }
+}
+
+/* Support pour le snap obligatoire sur mobile */
+.scroll-carousel-wrapper > div {
+  -webkit-overflow-scrolling: touch !important;
+  scroll-behavior: smooth !important;
+  scroll-snap-type: x mandatory !important;
+  position: relative;
+  /* Ajouter un peu de padding pour éviter que le contenu ne touche les bords */
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+/* S'assurer que le contenu principal du caroussel a de l'espace pour les flèches */
+.scroll-carousel-wrapper {
+  padding: 0 5px;
+  box-sizing: border-box;
+  overflow-x: hidden !important;
+}
+
+/* Style spécifique pour le contrôle du caroussel sur mobile */
+@media (max-width: 768px) {
+  /* Ajouter un conteneur invisible pour s'assurer que les flèches restent visibles */
+  .scroll-carousel-wrapper::before,
+  .scroll-carousel-wrapper::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 40px;
+    height: 100%;
+    z-index: 40;
+    pointer-events: none;
+  }
+  
+  .scroll-carousel-wrapper::before {
+    left: 0;
+  }
+  
+  .scroll-carousel-wrapper::after {
+    right: 0;
+  }
+}
+
+/* Styles pour les items du carousel */
+.scroll-carousel-item {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  transition: transform 0.3s ease;
+}
+
+.scroll-carousel-item:hover {
+  transform: translateY(-5px);
+}
+
+/* Feedback visuel lorsque les boutons sont désactivés */
+.scroll-carousel-wrapper .carousel-arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}

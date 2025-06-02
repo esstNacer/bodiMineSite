@@ -1,11 +1,18 @@
 // src/pages/HomePage.tsx
 import React, { useContext, useState, useEffect, useRef } from "react";
 import "../assets/Home.css";
+import "../assets/speciality-fixes.css"; // Import des styles améliorés pour les spécialités
+import "../assets/mobile-tailwind.css"; // Import mobile Tailwind optimizations
+import "../assets/responsive.css"; // Import responsive styles with animations
+import "../assets/mobile-carousel-fix.css"; // Import des styles minimaux pour les carrousels mobile
+import "../assets/scroll-carousel.css"; // Import des styles pour ScrollCarousel
+import ScrollCarousel from "../components/ScrollCarousel"; // Import du nouveau composant de carrousel
 import { Link, useNavigate } from "react-router-dom";
+import { addDefaultTestClinics } from "./ClinicSection";
 import { 
   FiSearch, FiMapPin, FiSliders, FiHome, 
   FiHeart, FiSmile, FiScissors, FiActivity, FiUser, 
-  FiThumbsUp, FiScissors as FiHairCut, FiBriefcase, 
+  FiThumbsUp, FiBriefcase, 
   FiUserCheck, FiRefreshCw, FiAward, 
   FiChevronLeft, FiChevronRight, FiMessageCircle,
   FiGlobe
@@ -17,7 +24,6 @@ import useBreakpoint from "../hooks/useBreakpoint";
 import BottomNav from "../components/BottomNav";
 import Header from "../components/Header";
 
-
 import doctorImage from "../images/doctor.png";
 import clinic1 from "../images/clinic1.png";
 import clinic2 from "../images/clinic2.png";
@@ -26,6 +32,7 @@ import bodyMine from "../images/LogoBODYMINE.png";
 import { FaHeart, FaHeartbeat, FaRegHeart, FaUserMd } from "react-icons/fa";
 import Footer from "../components/Footer";
 import { IoFilterSharp } from "react-icons/io5";
+import '../assets/scroll-carousel.css';
 
 interface Professional {
   professional_id: number;
@@ -46,8 +53,9 @@ interface Photo {
   type: string;
 }
 
-export default function HomePage() {
-  const { user, updateUser, setToken } = useUser();  const navigate = useNavigate();
+export default function HomePage() {  const { user, updateUser, setToken } = useUser();  
+  const navigate = useNavigate();
+  const location = useLocation();
   const [slide, setSlide] = useState(0);
   const [openedSections, setOpenedSections] = useState<string[]>([]);
 
@@ -76,7 +84,7 @@ export default function HomePage() {
     { name: "Abdominoplasty", icon: <FiActivity /> },
     { name: "Dental Care", icon: <FiUser /> },
     { name: "Buttock Surgery", icon: <FiThumbsUp /> },
-    { name: "Hair Surgery", icon: <FiHairCut /> },
+    { name: "Hair Surgery", icon: <FiScissors /> },
     { name: "Hand Surgery", icon: <FiBriefcase /> },
     { name: "Ear Surgery", icon: <FiHeart /> },
     { name: "Intimate Surgery", icon: <FiUserCheck /> },
@@ -99,7 +107,33 @@ export default function HomePage() {
   ];
 
   const [clinics, setClinics] = useState<any[]>([]);
-  const [articles, setArticles] = useState<any[]>([]);
+  const [articles, setArticles] = useState<any[]>([
+    { 
+      id: 1, 
+      title: "Understanding Cosmetic Surgery", 
+      image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y29zbWV0aWMlMjBzdXJnZXJ5fGVufDB8fDB8fHww",
+    },
+    { 
+      id: 2, 
+      title: "Benefits of Dental Care", 
+      image: "https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGRlbnRhbCUyMGNhcmV8ZW58MHx8MHx8fDA%3D",
+    },
+    { 
+      id: 3, 
+      title: "Facial Rejuvenation Trends", 
+      image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZmFjaWFsJTIwY2FyZXxlbnwwfHwwfHx8MA%3D%3D",
+    },
+    { 
+      id: 4, 
+      title: "Liposuction: What to Expect", 
+      image: "https://images.unsplash.com/photo-1511174944925-a99f10911d45?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Ym9keSUyMGNvbnRvdXJpbmd8ZW58MHx8MHx8fDA%3D",
+    },
+    { 
+      id: 5, 
+      title: "Hair Transplant Innovations", 
+      image: "https://images.unsplash.com/photo-1580421383874-7e139567454a?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8aGFpciUyMHRyYW5zcGxhbnR8ZW58MHx8MHx8fDA%3D",
+    }
+  ]);
   const [doctors, setDoctors] = useState<Professional[]>([]);
   const isMobile = useBreakpoint();
 
@@ -109,8 +143,7 @@ export default function HomePage() {
         ? prev.filter((name) => name !== sectionName)
         : [...prev, sectionName]
     );
-  };
-  useEffect(() => {
+  };  useEffect(() => {
     const params = new URLSearchParams(location.search);
     const tokenParam = params.get('token');
     const userParam = params.get('user');
@@ -126,7 +159,46 @@ export default function HomePage() {
         console.error('Error parsing user from URL:', err);
       }
     }
-  }, [location]);
+  }, [location, navigate, setToken, updateUser]);
+  
+  // Correction des carrousels - ajout des classes pour contrôler l'affichage des flèches
+  useEffect(() => {
+    // Attendre que React ait rendu tous les composants
+    const timeout = setTimeout(function() {
+      // 1. Identifier les sections concernées
+      const sections = document.querySelectorAll('.section-speciality, .section-doctors, .section-clinics, .section-articles');
+      
+      // 2. Pour chaque section
+      sections.forEach(function(section) {
+        // Trouver les boutons de navigation
+        const prevButtons = section.querySelectorAll('button[class*="prev"]');
+        const nextButtons = section.querySelectorAll('button[class*="next"]');
+        
+        // Ajouter la classe carousel-arrow aux boutons de navigation
+        prevButtons.forEach(function(button) {
+          if (!button.classList.contains('carousel-arrow')) {
+            button.classList.add('carousel-arrow');
+          }
+        });
+        
+        nextButtons.forEach(function(button) {
+          if (!button.classList.contains('carousel-arrow')) {
+            button.classList.add('carousel-arrow');
+          }
+        });
+        
+        // Vérifier si la section est ouverte (déjà dans openedSections)
+        const sectionName = section.classList[1].replace('section-', '');
+        if (openedSections.includes(sectionName)) {
+          section.classList.add('open');
+        } else {
+          section.classList.remove('open');
+        }
+      });
+    }, 500); // Délai pour s'assurer que React a bien rendu la page
+    
+    return () => clearTimeout(timeout);
+  }, [openedSections]); // Réexécuter lorsque openedSections change
     // auto-slide sur mobile
     useEffect(() => {
       if (!isMobile) return;
@@ -146,14 +218,22 @@ export default function HomePage() {
       } catch (err) {
         console.error('Error fetching doctors:', err);
       }
-    };
-    const fetchClinics = async () => {
+    };    const fetchClinics = async () => {
       try {
         const res = await fetch(`/api/professional/clinics`);
         const data: Professional[] = await res.json();
-        setClinics(data);
+        
+        if (data && data.length > 0) {
+          // Si on a des données réelles de l'API, les combiner avec nos cliniques par défaut
+          setClinics(prev => {
+            // Garder les cliniques test (IDs >= 9000) et ajouter les données réelles
+            const testClinics = prev.filter(c => c.professional_id >= 9000);
+            return [...testClinics, ...data];
+          });
+        }
       } catch (err) {
-        console.error('Error fetching doctors:', err);
+        console.error('Error fetching clinics:', err);
+        // En cas d'erreur, on garde nos cliniques par défaut
       }
     };
      useEffect(() => {
@@ -204,20 +284,44 @@ export default function HomePage() {
             }
           });
         }, [clinics]);
-          useEffect(() => { fetchClinics(); }, []);
+          // Ajouter d'abord les cliniques par défaut, puis essayer de récupérer les cliniques réelles
+        useEffect(() => {
+          // Utiliser la fonction du fichier ClinicSection pour ajouter des cliniques par défaut
+          addDefaultTestClinics(clinics, setClinics);
+          
+          // Ensuite essayer de récupérer les vraies cliniques
+          fetchClinics();
+        }, []);
       
-
   const handleToggleSection = (section: string) => {
     if (openedSections.includes(section)) {
       setOpenedSections(openedSections.filter((s) => s !== section));
+      // Retirer manuellement la classe 'open' de la section
+      const sectionElement = document.querySelector(`.section-${section}`);
+      if (sectionElement) {
+        sectionElement.classList.remove('open');
+      }
     } else {
       setOpenedSections([...openedSections, section]);
+      // Ajouter manuellement la classe 'open' à la section
+      const sectionElement = document.querySelector(`.section-${section}`);
+      if (sectionElement) {
+        sectionElement.classList.add('open');
+      }
     }
   };
-
   const handleScroll = (ref: React.RefObject<HTMLDivElement>, direction: "left" | "right") => {
     if (ref.current) {
-      const amount = 300;
+      // Ajuster le défilement en fonction de la largeur de l'écran et des éléments visibles
+      const isMobile = window.innerWidth < 768;
+      
+      // Trouver la largeur d'un élément du carrousel si possible
+      const item = ref.current.querySelector('.flex-none, .snap-start');
+      const itemWidth = item ? (item as HTMLElement).offsetWidth + 20 : 300; // 20px pour le gap
+      
+      // Sur mobile, faire défiler un élément à la fois pour une meilleure expérience
+      const amount = isMobile ? itemWidth : Math.min(ref.current.clientWidth * 0.8, 3 * itemWidth);
+      
       ref.current.scrollBy({
         left: direction === "left" ? -amount : amount,
         behavior: "smooth",
@@ -261,27 +365,34 @@ export default function HomePage() {
       <Header className="navbar"/>
   
       {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-left">
-          <h1>Find the Right Care,<br /><span>Anywhere in the World</span></h1>
-          <p>Connect with top-rated cosmetic surgeons and clinics.<br />Your journey to confidence starts here.</p>
-          <div className="hero-buttons">
-            <button className="btn-hero secondary" onClick={() => handleProtectedNavigation("/search")}>Explore</button>
+      <section className="hero w-full flex flex-row items-center justify-between gap-12 px-16 py-12 bg-[#eefaff] relative overflow-hidden z-10 min-h-[340px]" style={{paddingTop:0}}>
+        {/* Left: Title and CTA */}        <div className="hero-left flex flex-col justify-center min-w-[340px] max-w-[480px] z-10">
+          <h1 className="text-[2.4rem] leading-tight font-semibold text-gray-900 mb-4" style={{lineHeight:'1.2'}}>
+            Find the Right Care,<br />
+            <span className="text-[#7ddbdc]">Anywhere in the World</span>
+          </h1>
+          <p className="text-xl text-gray-700 mb-8">Connect with top-rated cosmetic surgeons and clinics.<br />Your journey to confidence starts here.</p>
+          <div className="hero-buttons flex gap-4 mt-2">
+            <button className="btn-hero secondary px-8 py-3 rounded-full text-lg font-medium shadow-sm transition-colors" onClick={() => handleProtectedNavigation("/search")}>Explore</button>
           </div>
         </div>
-        <div className="doctor-wrapper">
-  <img src={doctorImage} alt="Doctor" className="doctor-img" />
-  </div>
-  
-        <div className="hero-right">
-          
-            <h4>How BodyMine Works</h4>
-            <ol>
-              <li>Search for doctors by specialty or service.</li>
-              <li>Select based on experience, fee or rating.</li>
-              <li>Start chat and ask questions with your Doctors.</li>
-            </ol>
-            <Link to="/how-it-works" className="home-wrapper hero-right read-more">Read more</Link>
+        {/* Center: Doctor image with organic halo */}
+        <div className="doctor-wrapper relative flex items-center justify-center flex-1 min-w-[320px] max-w-[420px] h-full">
+          <span className="absolute w-[420px] h-[420px] bg-[radial-gradient(circle_at_center,_#92ded9_0%,_#eefaff_100%)] rounded-[62%_38%_48%_70%_/_58%_62%_35%_42%] z-0"></span>
+          <img src={doctorImage} alt="Doctor" className="doctor-img relative z-10 max-w-[360px] w-full h-auto" />
+        </div>
+        {/* Right: How it works */}
+        <div className="hero-right flex flex-col justify-center min-w-[320px] max-w-[340px] z-10">
+        <h4 className="text-3xl font-medium text-gray-900 mb-6 mt-0">How BodyMine Works</h4>          <ol className="list-none pl-0 max-w-[300px] ml-8 mt-2 counter-reset-[list-counter]">
+            <li className="relative pl-12 mb-4 text-lg leading-snug before:content-['1'] before:absolute before:left-0 before:top-0 before:w-10 before:h-10 before:rounded-full before:bg-[#7ddbdc] before:text-white before:flex before:items-center before:justify-center before:font-medium before:text-xl before:border before:border-[#7ddbdc] before:z-10">Search for doctors by specialty or service.</li>
+            <li className="relative pl-12 mb-4 text-lg leading-snug before:content-['2'] before:absolute before:left-0 before:top-0 before:w-10 before:h-10 before:rounded-full before:bg-[#7ddbdc] before:text-white before:flex before:items-center before:justify-center before:font-medium before:text-xl before:border before:border-[#7ddbdc] before:z-10">Select based on experience, fee or rating.</li>
+            <li className="relative pl-12 mb-4 text-lg leading-snug before:content-['3'] before:absolute before:left-0 before:top-0 before:w-10 before:h-10 before:rounded-full before:bg-[#7ddbdc] before:text-white before:flex before:items-center before:justify-center before:font-medium before:text-xl before:border before:border-[#7ddbdc] before:z-10">Start chat and ask questions with your Doctors.</li>
+          </ol>
+          <div className="flex justify-center">
+            <Link to="/how-it-works" className="mt-4 px-6 py-2 rounded-full text-base font-medium shadow-sm transition-colors bg-transparent border-2 border-[#04C2C2] text-[#04C2C2] hover:bg-[#92ded9] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#04C2C2] focus:ring-offset-2">
+              Read more
+            </Link>
+          </div>
         </div>
       </section>
   
@@ -309,9 +420,8 @@ export default function HomePage() {
           value={speciality}
           onChange={e => setSpeciality(e.target.value)}
         >
-          <option value="">Speciality</option>
-          {specialities.map(sp => (
-            <option key={sp.name} value={sp.name}>{sp.icon}</option>
+          <option value="">Speciality</option>          {specialities.map(sp => (
+            <option key={sp.name} value={sp.name}>{sp.name}</option>
           ))}
         </select>
       </div>
@@ -383,151 +493,148 @@ export default function HomePage() {
     >
       Search
     </button>
-  </div>
-
-</section>
+  </div>  </section>
 
   
       {/* Carousel */}
-      <section className="home carousel">
+      <section className="home carousel relative w-full">
+        <button 
+          className="carousel-arrow prev absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-11 md:h-11 rounded-full bg-white shadow-md flex items-center justify-center cursor-pointer text-[#007c8a] hover:bg-[#eefaff]"
+          onClick={() => setSlide(prev => (prev === 0 ? carousel.length - 1 : prev - 1))}
+        >
+          <FiChevronLeft className="text-xl" />
+        </button>
+        
         <div className="home carousel-inner">
           {carousel.map((item, i) => (
             <img key={i} src={item.src} alt={item.alt} className={i === slide ? "active" : ""} />
           ))}
         </div>
+        
+        <button 
+          className="carousel-arrow next absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-11 md:h-11 rounded-full bg-white shadow-md flex items-center justify-center cursor-pointer text-[#007c8a] hover:bg-[#eefaff]"
+          onClick={() => setSlide(prev => (prev + 1) % carousel.length)}
+        >
+          <FiChevronRight className="text-xl" />
+        </button>
       </section>
   
       {/* Sections */}
       <section className="sections">
-
-  {/* Specialities */}
-  <div className={`section section-speciality ${openedSections.includes("speciality") ? 'open' : ''}`}>
-    <h2 onClick={() => handleToggleSection("speciality")}>
-      Our Speciality <a onClick={() => handleProtectedNavigation("/search")}>See All</a>
+  {/* Specialities */}  <div className={`section section-speciality ${openedSections.includes("speciality") ? 'open' : ''}`}>
+    <h2 onClick={() => handleToggleSection("speciality")} className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center">
+      Our Speciality <a onClick={(e) => {e.stopPropagation(); handleProtectedNavigation("/search")}} className="ml-4 text-lg md:text-2xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
     </h2>
-    <div className="section-content">
-      {openedSections.includes("speciality") && (
-        <div className="specialities-carousel-wrapper">
-          <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(specialityRef, "left")} />
-          <div className="doctors-track" ref={specialityRef}>
-            {specialities.map((spec, index) => (
-              <div key={index} className="speciality-item">
-                <div className="speciality-icon">{spec.icon}</div>
-                <div className="speciality-name">{spec.name}</div>
-              </div>
-            ))}
-          </div>
-          <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(specialityRef, "right")} />
-        </div>
+    <div className="section-content">      {openedSections.includes("speciality") && (
+        <ScrollCarousel id="speciality-carousel" showArrows={true}>
+          {specialities.map((spec, index) => (
+            <div key={index} className="scroll-carousel-item min-w-[120px] bg-white rounded-xl shadow-md p-4 text-center flex flex-col items-center justify-center">
+              <div className="text-[2.5rem] text-[#19c7c7] mb-2">{spec.icon}</div>
+              <div className="font-bold text-base text-[#222]">{spec.name}</div>
+            </div>
+          ))}
+        </ScrollCarousel>
       )}
     </div>
   </div>
-
-  {/* Doctors */}
-  <div className={`section section-doctors ${openedSections.includes("doctors") ? 'open' : ''}`}>
-    <h2 onClick={() => handleToggleSection("doctors")}>
-      Top <span>Doctors</span> <a onClick={() => handleProtectedNavigation("/search")}>See All</a>
-    </h2>
-    <div className="section-content">
-      {openedSections.includes("doctors") && (
-        <section className="doctors-carousel-wrapper">
-          <button className="carousel-arrow prev" onClick={() => handleScroll(doctorsRef, "left")}>
-            <FiChevronLeft />
-          </button>
-          <div className="doctors-track" ref={doctorsRef}>
-            {doctors.map((doc) => (
-              <article className="doctor-card" key={doc.professional_id}>
-                <Link to={`/doctor/${doc.professional_id}`} className="doctor-link">
-                  <img className="doctor-photo" src={doc.photo_url || "https://i.imgur.com/1X3K1vF.png"} alt={doc.full_name} />
-                  <button className="doctor-fav">
-                    {doc.isFavorited ? <FaHeart /> : <FaRegHeart />}
-                  </button>
-                  <div className="doctor-info">
-                    <h4 className="doctor-name">Dr. {doc.full_name}</h4>
-                    <p className="doctor-title">{doc.specialization}</p>
-                    <h1 className="doctor-meta-home">{doc.country}</h1>
-                    <div className="doctor-stats">
-                      <span className="doctor-rating">⭐ {4.8}</span>
-                    </div>
-                    <span className="doctor-meta-home">
-                      {doc.practice_tenure ?? "N/A"} years
-                    </span>
-                    <button type="button" className="doctor-chat-btn" onClick={() => handleStartChat(doc.professional_id)}>
-                      💬 Chat
+  {/* Doctors */}  <div className={`section section-doctors ${openedSections.includes("doctors") ? 'open' : ''}`}>
+  <h2 onClick={() => handleToggleSection("doctors")} className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center">
+      Top <span className="ml-2">Doctors</span> <a onClick={(e) => {e.stopPropagation(); handleProtectedNavigation("/search")}} className="ml-4 text-xl md:text-3xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
+  </h2>
+  <div className="section-content">
+      {openedSections.includes("doctors") && (        <ScrollCarousel id="doctors-carousel" containerRef={doctorsRef} showArrows={true} className="doctors-carousel-wrapper" autoRotate={true} autoRotateInterval={3000}>
+          {doctors.map((doc) => (
+            <article className="scroll-carousel-item w-[240px] bg-white rounded-xl shadow-md overflow-hidden relative" key={doc.professional_id}>
+              <Link to={`/doctor/${doc.professional_id}`} className="block">
+                <img className="w-full h-[210px] object-cover object-center" src={doc.photo_url || "https://i.imgur.com/1X3K1vF.png"} alt={doc.full_name} />
+                <div className="p-[0.3rem_0.5rem_0.3rem]">
+                  <div className="flex justify-end mb-1">
+                    <button className="border-none bg-transparent flex items-center justify-center text-red-500 text-[1.2rem] cursor-pointer">
+                      {doc.isFavorited ? <FaHeart /> : <FaRegHeart />}
                     </button>
                   </div>
-                </Link>
-              </article>
-            ))}
-          </div>
-          <button className="carousel-arrow next" onClick={() => handleScroll(doctorsRef, "right")}>
-            <FiChevronRight />
-          </button>
-        </section>
+                  <h4 className="font-bold text-base m-0 leading-tight">Dr. {doc.full_name}</h4>
+                  <p className="text-[0.8rem] text-[#666] m-0 leading-tight">{doc.specialization}</p>
+                  <h1 className="text-[0.75rem] text-[#666] m-0 leading-tight">{doc.country}</h1>
+                  <div className="flex items-center gap-0 mt-[0.1rem] mb-0">
+                    <span className="text-[0.8rem] text-black">⭐ {4.8}</span>
+                  </div>
+                  <span className="text-[0.75rem] text-[#666] m-0 block leading-tight">
+                    {doc.practice_tenure ?? "N/A"} years
+                  </span>
+                  <button 
+                    type="button" 
+                    className="flex items-center mx-auto mt-[0.15rem] mb-[0.1rem] justify-center gap-[0.2rem] w-[70%] py-[0.35rem] rounded-md bg-[#00b6c8] hover:bg-[#0092a3] text-white text-[0.75rem] font-semibold border-none cursor-pointer transition-colors"
+                    onClick={() => handleStartChat(doc.professional_id)}
+                  >
+                    💬 Chat
+                  </button>
+                </div>
+              </Link>
+            </article>
+          ))}
+        </ScrollCarousel>
       )}
     </div>
-  </div>
-
-  {/* Clinics */}
-  <div className={`section section-clinics ${openedSections.includes("clinics") ? 'open' : ''}`}>
-    <h2 onClick={() => handleToggleSection("clinics")}>Top <span>Clinics</span></h2>
+  </div>{/* Clinics */}  <div className={`section section-clinics ${openedSections.includes("clinics") ? 'open' : ''}`}>
+    <h2 onClick={() => handleToggleSection("clinics")} className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center">
+      Top <span className="ml-2">Clinics</span> <a onClick={(e) => {e.stopPropagation(); handleProtectedNavigation("/search")}} className="ml-4 text-xl md:text-3xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
+    </h2>
     <div className="section-content">
       {openedSections.includes("clinics") && (
-        <section className="doctors-carousel-wrapper">
-          <button className="carousel-arrow prev" onClick={() => handleScroll(clinicsRef, "left")}>
-            <FiChevronLeft />
-          </button>
-          <div className="doctors-track" ref={clinicsRef}>
-            {clinics.map((clinic) => (
-              <article className="doctor-card" key={clinic.professional_id}>
-                <Link to={`/doctor/${clinic.professional_id}`} className="doctor-link">
-                  <img className="doctor-photo" src={clinic.photo_url || "https://i.imgur.com/1X3K1vF.png"} alt={clinic.full_name} />
-                  <button className="doctor-fav">
-                    {clinic.isFavorited ? <FaHeart /> : <FaRegHeart />}
-                  </button>
-                  <div className="doctor-info">
-                    <h4 className="doctor-name">{clinic.full_name}</h4>
-                    <p className="doctor-title">{clinic.specialization}</p>
-                    <h1 className="doctor-meta-home">{clinic.country}</h1>
-                    <div className="doctor-stats">
-                      <span className="doctor-rating">⭐ {4.8}</span>
-                    </div>
-                    <span className="doctor-meta-home">
-                      {clinic.practice_tenure ?? "N/A"} years
-                    </span>
-                    <button type="button" className="doctor-chat-btn" onClick={() => handleStartChat(clinic.professional_id)}>
-                      💬 Chat
+        <ScrollCarousel id="clinics-carousel" containerRef={clinicsRef} showArrows={true} className="clinics-carousel-wrapper">
+          {clinics.map((clinic) => (
+            <article className="scroll-carousel-item w-[240px] bg-white rounded-xl shadow-md overflow-hidden relative" key={clinic.professional_id}>
+              <Link to={`/doctor/${clinic.professional_id}`} className="block">
+                <img className="w-full h-[210px] object-cover object-center" src={clinic.photo_url || "https://i.imgur.com/1X3K1vF.png"} alt={clinic.full_name} />
+                <div className="p-[0.3rem_0.5rem_0.3rem]">
+                  <div className="flex justify-end mb-1">
+                    <button className="border-none bg-transparent flex items-center justify-center text-red-500 text-[1.2rem] cursor-pointer">
+                      {clinic.isFavorited ? <FaHeart /> : <FaRegHeart />}
                     </button>
                   </div>
-                </Link>
-              </article>
-            ))}
-          </div>
-          <button className="carousel-arrow next" onClick={() => handleScroll(clinicsRef, "right")}>
-            <FiChevronRight />
-          </button>
-        </section>
+                  <h4 className="font-bold text-base m-0 leading-tight">{clinic.full_name}</h4>
+                  <p className="text-[0.8rem] text-[#666] m-0 leading-tight">{clinic.specialization}</p>
+                  <h1 className="text-[0.75rem] text-[#666] m-0 leading-tight">{clinic.country}</h1>
+                  <div className="flex items-center gap-0 mt-[0.1rem] mb-0">
+                    <span className="text-[0.8rem] text-black">⭐ {4.8}</span>
+                  </div>
+                  <span className="text-[0.75rem] text-[#666] m-0 block leading-tight">
+                    {clinic.practice_tenure ?? "N/A"} years
+                  </span>
+                  <button 
+                    type="button" 
+                    className="flex items-center mx-auto mt-[0.15rem] mb-[0.1rem] justify-center gap-[0.2rem] w-[70%] py-[0.35rem] rounded-md bg-[#00b6c8] hover:bg-[#0092a3] text-white text-[0.75rem] font-semibold border-none cursor-pointer transition-colors"
+                    onClick={() => handleStartChat(clinic.professional_id)}
+                  >
+                    💬 Chat
+                  </button>
+                </div>
+              </Link>
+            </article>
+          ))}
+        </ScrollCarousel>
       )}
     </div>
-  </div>
-
-  {/* Articles */}
-  <div className={`section section-articles ${openedSections.includes("articles") ? 'open' : ''}`}>
-    <h2 onClick={() => handleToggleSection("articles")}>Health Article <a href="#">See All</a></h2>
+  </div>{/* Articles */}  <div className={`section section-articles ${openedSections.includes("articles") ? 'open' : ''}`}>
+    <h2 onClick={() => handleToggleSection("articles")} className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center">
+      Health Article <a onClick={(e) => {e.stopPropagation()}} href="#" className="ml-4 text-lg md:text-2xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
+    </h2>
     <div className="section-content">
       {openedSections.includes("articles") && (
-        <div className="specialities-carousel-wrapper">
-          <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(articlesRef, "left")} />
-          <div className="specialities-track" ref={articlesRef}>
-            {articles.map((article) => (
-              <div key={article.id} className="speciality-item">
-                <div className="speciality-icon">📚</div>
-                <div className="speciality-name">{article.title}</div>
-              </div>
-            ))}
-          </div>
-          <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(articlesRef, "right")} />
-        </div>
+        <ScrollCarousel id="articles-carousel" containerRef={articlesRef} showArrows={true} className="articles-carousel-wrapper">
+          {articles.map((article) => (
+            <article className="scroll-carousel-item w-[240px] bg-white rounded-xl shadow-md overflow-hidden relative" key={article.id}>
+              <a href="#" className="block">
+                <img
+                  className="w-full h-[300px] object-cover object-center"
+                  src={article.image}
+                  alt={article.title}
+                />
+              </a>
+            </article>
+          ))}
+        </ScrollCarousel>
       )}
     </div>
   </div>
@@ -585,208 +692,166 @@ export default function HomePage() {
       Login
     </button>
   </div>
-</section>
-
-      <div className="hero-right">
+</section>      <div className="hero-right">
           
-          <h4>How BodyMine Works</h4>
+          <h4 className="font-medium">How BodyMine Works</h4>
           <ol>
             <li>Search for doctors by specialty or service.</li>
             <li>Select based on experience, fee or rating.</li>
             <li>Start chat and ask questions with your Doctors.</li>
-          </ol>
-          <Link to="/how-it-works" className="hero-right read-more-tel">Read more</Link>
+          </ol>          <Link to="/how-it-works" className="inline-block mt-4 px-8 py-3 border-2 border-[#04C2C2] text-[#04C2C2] rounded-full font-medium text-base shadow-sm transition hover:bg-[#92ded9] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#04C2C2] focus:ring-offset-2">
+            Read more
+          </Link>
       </div>
   
-      {/* Searchbar *
-  
-      {/* Carousel */}
-      <section className="home carousel">
+      {/* Searchbar *      {/* Carousel */}
+      <section className="home carousel relative w-full">
+        <button 
+          className="carousel-arrow prev absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-11 md:h-11 rounded-full bg-white shadow-md flex items-center justify-center cursor-pointer text-[#007c8a] hover:bg-[#eefaff]"
+          onClick={() => setSlide(prev => (prev === 0 ? carousel.length - 1 : prev - 1))}
+        >
+          <FiChevronLeft className="text-xl" />
+        </button>
+        
         <div className="home carousel-inner">
           {carousel.map((item, i) => (
             <img key={i} src={item.src} alt={item.alt} className={i === slide ? "active" : ""} />
           ))}
         </div>
+        
+        <button 
+          className="carousel-arrow next absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-11 md:h-11 rounded-full bg-white shadow-md flex items-center justify-center cursor-pointer text-[#007c8a] hover:bg-[#eefaff]"
+          onClick={() => setSlide(prev => (prev + 1) % carousel.length)}
+        >
+          <FiChevronRight className="text-xl" />
+        </button>
       </section>
   
       {/* Sections */}
-      <section className="sections">
-  
-        {/* Specialities */}
-        <div className="section section-speciality">
-          <h2 onClick={() => handleToggleSection("speciality")}>Our Speciality <a onClick={() => handleProtectedNavigation("/search")}>See All</a></h2>
-          {openedSections.includes("speciality") && (
-            <div className="specialities-carousel-wrapper">
-              <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(specialityRef, "left")} />
-              <div className="specialities-track" ref={specialityRef}>
-                {specialities.map((spec, index) => (
-                  <div key={index} className="speciality-item">
-                    <div className="speciality-icon">{spec.icon}</div>
-                    <div className="speciality-name">{spec.name}</div>
-                  </div>
-                ))}
-              </div>
-              <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(specialityRef, "right")} />
-            </div>
-          )}
-        </div>
-  
-        {/* Doctors */}
-        <div className="section section-doctors">
-  <h2 onClick={() => handleToggleSection("doctors")}>
-    Top <span>Doctors</span><a  onClick={() => handleProtectedNavigation("/search")}>See All</a>
+      <section className="sections">        {/* Specialities */}        <div className={`section section-speciality ${openedSections.includes("speciality") ? 'open' : ''}`}>
+          <h2 onClick={() => handleToggleSection("speciality")} className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 flex items-center">
+            Our Speciality <a onClick={(e) => {e.stopPropagation(); handleProtectedNavigation("/search")}} className="ml-4 text-base md:text-xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
+          </h2>      {openedSections.includes("speciality") && (
+            <ScrollCarousel id="speciality-carousel" containerRef={specialityRef} showArrows={true} className="speciality-carousel-wrapper">
+              {specialities.map((spec, index) => (
+                <div key={index} className="scroll-carousel-item min-w-[110px] bg-white rounded-xl shadow-md p-3 text-center flex flex-col items-center justify-center">
+                  <div className="text-[2rem] text-[#19c7c7] mb-2">{spec.icon}</div>
+                  <div className="font-bold text-sm text-[#222]">{spec.name}</div>
+                </div>
+              ))}
+            </ScrollCarousel>)
+          }
+        </div>        {/* Doctors */}        <div className={`section section-doctors ${openedSections.includes("doctors") ? 'open' : ''}`}>
+  <h2 onClick={() => handleToggleSection("doctors")} className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 flex items-center">
+    Top <span className="ml-2">Doctors</span>
+    <a onClick={(e) => {e.stopPropagation(); handleProtectedNavigation("/search")}} className="ml-4 text-base md:text-xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
   </h2>
+  {openedSections.includes("doctors") && (    <ScrollCarousel id="mobile-doctors-carousel" containerRef={doctorsRef} showArrows={true} className="doctors-carousel-wrapper" autoRotate={true} autoRotateInterval={3000}>
+      {doctors.map((doc) => (
+        <article className="scroll-carousel-item w-[240px] bg-white rounded-xl shadow-md overflow-hidden relative" key={doc.professional_id}>
+          <Link to={`/doctor/${doc.professional_id}`} className="block">
+            {/* Photo */}
+            <img
+              className="w-full h-[210px] object-cover object-center"
+              src={doc.photo_url || "https://i.imgur.com/1X3K1vF.png"}
+              alt={doc.full_name}
+            />
 
-  {openedSections.includes("doctors") && (
-    <section className="doctors-carousel-wrapper">
-      {/* Flèche ← */}
-      <button
-        className="carousel-arrow prev"
-        onClick={() => handleScroll(doctorsRef, "left")}
-      >
-        <FiChevronLeft />
-      </button>
-
-      {/* Piste défilante */}
-      <div className="doctors-track" ref={doctorsRef}>
-        {doctors.map((doc) => (
-          <article className="doctor-card" key={doc.professional_id}>
-            <Link to={`/doctor/${doc.professional_id}`} className="doctor-link">
-              {/* Photo + icône favori */}
-              <img
-                className="doctor-photo"
-                src={doc.photo_url || "https://i.imgur.com/1X3K1vF.png"}
-                alt={doc.full_name}
-              />
-              <button className="doctor-fav">
-                {doc.isFavorited ? <FaHeart /> : <FaRegHeart />}
-              </button>
-
-              {/* Infos principales */}
-              <div className="doctor-info">
-                <h4 className="doctor-name">Dr.{doc.full_name}</h4>
-                <p className="doctor-title">{doc.specialization}</p>
-                <h1 className="doctor-meta-home">{doc.country}</h1>
-
-                {/* Note + ancienneté */}
-                <div className="doctor-stats">
-                  <span className="doctor-rating">
-                    ⭐ { 4.8}
-                  </span>
-                </div>
-                  <span className="doctor-meta-home">
-                    {doc.practice_tenure ?? "N/A"} years
-                  </span>
-                {/* Bouton Chat */}
-                <button
-                  type="button"
-                  className="doctor-chat-btn"
-                  onClick={() => handleStartChat(doc.professional_id)}
-                >
-                  💬 Chat
+            {/* Infos principales */}
+            <div className="p-[0.3rem_0.5rem_0.3rem]">
+              {/* Icône favori déplacée sous l'image */}
+              <div className="flex justify-end mb-1">
+                <button className="border-none bg-transparent flex items-center justify-center text-red-500 text-[1.2rem] cursor-pointer">
+                  {doc.isFavorited ? <FaHeart /> : <FaRegHeart />}
                 </button>
               </div>
-            </Link>
-          </article>
-        ))}
-      </div>
+              <h4 className="font-bold text-base m-0 leading-tight">Dr. {doc.full_name}</h4>
+              <p className="text-[0.8rem] text-[#666] m-0 leading-tight">{doc.specialization}</p>
+              <h1 className="text-[0.75rem] text-[#666] m-0 leading-tight">{doc.country}</h1>
 
-      {/* Flèche → */}
-      <button
-        className="carousel-arrow next"
-        onClick={() => handleScroll(doctorsRef, "right")}
-      >
-        <FiChevronRight />
-      </button>
-    </section>
-  )}
-</div>
-
-  
-        {/* Clinics */}
-        <div className="section section-clinics">
-          <h2 onClick={() => handleToggleSection("clinics")}>Top <span>Clinics</span></h2>
-          {openedSections.includes("clinics") && (
-    <section className="doctors-carousel-wrapper">
-      {/* Flèche ← */}
-      <button
-        className="carousel-arrow prev"
-        onClick={() => handleScroll(clinicsRef, "left")}
-      >
-        <FiChevronLeft />
-      </button>
-
-      {/* Piste défilante */}
-      <div className="doctors-track" ref={clinicsRef}>
-        {clinics.map((clinic) => (
-          <article className="doctor-card" key={clinic.professional_id}>
-            <Link to={`/doctor/${clinic.professional_id}`} className="doctor-link">
-              {/* Photo + icône favori */}
-              <img
-                className="doctor-photo"
-                src={clinic.photo_url || "https://i.imgur.com/1X3K1vF.png"}
-                alt={clinic.full_name}
-              />
-              <button className="doctor-fav">
-                {clinic.isFavorited ? <FaHeart /> : <FaRegHeart />}
+              {/* Note + ancienneté */}
+              <div className="flex items-center gap-0 mt-[0.1rem] mb-0">
+                <span className="text-[0.8rem] text-black">
+                  ⭐ { 4.8}
+                </span>
+              </div>
+              <span className="text-[0.75rem] text-[#666] m-0 block leading-tight">
+                {doc.practice_tenure ?? "N/A"} years
+              </span>
+              {/* Bouton Chat */}
+              <button
+                type="button" 
+                className="flex items-center mx-auto mt-[0.15rem] mb-[0.1rem] justify-center gap-[0.2rem] w-[70%] py-[0.35rem] rounded-md bg-[#00b6c8] hover:bg-[#0092a3] text-white text-[0.75rem] font-semibold border-none cursor-pointer transition-colors"
+                onClick={() => handleStartChat(doc.professional_id)}
+              >
+                💬 Chat
               </button>
-
-              {/* Infos principales */}
-              <div className="doctor-info">
-                <h4 className="doctor-name">{clinic.full_name}</h4>
-                <p className="doctor-title">{clinic.specialization}</p>
-                <h1 className="doctor-meta-home">{clinic.country}</h1>
-
-                {/* Note + ancienneté */}
-                <div className="doctor-stats">
-                  <span className="doctor-rating">
-                    ⭐ { 4.8}
-                  </span>
-                </div>
-                  <span className="doctor-meta-home">
-                    {clinic.practice_tenure ?? "N/A"} years
-                  </span>
-                {/* Bouton Chat */}
-                <button
-                  type="button"
-                  className="doctor-chat-btn"
-                  onClick={() => handleStartChat(clinic.professional_id)}
-                >
-                  💬 Chat
-                </button>
-              </div>
-            </Link>
-          </article>
-        ))}
-      </div>
-
-      {/* Flèche → */}
-      <button
-        className="carousel-arrow next"
-        onClick={() => handleScroll(clinicsRef, "right")}
-      >
-        <FiChevronRight />
-      </button>
-    </section>
-  )}
-        </div>
-  
-        {/* Articles */}
-        <div className="section section-articles">
-          <h2 onClick={() => handleToggleSection("articles")}>Health Article <a href="#">See All</a></h2>
-          {openedSections.includes("articles") && (
-            <div className="specialities-carousel-wrapper">
-              <FiChevronLeft className="speciality-arrow left" onClick={() => handleScroll(articlesRef, "left")} />
-              <div className="specialities-track" ref={articlesRef}>
-                {articles.map((article) => (
-                  <div key={article.id} className="speciality-item">
-                    <div className="speciality-icon">📚</div>
-                    <div className="speciality-name">{article.title}</div>
-                  </div>
-                ))}
-              </div>
-              <FiChevronRight className="speciality-arrow right" onClick={() => handleScroll(articlesRef, "right")} />
             </div>
+          </Link>
+        </article>
+      ))}
+    </ScrollCarousel>
+  )}
+</div>        {/* Clinics */}        <div className={`section section-clinics ${openedSections.includes("clinics") ? 'open' : ''}`}>
+          <h2 onClick={() => handleToggleSection("clinics")} className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 flex items-center">
+            Top <span className="ml-2">Clinics</span><a onClick={(e) => {e.stopPropagation(); handleProtectedNavigation("/search")}} className="ml-4 text-base md:text-xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
+          </h2>          {openedSections.includes("clinics") && (
+    <ScrollCarousel id="mobile-clinics-carousel" containerRef={clinicsRef} showArrows={true} className="clinics-carousel-wrapper">
+      {clinics.map((clinic) => (
+        <article className="scroll-carousel-item w-[240px] bg-white rounded-xl shadow-md overflow-hidden relative" key={clinic.professional_id}>
+          <Link to={`/doctor/${clinic.professional_id}`} className="block">
+            <img
+              className="w-full h-[210px] object-cover object-center"
+              src={clinic.photo_url || "https://i.imgur.com/1X3K1vF.png"}
+              alt={clinic.full_name}
+            />
+
+            <div className="p-[0.3rem_0.5rem_0.3rem]">
+              <div className="flex justify-end mb-1">
+                <button className="border-none bg-transparent flex items-center justify-center text-red-500 text-[1.2rem] cursor-pointer">
+                  {clinic.isFavorited ? <FaHeart /> : <FaRegHeart />}
+                </button>
+              </div>
+              <h4 className="font-bold text-base m-0 leading-tight">{clinic.full_name}</h4>
+              <p className="text-[0.8rem] text-[#666] m-0 leading-tight">{clinic.specialization}</p>
+              <h1 className="text-[0.75rem] text-[#666] m-0 leading-tight">{clinic.country}</h1>
+              <div className="flex items-center gap-0 mt-[0.1rem] mb-0">
+                <span className="text-[0.8rem] text-black">⭐ {4.8}</span>
+              </div>
+              <span className="text-[0.75rem] text-[#666] m-0 block leading-tight">
+                {clinic.practice_tenure ?? "N/A"} years
+              </span>
+              <button 
+                type="button" 
+                className="flex items-center mx-auto mt-[0.15rem] mb-[0.1rem] justify-center gap-[0.2rem] w-[70%] py-[0.35rem] rounded-md bg-[#00b6c8] hover:bg-[#0092a3] text-white text-[0.75rem] font-semibold border-none cursor-pointer transition-colors"
+                onClick={() => handleStartChat(clinic.professional_id)}
+              >
+                💬 Chat
+              </button>
+            </div>
+          </Link>
+        </article>
+      ))}
+    </ScrollCarousel>
+  )}
+        </div>        {/* Articles */}        <div className={`section section-articles ${openedSections.includes("articles") ? 'open' : ''}`}>
+          <h2 onClick={() => handleToggleSection("articles")} className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 flex items-center">
+            Health Article <a onClick={(e) => {e.stopPropagation()}} href="#" className="ml-4 text-base md:text-xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
+          </h2>
+          {openedSections.includes("articles") && (
+            <ScrollCarousel id="mobile-articles-carousel" containerRef={articlesRef} showArrows={true} className="articles-carousel-wrapper">
+              {articles.map((article) => (
+                <article className="scroll-carousel-item w-[240px] bg-white rounded-xl shadow-md overflow-hidden relative" key={article.id}>
+                  <a href="#" className="block">
+                    <img
+                      className="w-full h-[160px] object-cover object-center"
+                      src={article.image}
+                      alt={article.title}
+                    />
+                  </a>
+                </article>
+              ))}
+            </ScrollCarousel>
           )}
         </div>
   
@@ -794,9 +859,10 @@ export default function HomePage() {
   
       
   
-    </div>
-      )}
-       {isMobile && <BottomNav />}
+    </div>      )}
+        {/* Footer with responsive Tailwind styling */}
+      <Footer className="responsive-footer" />
+      {isMobile && <BottomNav />}
        </>
   );
   

@@ -599,9 +599,19 @@ img {
 
 /* liens dans les titres */
 .sections .section h2 a {
-  font-size: .85rem;
+  font-size: 1.2rem;  /* Taille augmentée pour "See all" */
   font-weight: 600;
   color: var(--primary);
+  margin-left: 10px;  /* Espacement par rapport au titre */
+  text-transform: uppercase;  /* Mise en majuscules pour renforcer la visibilité */
+  letter-spacing: 0.5px;  /* Espacement entre les lettres pour améliorer la lisibilité */
+  transition: transform 0.3s ease, color 0.3s ease;  /* Animation au survol */
+}
+
+/* Effet au survol */
+.sections .section h2 a:hover {
+  transform: scale(1.05);  /* Léger agrandissement au survol */
+  color: #04a5a5;  /* Légère variation de couleur */
 }
 
 /* styles des contenus animés à l’ouverture */
@@ -896,101 +906,30 @@ img {
   right: 10px;
 }
 
-.specialities-track {
-  display: flex;
-  overflow-x: auto;
-  gap: 1.5rem;
-  scroll-behavior: smooth;
-  padding: 1rem 2rem;
-  width: 100%;
-}
-
-.specialities-track::-webkit-scrollbar {
-  display: none;
-}
-
-.speciality-item {
-  min-width: 120px;
-  background: white;
-  border-radius: 12px;
-  padding: 1rem;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  transition: transform 0.3s;
-  flex-shrink: 0;
-}
-
-.speciality-item:hover {
-  transform: translateY(-5px);
-}
-
-.speciality-icon {
-  font-size: 2.5rem;
-  color: var(--primary-dark);
-  margin-bottom: 0.5rem;
-}
+/* Remplacé par Tailwind:
+.specialities-track: flex gap-5 overflow-x-auto snap-x snap-mandatory pb-2 scroll-smooth [&::-webkit-scrollbar]:hidden
+.speciality-item: flex-none min-w-[120px] bg-white rounded-xl shadow-md p-4 text-center transition-transform hover:-translate-y-[5px]
+.speciality-icon: text-[2.5rem] text-[#19c7c7] mb-2
+.speciality-name: font-bold text-base text-[#222]
+*/
 
 .speciality-name {
-  font-size: 0.95rem;
   font-weight: 600;
   color: var(--text);
 }
 
 /* ---- Carousel des Sections (Doctors, Clinics, Articles) ---- */
-.specialities-carousel-wrapper {
-  position: relative;
-  background: transparent;
-  padding: 2rem 5%;
-  border-radius: 16px;
-  overflow: hidden;
-  margin-top: 1rem;
-}
+/* Remplacé par Tailwind:
+.specialities-carousel-wrapper: relative p-8 overflow-hidden mt-4
+.specialities-track: flex gap-5 overflow-x-auto snap-x snap-mandatory pb-2 scroll-smooth [&::-webkit-scrollbar]:hidden
+.speciality-item: flex-none min-w-[120px] bg-white rounded-xl shadow-md p-4 text-center transition-transform hover:-translate-y-[5px] flex flex-col items-center justify-center
+*/
 
-.specialities-track {
-  display: flex;
-  overflow-x: auto;          /* scrolling horizontal */
-  scroll-behavior: smooth;   /* défilement fluide */
-  gap: 12px;                 /* espacement entre les éléments */
-  padding-bottom: 10px;      /* évite que le scroll masque le contenu */
-}
-
-/* cache la barre de scroll pour un rendu esthétique (optionnel) */
-.specialities-track::-webkit-scrollbar {
-  display: none;
-}
-
-
-.speciality-item {
-  flex: 0 0 auto;
-  background: transparent;
-  border-radius: 12px;
-  padding: 1rem;
-  min-width: 150px;
-  max-width: 180px;
-  text-align: center;
-  transition: all 0.3s ease;
-  scroll-snap-align: start;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.speciality-item:hover {
-  transform: translateY(-5px);
-}
-
-.speciality-icon {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  color: var(--primary-dark);
-}
-
-.speciality-name {
-  font-weight: 700;
-  font-size: 1rem;
-  color: var(--text);
-}
+/* Remplacé par Tailwind:
+.speciality-item:hover: hover:-translate-y-[5px]
+.speciality-icon: text-[2.5rem] text-[#19c7c7] mb-2
+.speciality-name: font-bold text-base text-[#222]
+*/
 /* docteur carousel */
 /* ───────────── 1. Wrapper général ───────────── */
 .doctors-carousel-wrapper {
@@ -1001,107 +940,39 @@ img {
 }
 
 /* ───────────── 2. Piste défilante ───────────── */
-.doctors-track {
-  display: flex;
-  gap: 1.25rem;                 /* espace régulier entre cartes */
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 0.5rem;       /* petit espace sous les cartes */
-  scroll-behavior: smooth;      /* défilement doux */
-}
-.doctors-track::-webkit-scrollbar { display: none; } /* masquage scrollbar */
+/* Remplacé par Tailwind: flex gap-5 overflow-x-auto snap-x snap-mandatory pb-2 scroll-smooth [&::-webkit-scrollbar]:hidden */
 
 /* ───────────── 3. Carte docteur ───────────── */
-.doctor-card {
-  scroll-snap-align: start;
-  flex: 0 0 220px;              /* largeur fixe → 4 cartes tiennent sur >1050 px */
-  background: #fff;
-  border-radius: 12px;
-  padding: 0;
-  box-shadow: 0 4px 14px rgba(0,0,0,.08);
-  overflow: hidden;
-  position: relative;
-  transition: transform .25s ease;
-}
-.doctor-card:hover { transform: translateY(-6px); }
+/* Remplacé par Tailwind: snap-start flex-none w-[220px] bg-white rounded-xl shadow-md overflow-hidden relative transition-transform duration-250 hover:-translate-y-[6px] */
 
 /* 3-a. Image (header) */
-.doctor-photo {
-  width: 100%;
-  height: 190px;
-  object-fit: cover;
-}
+/* Remplacé par Tailwind: w-full h-[210px] object-cover */
 
 /* 3-b. Icône « favori » (en haut à droite) */
-.doctor-fav {
-  position: absolute;
-  border: none;
-  top: 12.8rem;
-  right: 7px;
-  background: transparent;
-  display: flex;
-  place-items: center;
-  color: red;
-  font-size: 1.4rem;
-  cursor: pointer;
-}
+/* Remplacé par Tailwind: absolute top-[10px] right-[10px] border-none bg-white/80 flex items-center justify-center text-red-500 text-[1.4rem] cursor-pointer rounded-full w-[30px] h-[30px] */
 
 /* 3-c. Bloc infos */
-.doctor-info {
-  padding-bottom: 0.2rem;
-}
-.doctor-name   { font-weight: 700; font-size: 1rem; margin-bottom: 0rem; }
-.doctor-title  { font-size: .9rem; color: var(--text-muted, #666); }
-.doctor-meta-home   { font-size: .8rem; color: var(--text-muted, #666); }
+/* Remplacé par Tailwind: p-[0.3rem_0.5rem_0.3rem] */
 
-/* 3-d. Rating + ancienneté  (ligne étoile + années) */
-.doctor-stats {
-  display: flex;
-  align-items: center;
-  gap: 0rem;
-  margin: 0rem 0 0rem;
-}
-.doctor-rating { color: #000000; font-size: .9rem; }
+/* Styles remplacés par Tailwind:
+- doctor-name: font-bold text-base m-0 leading-tight
+- doctor-title: text-[0.8rem] text-[#666] m-0 leading-tight
+- doctor-meta-home: text-[0.75rem] text-[#666] m-0 leading-tight */
+
+/* 3-d. Rating + ancienneté (ligne étoile + années) */
+/* Remplacé par Tailwind: flex items-center gap-0 mt-[0.1rem] mb-0 */
+/* doctor-rating: text-[0.8rem] text-black */
 
 /* 3-e. Bouton Chat */
-.doctor-chat-btn {
-  display: inline-flex;
-  align-items: center;
-  margin-left: 67px;
-  justify-content: center;
-  gap: .35rem;
-  width: 35%;
-  padding: .45rem 0;
-  border-radius: 6px;
-  background: var(--primary, #00b6c8);
-  color: #fff;
-  font-size: .8rem;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: background .2s;
-}
-.doctor-chat-btn:hover { background: var(--primary-dark, #0092a3); }
+/* Remplacé par Tailwind: flex items-center mx-auto mt-[0.15rem] mb-[0.1rem] justify-center gap-[0.2rem] w-[70%] py-[0.35rem] rounded-md bg-[#00b6c8] hover:bg-[#0092a3] text-white text-[0.75rem] font-semibold border-none cursor-pointer transition-colors */
 
 /* ───────────── 4. Flèches de navigation (optionnel) ───────────── */
-.carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 5;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 3px 10px rgba(0,0,0,.12);
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-}
-.carousel-arrow svg { font-size: 1.2rem; color: var(--primary-dark, #007c8a); }
-
-.carousel-arrow.prev { left: 1rem; }
-.carousel-arrow.next { right: 1rem; }
+/* Remplacé par Tailwind:
+carousel-arrow: absolute top-1/2 -translate-y-1/2 z-[5] w-[38px] h-[38px] rounded-full bg-white shadow-md grid place-items-center cursor-pointer
+carousel-arrow svg: text-[1.2rem] text-[#007c8a]
+carousel-arrow.prev: left-4
+carousel-arrow.next: right-4
+*/
 
 /* ───────────── 5. Responsive tweaks ───────────── */
 @media (max-width: 1050px) {
@@ -1118,30 +989,11 @@ img {
 }
 
 /* Flèches à gauche et droite */
-.speciality-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: white;
-  color: var(--primary-dark);
-  border: 1px solid var(--primary-dark);
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 2;
-}
-
-.speciality-arrow.left {
-  left: 12px;
-}
-
-.speciality-arrow.right {
-  right: 12px;
-}
+/* Remplacé par Tailwind:
+speciality-arrow: absolute top-1/2 -translate-y-1/2 bg-white text-[#007c8a] border border-[#007c8a] rounded-full w-[36px] h-[36px] flex items-center justify-center cursor-pointer z-[2]
+speciality-arrow.left: left-3
+speciality-arrow.right: right-3
+*/
 .login-mobile {
   display: none;
 }

@@ -1,0 +1,43 @@
+/* Tailwind CSS Mobile Carousel & Footer Styles */
+
+/* This file provides responsive styles for mobile views that might not be directly implemented with Tailwind in the JSX */
+
+/* Add animation and hover effects to all carousel navigation buttons */
+.home button[class*="rounded-full"] {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.home button[class*="rounded-full"]:hover {
+  transform: scale(1.1);
+  background-color: #eefaff;
+}
+
+/* Animation for button appearance */
+.responsive-footer {
+  /* Any specific tweaks for the responsive footer */
+  margin-bottom: 60px; /* Space for bottom nav */
+}
+
+/* If using animation effects that are hard to do with Tailwind */
+@keyframes slideIn {
+  from {
+    transform: translateX(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.carousel-btn-animation {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Any additional media queries needed */
+@media (max-width: 640px) {
+  /* Mobile-specific tweaks */
+  .footer .socialfoot-icons {
+    justify-content: center;
+  }
+}

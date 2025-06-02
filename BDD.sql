@@ -110,8 +110,7 @@ CREATE TABLE notifications (
   notification_id INT PRIMARY KEY AUTO_INCREMENT,
   professional_id INT,
   project_id INT,
-  message TEXT,
-  `read` INT DEFAULT FALSE,
+  message TEXT,  `read` INT DEFAULT FALSE,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (professional_id) REFERENCES professionals(professional_id),
   FOREIGN KEY (project_id) REFERENCES mybody_projects(project_id)
@@ -170,8 +169,7 @@ CREATE TABLE premium_subscriptions_with_discount (
   professional_id INT,
   start_date DATETIME,
   end_date DATETIME,
-  `status` ENUM('active', 'inactive'),
-  discount_applied BOOLEAN DEFAULT FALSE,
+  `status` ENUM('active', 'inactive'),  discount_applied BOOLEAN DEFAULT FALSE,
   promotion_id INT,
   FOREIGN KEY (professional_id) REFERENCES professionals(professional_id),
   FOREIGN KEY (promotion_id) REFERENCES promotions(promotion_id)

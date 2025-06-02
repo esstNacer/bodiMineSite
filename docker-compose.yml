@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: bodyminedb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bodyMine
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./BDD.sql:/docker-entrypoint-initdb.d/1_BDD.sql
+      - ./insert.sql:/docker-entrypoint-initdb.d/2_insert.sql
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructions d'intégration du script de correction des carrousels</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+        code { background-color: #f5f5f5; padding: 2px 5px; border-radius: 3px; }
+        pre { background-color: #f5f5f5; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .note { background-color: #fffde7; border-left: 4px solid #ffd600; padding: 10px 15px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>Instructions pour implémenter la correction des carrousels</h1>
+
+    <div class="note">
+        <p>Ce document explique comment intégrer le script JavaScript qui corrige l'affichage des flèches de navigation sur les carrousels de la page d'accueil.</p>
+    </div>
+
+    <h2>Option 1 : Ajouter le script dans le fichier HTML principal</h2>
+    <p>Si vous avez accès au fichier HTML principal de l'application (généralement index.html), ajoutez le script suivant juste avant la balise de fermeture </code>&lt;/body&gt;</code> :</p>
+    <pre><code>&lt;script src="/assets/carousel-correction.js"&gt;&lt;/script&gt;</code></pre>
+
+    <h2>Option 2 : Importer le script dans HomePage.tsx</h2>
+    <p>Si vous préférez importer le script directement dans le composant React, corrigez d'abord les erreurs de syntaxe dans HomePage.tsx puis ajoutez le code suivant au début du fichier :</p>
+    <pre><code>import { useEffect } from 'react';
+// Autres imports...
+
+export default function HomePage() {
+  // Chargement du script de correction des carrousels
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = '/assets/carousel-correction.js';
+    script.async = true;
+    document.body.appendChild(script);
+    
+    return () => {
+      // Nettoyage lors du démontage du composant
+      document.body.removeChild(script);
+    };
+  }, []);
+  
+  // Reste du code...
+}</code></pre>
+
+    <h2>Option 3 : Intégrer le code directement dans HomePage.tsx</h2>
+    <p>Si vous ne pouvez pas ajouter de fichier externe, vous pouvez intégrer le code directement dans HomePage.tsx :</p>
+    <pre><code>export default function HomePage() {
+  // ...
+  
+  useEffect(() => {
+    // Attendre que React ait rendu tous les composants
+    const timeout = setTimeout(function() {
+      // 1. Identifier les sections concernées
+      const sections = document.querySelectorAll('.section-speciality, .section-doctors, .section-clinics, .section-articles');
+      
+      // 2. Pour chaque section
+      sections.forEach(function(section) {
+        // Trouver les boutons de navigation
+        const prevButtons = section.querySelectorAll('button[class*="prev"]');
+        const nextButtons = section.querySelectorAll('button[class*="next"]');
+        
+        // Ajouter la classe carousel-arrow aux boutons de navigation
+        prevButtons.forEach(function(button) {
+          if (!button.classList.contains('carousel-arrow')) {
+            button.classList.add('carousel-arrow');
+          }
+        });
+        
+        nextButtons.forEach(function(button) {
+          if (!button.classList.contains('carousel-arrow')) {
+            button.classList.add('carousel-arrow');
+          }
+        });
+        
+        // Vérifier si la section est ouverte (déjà dans openedSections)
+        if (openedSections.includes(section.classList[1].replace('section-', ''))) {
+          section.classList.add('open');
+        }
+      });
+    }, 500); // Délai pour s'assurer que React a bien rendu la page
+    
+    return () => clearTimeout(timeout);
+  }, [openedSections]); // Réexécuter lorsque openedSections change
+  
+  // ...
+}</code></pre>
+
+    <h2>Vérifier le fonctionnement</h2>
+    <p>Pour vérifier que le script fonctionne :</p>
+    <ol>
+        <li>Ouvrez la page d'accueil dans le navigateur</li>
+        <li>Ouvrez les outils de développement (F12)</li>
+        <li>Allez dans l'onglet "Console"</li>
+        <li>Il ne devrait pas y avoir d'erreurs</li>
+        <li>Cliquez sur les titres de section pour vérifier que les flèches apparaissent/disparaissent correctement</li>
+    </ol>
+    
+    <div class="note">
+        <p><strong>Note importante :</strong> Si le CSS dans mobile-carousel-fix.css est déjà correctement importé, les règles CSS qui masquent/affichent les flèches devraient fonctionner automatiquement dès que les classes .carousel-arrow et .open sont correctement appliquées aux éléments.</p>
+    </div>
+</body>
+</html>

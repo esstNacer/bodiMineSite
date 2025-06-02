@@ -1,12 +1,8 @@
 // src/pages/MyBodyProjectPage.tsx
-import React, {
-  useContext,
-  useState,
-  useEffect,
-  SyntheticEvent
-} from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import '../assets/MyBodyProjectPage.css'
+import React, { useContext, useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import '../assets/MyBodyProjectPage.css';
+import ConfirmationModal from '../components/ConfirmationModal';
 import bodyMineLogo from '../images/LogoBODYMINE.png'
 import clinic1 from '../images/clinic1.png'
 import clinic2 from '../images/clinic2.png'
@@ -77,11 +73,22 @@ interface NotificationPayload {
 }
 
 export default function MyBodyProjectPage() {
-  const { user } = useContext(UserContext)!
-  const { logout } = useUser()
-  const navigate = useNavigate()
-    const isMobile = useBreakpoint();
+  const { user, token } = useContext(UserContext)!
+  const { logout } = useUser();
   
+  // États pour les modales de confirmation
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  
+  const [slide, setSlide] = useState(0);
+  const carousel = [
+        { src: clinic1, alt: "New Clinic Dental Care" },
+        { src: clinic2, alt: "Cosmetic Surgery" },
+        { src: clinic3, alt: "New Cosmetic Surgery Website" },
+      ];
+
+  const isMobile = useBreakpoint();
+  const navigate = useNavigate()
 
   const [projects, setProjects] = useState<Project[]>([])
   const [doctors, setDoctors] = useState<Doctor[]>([])
@@ -106,14 +113,7 @@ export default function MyBodyProjectPage() {
     comments: '',
     chosenDoctor: ''
   })
-    const [slide, setSlide] = useState(0);
   
-   const carousel = [
-        { src: clinic1, alt: "New Clinic Dental Care" },
-        { src: clinic2, alt: "Cosmetic Surgery" },
-        { src: clinic3, alt: "New Cosmetic Surgery Website" },
-      ];
-
   useEffect(() => {
     if (!user?.patient_id) return
 
@@ -184,7 +184,7 @@ export default function MyBodyProjectPage() {
     setEditProj(null)
   }
 
-  const handleSave = async (e: SyntheticEvent) => {
+  const handleSave = async (e: React.SyntheticEvent) => {
     e.preventDefault()
     if (!user?.patient_id) return
     setLoading(true)
@@ -264,9 +264,54 @@ export default function MyBodyProjectPage() {
     setConfirmOpen(false)
     setToDeleteId(null)
   }
+
+  // Fonction pour supprimer le compte utilisateur
+  const handleDeleteAccount = async () => {
+    try {
+      if (!user?.patient_id) throw new Error('User ID not found');
+
+      const response = await fetch(`/api/patients/${user.patient_id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (!response.ok) {
+        const { error } = await response.json();
+        throw new Error(error || 'Delete account error');
+      }
+
+      // Déconnexion après suppression réussie
+      logout();
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
+  // Fonction pour gérer la déconnexion avec confirmation
+  const handleLogoutConfirm = () => {
+    setShowLogoutModal(false);
+    logout();
+  };
+
+  /* ======================= RENDER ======================= */
   return (
     <>
-    {!isMobile && (
+      {/* Modaux de confirmation */}
+      <ConfirmationModal
+        isOpen={showLogoutModal}
+        type="logout"
+        onConfirm={handleLogoutConfirm}
+        onCancel={() => setShowLogoutModal(false)}
+      />
+
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        type="delete"
+        onConfirm={handleDeleteAccount}
+        onCancel={() => setShowDeleteModal(false)}
+      />
+
+      {!isMobile && (
     <div className="home-wrapper">
 
     <div className="mybody-page">
@@ -325,9 +370,10 @@ export default function MyBodyProjectPage() {
             <li><Link to="/CGU"><FiFileText /> Terms & Conditions</Link></li>
             <li><Link to="/news"><FiBookOpen /> News & Article</Link></li>
             <li><Link to="/support"><FiLifeBuoy /> Support</Link></li>
-          </ul>
-          <button className="danger-btn"><FiTrash2 /> Delete Account</button>
-          <button className="logout-btn" onClick={logout}>
+          </ul>          <button className="danger-btn" onClick={() => setShowDeleteModal(true)}>
+            <FiTrash2 /> Delete Account
+          </button>
+          <button className="logout-btn" onClick={() => setShowLogoutModal(true)}>
             <FiLogOut /> Logout
           </button>
         </aside>

@@ -18,6 +18,7 @@ import { BsDot } from 'react-icons/bs';
 
 import '../assets/MyBodyProjectPage.css';   // même grille / sidebar / bannière
 import '../assets/SupportPage.css';         // (juste quelques règles pour le formulaire)
+import ConfirmationModal from '../components/ConfirmationModal';
 
 import bodyMineLogo from '../images/LogoBODYMINE.png';
 import clinic1 from '../images/clinic1.png';
@@ -29,11 +30,45 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 export default function SupportPage() {
-  const { user } = useUser();
-  const { logout } = useUser();
+  const { user, token, logout } = useUser();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   /* ---------- carrousel ---------- */
   const banners = [clinic1, clinic2, clinic3];
   const [slide, setSlide] = useState(0);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert('Your message has been sent!');
+  };
+
+  // Fonction pour supprimer le compte utilisateur
+  const handleDeleteAccount = async () => {
+    try {
+      if (!user?.patient_id) throw new Error('User ID not found');
+
+      const response = await fetch(`/api/patients/${user.patient_id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (!response.ok) {
+        const { error } = await response.json();
+        throw new Error(error || 'Delete account error');
+      }
+
+      // Déconnexion après suppression réussie
+      logout();
+    } catch (err: any) {
+      alert(err.message);
+    }
+  };
+
+  // Fonction pour gérer la déconnexion avec confirmation
+  const handleLogoutConfirm = () => {
+    setShowLogoutModal(false);
+    logout();
+  };
 
   return (
     <div className="home-wrapper">
@@ -87,8 +122,8 @@ export default function SupportPage() {
             </li>
           </ul>
 
-          <button className="danger-btn"><FiTrash2 /> Delete Account</button>
-          <button className="logout-btn" onClick={logout}><FiLogOut /> Logout</button>
+          <button className="danger-btn" onClick={() => setShowDeleteModal(true)}><FiTrash2 /> Delete Account</button>
+          <button className="logout-btn" onClick={() => setShowLogoutModal(true)}><FiLogOut /> Logout</button>
         </aside>
 
         {/* -------- ZONE SUPPORT -------- */}
@@ -100,7 +135,7 @@ export default function SupportPage() {
             <div className="left-col">
               <div className="support-form">
                 <h3><FiMail /> Send a Message</h3>
-                <form>
+                <form onSubmit={handleSubmit}>
                   <input type="text" placeholder="Your name" />
                   <input type="text" placeholder="Subject" />
                   <textarea placeholder="Your message" rows={5}></textarea>
