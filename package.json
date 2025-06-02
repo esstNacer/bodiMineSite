@@ -1,9 +1,6 @@
 {
   "dependencies": {
-    "@stripe/react-stripe-js": "^3.6.0",
-    "@stripe/stripe-js": "^7.2.0",
-    "bcryptjs": "^3.0.2",
-    "jsonwebtoken": "^9.0.2",
-    "react-quill": "^2.0.0"
+    "react-slick": "^0.30.3",
+    "swiper": "^11.2.8"
   }
 }

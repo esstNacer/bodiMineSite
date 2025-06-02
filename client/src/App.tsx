@@ -44,7 +44,7 @@ export default function App() {
       <Route path="/professional/sign-up" element={<ProfessionalSignup/>} />
       <Route path="/home" element={<HomePage />} />
       <Route path="/pro/dashboard" element={<ProfessionalDashboard />} />
-      <Route path="/editProfile" element={<EditProfilePage />} />
+      <Route path="/editProfile" element={<EditProfilePage />} />      
       <Route path="/how-it-works" element={<HowItWorksPage />} />
       <Route path="/support" element={<SupportPage />} />
       <Route path="/pro/support" element={<ProfessionalSupport />} />

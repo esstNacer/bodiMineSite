@@ -35,8 +35,16 @@
   border-radius: 50%;
 }
 .chat .status {
-  font-size: 12px;
+  display: block;
+  font-size: 0.8rem;
+  margin-top: 2px;
+  font-weight: 500;
+}
+.status.online {
   color: #38d27c;
+}
+.status.offline {
+  color: #b0b0b0;
 }
 
 /* Banner carousel */
@@ -183,21 +191,6 @@
 }
 .chat .message.right {
   align-items: flex-end;  margin-left: auto;}
-.chat .bubble {
-  display: inline-block;          /* ↔ width = contenu */
-  max-width: 80%;                 /* limite haute avant wrap */
-  padding: 0.6rem 0.85rem;
-  font-size: .85rem;
-  border-radius: 12px;
-  word-break: break-word;         /* coupe les mots longs */
-  white-space: pre-wrap; 
-}
-.chat .message.left .bubble {
-  background: #e8f3ff;
-}
-.chat .message.right .bubble {
-  background: #c8f4eb;
-}
 .chat .message-time {
   font-size: 0.75rem;
   margin-top: 0.25rem;
@@ -210,12 +203,6 @@
   height: auto;
   border-radius: 8px;
   object-fit: cover;
-}
-.bubble > img {
-  max-width: 100%;
-  border-radius: 6px;
-  display: block;
-  margin-top: .4rem;
 }
 /* Typing indicator */
 .chat .typing {
@@ -457,29 +444,24 @@
     gap: .9rem;              /* espace constant */
   }
 
-
   .message {
     display: flex;
     flex-direction: column; 
     max-width: 80%;            /* wrap dès que > 80 % */
   }
-  .message.left  { justify-content: flex-start; }
-  .message.right { justify-content: flex-end;     margin-left: auto;         /* pousse vers la droite */
+  .message.left  { 
+    justify-content: flex-start; 
   }
-  .message.left  .bubble { background: #e8f3ff; }
+  .message.right { 
+    justify-content: flex-end;     
+    margin-left: auto;         /* pousse vers la droite */
+  }
+  .message.left .bubble { 
+    background: #e8f3ff; 
+  }
   .message.right .bubble {
     background: #c8f4eb;
   }
-  .bubble {
-    display: inline-block;          /* épouse son contenu */
-    max-width: 100%;                 /* limite haute avant wrap */
-    padding: 0.6rem 0.85rem;
-    font-size: .85rem;
-    border-radius: 12px;
-    word-break: break-word;
-    white-space: pre-wrap;
-  }
-
   .message-time {
     font-size: .65rem;
     color: #98a1a1;

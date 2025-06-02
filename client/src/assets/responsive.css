@@ -1,0 +1,78 @@
+/* Responsive mobile styles for BodyMine */
+
+/* Enhance all carousel navigation buttons with animation */
+.home button[class*="rounded-full"] {
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.home button[class*="rounded-full"]:hover {
+  transform: scale(1.1);
+  background-color: #eefaff;
+}
+
+/* Remove animation on mobile hover for better performance */
+@media (max-width: 767px) {
+  .home button[class*="rounded-full"]:hover {
+    transform: none;
+  }
+}
+
+/* Animation for button appearance */
+@keyframes fadeInButton {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.carousel-btn-animation {
+  animation: fadeInButton 0.3s ease-out;
+}
+
+/* Responsive footer spacing */
+.responsive-footer {
+  margin-bottom: 60px; /* Space for bottom nav on mobile */
+  padding: 1.5rem !important;
+}
+
+@media (min-width: 768px) {
+  .responsive-footer {
+    margin-bottom: 0;
+  }
+}
+
+/* Adjust social icons on small screens */
+@media (max-width: 640px) {
+  .footer .socialfoot-icons {
+    justify-content: center;
+  }
+  
+  /* Better spacing for footer sections */
+  .footer h4 {
+    text-align: center;
+  }
+  
+  .footer ul {
+    text-align: center;
+  }
+}
+
+/* Improve carousel visibility on mobile */
+@media (max-width: 640px) {
+  /* Make the carousel buttons more visible on mobile */
+  .home button[class*="rounded-full"] {
+    width: 36px !important;
+    height: 36px !important;
+    background-color: rgba(255, 255, 255, 0.85) !important;
+  }
+  
+  /* Smoother scrolling for mobile carousels */
+  [ref="specialityRef"], [ref="doctorsRef"], [ref="clinicsRef"], [ref="articlesRef"] {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+}

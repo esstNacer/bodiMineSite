@@ -1,0 +1,101 @@
+/* Styles améliorés pour les spécialités */
+.specialities-carousel-wrapper {
+  position: relative;
+  padding: 0.5rem;
+  margin: 1rem 0;
+  overflow: visible;
+}
+
+.specialities-track {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem 0.5rem;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.specialities-track::-webkit-scrollbar {
+  display: none;
+}
+
+.speciality-item {
+  flex: 0 0 auto;
+  width: 120px;
+  height: 120px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.speciality-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 14px rgba(29, 190, 190, 0.15);
+}
+
+.speciality-icon {
+  font-size: 2rem;
+  color: #04C2C2;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.speciality-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.speciality-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  background-color: white;
+  color: #007c8a;
+  border: 1px solid #007c8a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.speciality-arrow.left {
+  left: 10px;
+}
+
+.speciality-arrow.right {
+  right: 10px;
+}
+
+/* Styles responsifs */
+@media (max-width: 768px) {
+  .speciality-item {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .speciality-icon {
+    font-size: 1.75rem;
+  }
+  
+  .speciality-name {
+    font-size: 0.75rem;
+  }
+}

@@ -39,59 +39,63 @@ export default function Header({
   const isActive = (path: string) => location.pathname === path;
 console.log(user?.photo_url);
   return (
-    <header className={`navbar ${className}`}>
-      {/* ------- Logo + liens principaux ------- */}
-       <div className="navbar-left">
-      <div className="logo">
+    <header className="navbar w-full bg-[#93dad6] flex items-center justify-between px-6 md:px-16 py-6 md:py-10 min-h-[100px] md:min-h-[130px]">
+      {/* Logo à gauche */}
+      <div className="flex items-center min-w-0">
         <Link to="/">
-          <img src={bodyMine} alt="BodyMine Cosmetic Surgery" />
+          <img src={bodyMine} alt="BodyMine Cosmetic Surgery" className="max-h-16 md:max-h-20 w-auto object-contain" />
         </Link>
       </div>
 
-      <nav className="nav-links">
+      {/* Navigation centrée */}
+      <nav className="flex-1 flex justify-center items-center gap-6 md:gap-12">
         <button
           type="button"
-          className={`nav-btn ${isActive('/home') ? 'active' : ''}`}
+          className={`nav-btn${isActive('/home') ? ' active' : ''} text-lg md:text-xl font-semibold flex items-center px-4 md:px-8 py-2 md:py-3 rounded-md transition`}
           onClick={() => navigate('/home')}
         >
-          <FiHome /> Home
+          <FiHome className="text-2xl md:text-3xl mr-2" /> Home
         </button>
-
         <button
           type="button"
-          className={`nav-btn ${isActive('/chat') ? 'active' : ''}`}
+          className={`nav-btn${isActive('/chat') ? ' active' : ''} text-lg md:text-xl font-semibold flex items-center px-4 md:px-8 py-2 md:py-3 rounded-md transition`}
           onClick={() => navigate('/chat')}
         >
-          <FiMessageCircle /> Chat
+          <FiMessageCircle className="text-2xl md:text-3xl mr-2" /> Chat
         </button>
-
         <button
           type="button"
-          className={`nav-btn ${isActive('/search') ? 'active' : ''}`}
+          className={`nav-btn${isActive('/search') ? ' active' : ''} text-lg md:text-xl font-semibold flex items-center px-4 md:px-8 py-2 md:py-3 rounded-md transition`}
           onClick={() => navigate('/search')}
         >
-          <FiSearch /> Search
+          <FiSearch className="text-2xl md:text-3xl mr-2" /> Search
         </button>
+        <Link to="/login" className="nav-btn login-mobile text-lg md:text-xl font-semibold px-4 md:px-8 py-2 md:py-3 rounded-md transition">
+          Login
+        </Link>
       </nav>
-    </div>
 
-      {/* ------- Zone droite : langue + profil / login ------- */}
-      <div className="navbar-right">
-        <span className="lang">EN ▾</span>
-
+      <div className="flex items-center gap-4 md:gap-7 min-w-0">
+        <span className="lang text-base md:text-lg font-semibold flex items-center gap-1">
+          <span className="fi fi-gb mr-1" />EN <span className="ml-1">▾</span>
+        </span>
         {user ? (
-          <Link to="/editProfile" className="profile">
-            <img
-              className="avatar"
-              src={user.photo_url || "https://i.pravatar.cc/40"}
-              alt="User Avatar"
-            />
-            <span className="name">
-              {user.first_name} {user.last_name} <span className="status">●</span>
+          <Link to="/editProfile" className="profile flex items-center gap-2 md:gap-3 min-w-0">
+            <div className="relative">
+              <img
+                className="avatar w-9 h-9 md:w-12 md:h-12 rounded-full object-cover border-2 border-white"
+                src={user.photo_url || 'https://i.pravatar.cc/40'}
+                alt="User Avatar"
+              />
+              <span className="absolute bottom-0 right-0 block w-3 h-3 md:w-4 md:h-4 rounded-full border-2 border-white bg-green-500"></span>
+            </div>
+            <span className="name text-base md:text-lg font-semibold truncate max-w-[120px] md:max-w-[180px] flex flex-col items-start">
+              <span>{user.first_name} {user.last_name}</span>
+              <span className="text-xs md:text-sm ml-0 text-green-600">Online</span>
             </span>
           </Link>
         ) : (
-          <Link to="/login" className="nav-btn login-desktop">
+          <Link to="/login" className="nav-btn login-desktop text-lg md:text-xl font-semibold px-4 md:px-8 py-2 md:py-3 rounded-md transition">
             Login
           </Link>
         )}

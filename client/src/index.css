@@ -1,1 +1,5 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body { margin: 0; font-family: sans-serif; } .App { padding: 2rem; }

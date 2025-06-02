@@ -1,5 +1,7 @@
 # Ignorer les fichiers/dossiers Node.js
 node_modules/
+server/node_modules/
+client/node_modules/
 npm-debug.log
 yarn-debug.log
 yarn-error.log
@@ -7,6 +9,8 @@ pnpm-debug.log
 
 # Ignorer les fichiers d'environnement
 .env
+server/*.env
+client/*.env
 .env.local
 .env.development.local
 .env.test.local

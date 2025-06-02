@@ -1,0 +1,144 @@
+/* mobile-carousel-fix.css 
+   Solution pour les carrousels mobiles avec Tailwind */
+
+/* Styles optimisés pour les flèches de navigation sur mobile */
+.carousel-arrow,
+.carousel-arrow-left, 
+.carousel-arrow-right,
+button.prev,
+button.next {
+  /* Optimisation pour le toucher mobile */
+  touch-action: manipulation !important;
+  -webkit-tap-highlight-color: transparent;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  width: 44px !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  background-color: white !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  z-index: 50 !important;
+  opacity: 0.9 !important;
+  pointer-events: auto !important; /* S'assure que les clics sont bien capturés */
+}
+
+/* Masquer les flèches par défaut */
+.section-doctors .carousel-arrow,
+.section-clinics .carousel-arrow,
+.section-articles .carousel-arrow,
+.section-speciality .carousel-arrow {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+/* Afficher les flèches uniquement lorsque la section est ouverte */
+.section-doctors.open .carousel-arrow,
+.section-clinics.open .carousel-arrow,
+.section-articles.open .carousel-arrow,
+.section-speciality.open .carousel-arrow {
+  display: flex !important;
+  opacity: 1 !important;
+}
+
+/* Effet de feedback au toucher */
+.carousel-arrow:active,
+.carousel-arrow-left:active, 
+.carousel-arrow-right:active,
+button.prev:active,
+button.next:active {
+  transform: translateY(-50%) scale(0.95) !important;
+  background-color: #eefaff !important;
+}
+
+/* Positionnement en surcharge des flèches */
+.carousel-arrow.prev,
+.carousel-arrow-left,
+button.prev {
+  left: 8px !important;
+}
+
+.carousel-arrow.next,
+.carousel-arrow-right,
+button.next {
+  right: 8px !important;
+}
+
+/* Désactivation du pointer-events: none qui pourrait être appliqué ailleurs */
+.doctors-carousel-wrapper button,
+.section-clinics button,
+.section-articles button,
+.section-speciality button {
+  pointer-events: auto !important;
+}
+
+/* Styles spécifiques pour mobile */
+@media (max-width: 768px) {
+  /* Rendre les flèches plus visibles et faciles à toucher */
+  .carousel-arrow,
+  .carousel-arrow-left, 
+  .carousel-arrow-right,
+  button.prev,
+  button.next {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(0, 124, 138, 0.3) !important;
+  }
+  
+  /* Ajout d'une légère animation pour attirer l'attention */
+  .doctors-carousel-wrapper .carousel-arrow,
+  .section-clinics .carousel-arrow,
+  .section-articles .carousel-arrow,
+  .section-speciality .carousel-arrow {
+    animation: gentle-pulse 2s ease-in-out infinite !important;
+  }
+  
+  @keyframes gentle-pulse {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-50%) scale(1.05); }
+  }
+  
+  /* Ajustement de la zone de toucher */
+  .carousel-arrow::before,
+  .carousel-arrow-left::before,
+  .carousel-arrow-right::before,
+  button.prev::before,
+  button.next::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+  }
+}
+
+/* Support pour le défilement tactile avec un feedback visuel */
+.doctors-carousel-wrapper > div,
+.specialities-track,
+div[class*="carousel-wrapper"] > div.flex,
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch !important;
+  scroll-behavior: smooth !important;
+  scroll-snap-type: x mandatory !important;
+}
+
+/* Suppression des barres de défilement tout en gardant la fonctionnalité */
+.doctors-carousel-wrapper > div::-webkit-scrollbar,
+.specialities-track::-webkit-scrollbar,
+div[class*="carousel-wrapper"] > div.flex::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar {
+  display: none !important;
+}
+
+.doctors-carousel-wrapper > div,
+.specialities-track,
+div[class*="carousel-wrapper"] > div.flex,
+.overflow-x-auto {
+  -ms-overflow-style: none !important;  /* IE and Edge */
+  scrollbar-width: none !important;  /* Firefox */
+}

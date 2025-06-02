@@ -1,5 +1,5 @@
 // src/pages/ChatPage.tsx
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import '../assets/ChatPage.css'
 import { FiArrowLeft, FiCamera, FiHome, FiInfo, FiMoreVertical, FiPaperclip, FiPhoneCall, FiSearch, FiVideo } from 'react-icons/fi'
@@ -30,12 +30,12 @@ export default function ChatPage() {
   const [selectedDoctorId, setSelectedDoctorId] = useState<number | null>(null)
   const [doctors, setDoctors] = useState<any[]>([])
   const [messages, setMessages] = useState<any[]>([])
-    const [slide, setSlide] = useState(0);
-      const isMobile = useBreakpoint();
-      const [tab, setTab] = useState<'active' | 'ended'>('active');   // NEW
+  const [slide, setSlide] = useState(0);
+  const isMobile = useBreakpoint();
+  const [tab, setTab] = useState<'active' | 'ended'>('active');   // NEW
+  const [onlineUsers, setOnlineUsers] = useState<Record<number, boolean>>({}) // Pour suivre qui est en ligne
+  const messageInputRef = useRef<HTMLTextAreaElement>(null);
 
-    
-  
   const carousel = [
         { src: clinic1, alt: "New Clinic Dental Care" },
         { src: clinic2, alt: "Cosmetic Surgery" },
@@ -131,6 +131,13 @@ export default function ChatPage() {
     doc => doc.professional_id === selectedDoctorId
   )
 
+  useEffect(() => {
+    if (messageInputRef.current) {
+      messageInputRef.current.style.height = 'auto';
+      messageInputRef.current.style.height = Math.min(messageInputRef.current.scrollHeight, 120) + 'px'; // max 5 lignes environ
+    }
+  }, [message]);
+
   return (
     <>
     {!isMobile && (
@@ -172,8 +179,7 @@ export default function ChatPage() {
                     `https://i.pravatar.cc/36?u=${doc.professional_id}`
                   }
                   alt={doc.full_name}
-                />
-                <div className="info">
+                />                <div className="info">
                   <strong>{doc.full_name}</strong>
                   <span>
                     {doc.specialization || 'Specialist'}
@@ -182,45 +188,48 @@ export default function ChatPage() {
               </li>
             ))}
           </ul>
-        </aside>
-
-        <section className="chat-box">
-          <div className="chat-header">
-            {selectedDoctor && (
-              <>
-                <div className="info">
-                  <img
-                    src={
-                      selectedDoctor.photo_url ||
-                      `https://i.pravatar.cc/36?u=${selectedDoctor.professional_id}`
-                    }
-                    alt={selectedDoctor.full_name}
-                  />
-                  <div>
-                    <strong>{selectedDoctor.full_name}</strong>
-                    <p>
-                      {selectedDoctor.specialization ||
-                        'General Physician'}
-                    </p>
+        </aside>      <section className="chat-box">
+          {selectedDoctorId && selectedDoctor ? (
+            <div className="chat-header flex items-center gap-3 px-4 py-1 bg-white shadow-sm min-h-0" style={{height:'auto'}}>
+              <div className="info flex items-center gap-3">
+                <img
+                  src={
+                    selectedDoctor.photo_url ||
+                    `https://i.pravatar.cc/42?u=${selectedDoctor.professional_id}`
+                  }
+                  alt={selectedDoctor.full_name}
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+                <div className="flex flex-col justify-center">
+                  <strong className="text-lg font-bold text-gray-900 leading-tight">{selectedDoctor.full_name}</strong>
+                  <p className="text-base text-gray-500 mb-0 leading-tight">{selectedDoctor.specialization || 'General Physician'}</p>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className={`inline-block w-3 h-3 rounded-full ${onlineUsers[selectedDoctor.professional_id] ? 'bg-green-500' : 'bg-red-500'}`}></span>
+                    <span className={`text-base font-semibold ${onlineUsers[selectedDoctor.professional_id] ? 'text-green-600' : 'text-red-500'}`}>{onlineUsers[selectedDoctor.professional_id] ? 'Online' : 'Offline'}</span>
                   </div>
                 </div>
-                <button className="call-btn">
-                  <FiPhoneCall />
-                </button>
-              </>
-            )}
-          </div>
+              </div>
+              <button className="call-btn w-12 h-12 text-2xl flex items-center justify-center bg-[#00b184] text-white rounded-full ml-2">
+                <FiPhoneCall />
+              </button>
+            </div>
+          ) : (
+            <div className="chat-header flex items-center justify-center py-4 bg-white shadow-sm">
+              <p className="text-gray-500">Sélectionnez une conversation pour commencer</p>
+            </div>
+          )}
+          
 
-          <div className="chat-messages">
+          <div className="chat-messages flex-1 overflow-y-auto px-4 py-2 flex flex-col gap-3 bg-[#F9F9F9]" style={{minHeight:0}}>
             {messages.map((msg, i) => (
               <div
                 key={i}
-                className={`message ${
-                  msg.sender === 'patient' ? 'right' : 'left'
-                }`}
+                className={`message flex flex-col max-w-[80%] mb-2 ${msg.sender === 'patient' ? 'self-end items-end' : 'self-start items-start'}`}
               >
-                <div className="bubble">{msg.message}</div>
-                <span className="message-time">
+                <div className={`bubble inline-block rounded-xl px-4 py-2 text-sm ${msg.sender === 'patient' ? 'bg-teal-100 text-gray-900' : 'bg-blue-50 text-gray-900'} break-words whitespace-pre-line`}>
+                  {msg.message}
+                </div>
+                <span className="message-time text-xs text-gray-400 mt-1">
                   {new Date(msg.timestamp).toLocaleTimeString([], {
                     hour: '2-digit',
                     minute: '2-digit',
@@ -231,13 +240,22 @@ export default function ChatPage() {
           </div>
 
           <div className="chat-footer">
-            <input
-              type="text"
-              placeholder="Send a Message..."
-              value={message}
-              onChange={e => setMessage(e.target.value)}
-              disabled={!selectedDoctorId}
-            />
+            <textarea
+  ref={messageInputRef}
+  className="message-input resize-none w-full rounded-xl border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
+  placeholder="Send a Message ..."
+  value={message}
+  onChange={e => setMessage(e.target.value)}
+  disabled={!selectedDoctorId}
+  rows={1}
+  style={{ minHeight: 40, maxHeight: 120, overflowY: 'auto' }}
+  onKeyDown={e => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (message.trim()) handleSend();
+    }
+  }}
+/>
             <button onClick={handleSend} disabled={!message.trim()}>
               <IoSend />
             </button>
@@ -332,37 +350,37 @@ export default function ChatPage() {
     {/* ───────── ÉCRAN 2 : DÉTAIL D’UN CHAT ───────── */}
     {selectedDoctorId && selectedDoctor && (
       <div className="detail-screen">
-        <header className="detail-header">
-          <button
-            className="back-btn"
-            onClick={() => setSelectedDoctorId(null)}
-          >
-            <FiArrowLeft />
-          </button>
-
-          <div className="info">
-            <img
-              src={
-                selectedDoctor.photo_url ||
-                `https://i.pravatar.cc/42?u=${selectedDoctor.professional_id}`
-              }
-              alt={selectedDoctor.full_name}
-            />
-            <div>
-              <strong>{selectedDoctor.full_name}</strong>
-              <p>{selectedDoctor.specialization || 'General Physician'}</p>
-            </div>
-          </div>
-
-          <div className="header-actions">
+        <header className="detail-header flex items-center gap-3 px-4 py-2 bg-white shadow-sm min-h-0" style={{height:'auto'}}>
   <button
-    className="menu-btn"
-    /* onClick={handleMoreOptions}  // si tu gères un menu */
+    className="back-btn"
+    onClick={() => setSelectedDoctorId(null)}
   >
-    <FiMoreVertical />
+    <FiArrowLeft />
   </button>
-</div>
-        </header>
+  <div className="info flex items-center gap-3">
+    <img
+      src={
+        selectedDoctor.photo_url ||
+        `https://i.pravatar.cc/42?u=${selectedDoctor.professional_id}`
+      }
+      alt={selectedDoctor.full_name}
+      className="w-12 h-12 rounded-full object-cover"
+    />
+    <div className="flex flex-col justify-center">
+      <strong className="text-lg font-bold text-gray-900 leading-tight">{selectedDoctor.full_name}</strong>
+      <p className="text-base text-gray-500 mb-0 leading-tight">{selectedDoctor.specialization || 'General Physician'}</p>
+      <div className="flex items-center gap-2 mt-0.5">
+        <span className={`inline-block w-3 h-3 rounded-full ${onlineUsers[selectedDoctor.professional_id] ? 'bg-green-500' : 'bg-red-500'}`}></span>
+        <span className={`text-base font-semibold ${onlineUsers[selectedDoctor.professional_id] ? 'text-green-600' : 'text-red-500'}`}>{onlineUsers[selectedDoctor.professional_id] ? 'Online' : 'Offline'}</span>
+      </div>
+    </div>
+  </div>
+  <div className="header-actions ml-auto">
+    <button className="menu-btn">
+      <FiMoreVertical />
+    </button>
+  </div>
+</header>
 
         <div className="chat-messages">
           {messages.map((msg, i) => (
@@ -370,7 +388,7 @@ export default function ChatPage() {
               key={i}
               className={`message ${msg.sender === 'patient' ? 'right' : 'left'}`}
             >
-              <div className="bubble">{msg.message}</div>
+              <div className="bubble inline-block rounded-xl px-4 py-2 text-sm break-words whitespace-pre-line max-w-[80%]">{msg.message}</div>
               <span className="message-time">
                 {new Date(msg.timestamp).toLocaleTimeString([], {
                   hour: '2-digit',
@@ -410,6 +428,12 @@ export default function ChatPage() {
       value={message}
       onChange={e => setMessage(e.target.value)}
       disabled={!selectedDoctorId}
+      onKeyDown={e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          if (message.trim()) handleSend();
+        }
+      }}
     />
 
     {/* envoi */}

@@ -11,9 +11,10 @@ import {
   FiTrash2,
 } from 'react-icons/fi';
 import BottomNav from '../components/BottomNav';
-import { JSX, useContext } from 'react';
+import { JSX, useContext, useState } from 'react';
 import "../assets/MenuPage.css"
 import { UserContext, useUser } from '../components/UserContext';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 interface MenuItem {
     id: string;
@@ -28,7 +29,11 @@ const MenuPageMobile = () => {
   
   const { user, updateUser } =
     useContext(UserContext) || ({ user: null, updateUser: () => {} } as any);
-    const { logout } = useUser();
+  const { logout } = useUser();
+  
+  // États pour les modals de confirmation
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   /* items internes  (→ chevron) */
   const internal: MenuItem[] = [
