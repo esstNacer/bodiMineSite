@@ -50,7 +50,8 @@ CREATE TABLE professionals (
   specialization VARCHAR(255),
   practice_tenure INT,
   practice_start_date DATE,
-  `type` VARCHAR(50),  is_premium BOOLEAN DEFAULT FALSE,
+  `type` VARCHAR(50),
+  is_premium BOOLEAN DEFAULT FALSE,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (clinic_id) REFERENCES clinics(clinic_id)
 );
