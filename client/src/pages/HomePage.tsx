@@ -6,7 +6,6 @@ import "../assets/mobile-tailwind.css"; // Import mobile Tailwind optimizations
 import "../assets/responsive.css"; // Import responsive styles with animations
 import "../assets/mobile-carousel-fix.css"; // Import des styles minimaux pour les carrousels mobile
 import "../assets/scroll-carousel.css"; // Import des styles pour ScrollCarousel
-import "../assets/mobile-spacing-fix.css"; // Import de la correction d'espacement sous la navbar mobile
 import ScrollCarousel from "../components/ScrollCarousel"; // Import du nouveau composant de carrousel
 import { Link, useNavigate } from "react-router-dom";
 import { addDefaultTestClinics } from "./ClinicSection";
@@ -641,10 +640,6 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
   </div>
 
 </section>
-
-  
-      {/* Footer */}
-      <Footer />
   
     </div>
     )}
@@ -729,7 +724,7 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
       </section>
   
       {/* Sections */}
-      <section className="sections">        {/* Specialities */}        <div className={`section section-speciality ${openedSections.includes("speciality") ? 'open' : ''}`}>
+      <section className="sections pb-24">        {/* Specialities */}        <div className={`section section-speciality ${openedSections.includes("speciality") ? 'open' : ''}`}>
           <h2 onClick={() => handleToggleSection("speciality")} className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 flex items-center">
             Our Speciality <a onClick={(e) => {e.stopPropagation(); handleProtectedNavigation("/search")}} className="ml-4 text-base md:text-xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
           </h2>      {openedSections.includes("speciality") && (
@@ -854,15 +849,16 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
               ))}
             </ScrollCarousel>
           )}
-        </div>
-  
-      </section>
+        </div>      </section>
   
       
-  
     </div>      )}
         {/* Footer with responsive Tailwind styling */}
       <Footer className="responsive-footer" />
+      {/* Ajout d'un conteneur blanc derrière la barre de navigation mobile */}
+      {isMobile && (
+        <div className="fixed bottom-0 left-0 right-0 h-20 bg-white" style={{zIndex: 999}}></div>
+      )}
       {isMobile && <BottomNav />}
        </>
   );

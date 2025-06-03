@@ -2,7 +2,7 @@
 @media (max-width: 991px) {
   /* Styles de base pour le body */
   body {
-    background-color: transparent !important;
+    background-color: white !important;
   }
     /* Créer un fond blanc qui "monte" depuis le bas de l'écran */
   body::after {
@@ -16,18 +16,19 @@
     z-index: 990; /* Juste en-dessous de la bottom-nav qui est à 1000 */
     border-radius: 0; /* Bords carrés */
     box-shadow: none; /* Pas d'ombre pour éviter de différencier du fond */
+    pointer-events: none;
   }
     /* S'assurer que le bottom-nav reste visible et va d'un bord à l'autre */
   .bottom-nav {
     z-index: 1000 !important;
-    bottom: 0 !important; /* Colle au bas de l'écran */
     left: 0 !important; /* Commence au bord gauche */
     right: 0 !important; /* Va jusqu'au bord droit */
-    transform: none !important; /* Annule la transformation de centrage */
     width: 100% !important; /* Prend toute la largeur */
     max-width: 100% !important; /* Enlève la limite de largeur */
     border-radius: 0 !important; /* Enlève les coins arrondis */
     height: 70px !important; /* Légèrement plus haute pour plus de présence */
+    bottom: 0 !important; /* Colle au bas de l'écran */
+    transform: none !important; /* Annule la transformation de centrage */
   }
   
   /* Ajuster les marges inférieures pour éviter que le contenu ne soit caché */
