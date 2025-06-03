@@ -6,6 +6,7 @@ import "../assets/mobile-tailwind.css"; // Import mobile Tailwind optimizations
 import "../assets/responsive.css"; // Import responsive styles with animations
 import "../assets/mobile-carousel-fix.css"; // Import des styles minimaux pour les carrousels mobile
 import "../assets/scroll-carousel.css"; // Import des styles pour ScrollCarousel
+import "../assets/mobile-spacing-fix.css"; // Import de la correction d'espacement sous la navbar mobile
 import ScrollCarousel from "../components/ScrollCarousel"; // Import du nouveau composant de carrousel
 import { Link, useNavigate } from "react-router-dom";
 import { addDefaultTestClinics } from "./ClinicSection";
