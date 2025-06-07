@@ -1,1 +1,10 @@
+<<<<<<< Updated upstream
+=======
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+>>>>>>> Stashed changes
 body { margin: 0; font-family: sans-serif; } .App { padding: 2rem; }
