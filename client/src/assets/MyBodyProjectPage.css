@@ -59,11 +59,10 @@
   .dots svg { cursor: pointer; color: #ccc; }
   .dots svg.active { color: var(--cyan); }
   
-  /* ============ GRILLE ============ */
-  .content-grid {
+  /* ============ GRILLE ============ */  .content-grid {
     max-width: 1200px;
     margin: 2rem auto 3rem;
-    padding: 0 1rem;
+    padding: 0 2.5rem;
     display: grid;
     grid-template-columns: 260px 1fr;
     gap: 32px;

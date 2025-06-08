@@ -88,7 +88,9 @@ export default function ProfessionalFaq() {
           <p className="text-gray-600 mt-1.5 text-[15px]">We're here to support you anytime. Choose the best way to reach us.</p>
         </div>
         <img src={heroPic} alt="Support operator" className="h-[170px] mr-8" />
-      </header>      {/* GRILLE */}
+      </header>
+
+      {/* GRILLE : sidebar | carte FAQ (scrollable) */}
       <main className="flex w-full">
         <SidebarPro active="FAQ" />
         <div className="flex-1 flex flex-col gap-6 p-6">

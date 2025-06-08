@@ -1,6 +1,6 @@
-/*  Page “FAQ Professionnels” – calquée sur la page Support
-    ─ hero identique
-    ─ grille :  sidebar  |  carte FAQ (scrollable)
+/*  Page "Data Privacy Professionnels" – calquée sur la page Support
+    ─ hero identique avec bannière support-header
+    ─ sidebar + carte contenu (scrollable)
 ---------------------------------------------------------------- */
 import TopbarPro   from "../components/TopbarPro";
 import SidebarPro  from "../components/SidebarPro";
@@ -30,111 +30,106 @@ Ste FLAGCOM
 
 2. Données personnelles collectées
 Nous collectons uniquement les données nécessaires à la bonne utilisation de notre service :
-Données d’identification : nom, prénom, adresse email
-Données liées au projet : type d’intervention, pays, attentes esthétiques
+Données d'identification : nom, prénom, adresse email
+Données liées au projet : type d'intervention, pays, attentes esthétiques
 Données de connexion : adresse IP, type de navigateur, temps de connexion
 Échanges via messagerie interne
 Avis, commentaires, documents partagés volontairement
-Les fiches patients ne sontvisible par personne d’autre aue sont propriétaire. Les profesionnels n’ont aucun acces aux fiches profils
+Les fiches patients ne sont visibles par personne d'autre que leur propriétaire. Les professionnels n'ont aucun accès aux fiches profils
 
 ---
 
-3. Finalités du traitement
-Les traitements de vos données ont pour but :
-
-La création et gestion de votre compte utilisateur
-La mise en relation avec des professionnels
-La gestion de vos projets via le service MyBodyProjet
-Le fonctionnement de la messagerie interne
-L’amélioration continue de la plateforme (expérience utilisateur, sécurité, performances)
-L’envoi de notifications et d'e-mails (si vous y avez consenti)
+3. Base légale du traitement
+Nos traitements reposent sur les bases légales suivantes :
+Consentement éclairé : pour l'envoi de newsletters, alertes, recommandations
+Exécution d'un contrat : pour la mise en relation patients/professionnels
+Intérêts légitimes : pour l'amélioration de nos services et la sécurité
+Obligation légale : conservation des logs de connexion, lutte contre la fraude
 
 ---
 
-4. Bases légales du traitement
-Nous traitons vos données sur les bases suivantes :
-
-Consentement (inscription, envoi d'emails, cookies non essentiels)
-Exécution contractuelle (services proposés via le site)
-Intérêt légitime (sécurité, amélioration du service)
+4. Finalités du traitement
+Vos données sont utilisées exclusivement pour :
+Faciliter la mise en relation entre patients et professionnels
+Assurer le bon fonctionnement de la messagerie sécurisée
+Améliorer l'expérience utilisateur (suggestions, personnalisation)
+Respecter nos obligations légales et de sécurité
+Vous informer des nouveautés (avec votre consentement)
 
 ---
 
 5. Destinataires des données
-Vos données sont strictement confidentielles. Elles sont traitées uniquement par Bodymine et ses prestataires techniques (hébergement, sécurité, maintenance).
-Aucun professionnel de santé ne peut entrer en contact avec un patient sans votre action explicite.
-Aucune donnée n'est vendue ni transmise à des tiers sans votre consentement.
+Vos données ne sont jamais vendues ni transmises à des tiers à des fins commerciales.
+Les seuls destinataires sont :
+L'équipe technique Bodymine (développeurs, support client)
+Hébergeurs et prestataires techniques (sous contrat de confidentialité strict)
+Autorités compétentes (en cas d'obligation légale uniquement)
+
+Importante distinction :
+Les professionnels inscrits n'ont accès qu'aux informations que vous choisissez de partager lors d'un échange initié par vos soins.
+Vos données de profil restent privées et ne sont jamais consultables librement.
 
 ---
 
-6. Transfert de données hors Union Européenne
-Si certaines données sont transférées hors UE (ex : prestataires techniques), ces transferts sont encadrés par des mécanismes conformes au RGPD, tels que les clauses contractuelles types de la Commission Européenne.
+6. Transferts de données hors UE
+Bodymine s'engage à héberger vos données exclusivement en Europe.
+En cas d'évolution technique nécessitant un transfert hors UE, vous en serez informé et des garanties appropriées seront mises en place (clauses contractuelles types, décision d'adéquation).
 
 ---
 
-7. Durée de conservation des données
-
-Compte utilisateur : jusqu'à 2 ans après la dernière activité ou sur demande de suppression
-
-Projets MyBodyProjet : 12 mois maximum après clôture
-
+7. Durée de conservation
+Données de profil actif : tant que votre compte reste actif
+Données de profil inactif : suppression après 3 ans d'inactivité totale
+Échanges et projets : conservation 2 ans après la dernière activité
 Logs de connexion : 12 mois
-
 Données marketing (email, consentement) : 3 ans après inactivité
 
 ---
 
 8. Sécurité des données
 Nous appliquons des mesures techniques et organisationnelles avancées :
-
 Chiffrement SSL/TLS des données en transit
 Hébergement sécurisé sur des serveurs certifiés (ISO 27001 / HDS)
-Accès restreint aux données sensibles
-Double authentification pour les professionnels
-Journalisation des accès
+Contrôles d'accès stricts et authentification multi-facteurs
+Sauvegardes régulières et redondantes
+Tests de sécurité et audits périodiques
+Formation continue des équipes à la cybersécurité
 
 ---
 
-9. Vos droits
-Conformément au RGPD, vous pouvez :
-Accéder à vos données
-Corriger des données inexactes
-Demander la suppression de votre compte et de vos données
-Demander la portabilité de vos données
-Limiter certains traitements
-Retirer votre consentement à tout moment
-Vous opposer à certains traitements automatiques (profilage marketing, par exemple)
+9. Vos droits RGPD
+Vous disposez des droits suivants :
+Droit d'accès : obtenez une copie de toutes vos données
+Droit de rectification : corrigez des informations erronées
+Droit à l'effacement : supprimez vos données (sous conditions)
+Droit de limitation : restreignez temporairement l'usage de vos données
+Droit à la portabilité : récupérez vos données dans un format structuré
+Droit d'opposition : refusez certains traitements (marketing, etc.)
+Droit de retrait du consentement : à tout moment et sans justification
 
-
-Pour exercer vos droits : support@bodymine.com
-Nous répondrons sous 30 jours conformément à la réglementation.
-
----
-
-10. Cookies
-Nous utilisons différents types de cookies :
-
-Cookies techniques nécessaires au fonctionnement du site
-Cookies analytiques (Google Analytics ou équivalent, avec anonymisation IP)
-Cookies de personnalisation et de performance
-
-Lors de votre première visite, un bandeau de consentement vous permet de choisir les cookies que vous acceptez. Vous pouvez modifier vos préférences à tout moment via les paramètres de votre navigateur.
+Pour exercer ces droits : info@bodymine.com
+Délai de réponse : 1 mois maximum (extensible à 3 mois si complexe)
 
 ---
 
-11. Modifications de la politique de confidentialité
-Nous nous réservons le droit de modifier cette politique à tout moment.
-La version à jour est toujours disponible sur notre site, avec la date de dernière mise à jour. En cas de modification majeure, nous vous en informerons directement.
+10. Réclamations et contact
+Délégué à la Protection des Données : dpo@bodymine.com
+Questions générales : info@bodymine.com
+
+En cas de désaccord persistant, vous pouvez saisir l'autorité de contrôle compétente :
+France : CNIL (cnil.fr)
+Autres pays UE : autorité locale de protection des données
 
 ---
 
-12. Contact
-Pour toute question concernant la gestion de vos données personnelles ou pour exercer vos droits :
-Email : info@bodymine.com
+11. Modifications de cette politique
+Toute modification sera communiquée par email et/ou notification sur la plateforme.
+Date d'entrée en vigueur : 30 jours après notification.
+Historique des versions disponible sur demande.
 
+---
 
-
-`;
+Cette politique de confidentialité reflète notre engagement envers la transparence et la protection de votre vie privée. N'hésitez pas à nous contacter pour toute question ou précision.`;
 
 export default function ProfessionalDataPrivicy() {
   return (
@@ -142,30 +137,30 @@ export default function ProfessionalDataPrivicy() {
       {/* top-bar partagée */}
       <TopbarPro />
 
-      {/* HERO (identique Support) */}
+      {/* Support header - bannière pleine largeur avec Tailwind */}
+      <header className="w-full max-w-none mx-0 bg-[#ecfafa] rounded-xl p-8 text-left flex justify-between items-center mb-6 px-4">
+        <div>
+          <h2 className="text-3xl font-bold">How can we help you?</h2>
+          <p className="text-gray-600 mt-1.5 text-[15px]">We're here to support you anytime. Choose the best way to reach us.</p>
+        </div>
+        <img src={heroPic} alt="Support operator" className="h-[170px] mr-8" />
+      </header>
       
-     <header className="support-header">
-                 <div>
-                   <h2>How can we help you&nbsp;?</h2>
-                   <p>We’re here to support you anytime. Choose the best way to reach us.</p>
-                 </div>
-                 <img src={heroPic} alt="Support operator" className="support-img" />
-               </header>
+      {/* GRILLE : flex layout avec sidebar collée à gauche */}
+      <main className="flex w-full">
+        <SidebarPro active="Data Privacy" />
+        <div className="flex-1 flex flex-col gap-6 p-6">
+          <section className="faq-card">
+            <header className="faq-head">Politique de Confidentialité – Bodymine</header>
 
-      {/* GRILLE */}
-      <div className="faq-grid">
-        <SidebarPro active="FAQ" />
-
-        <section className="faq-card">
-          <header className="faq-head">FAQ Professionnels&nbsp;– Bodymine</header>
-
-          <article className="faq-body">
-            {faqText.trim().split("\n").map((line, idx) =>
-              line.trim() === "" ? <br key={idx} /> : <p key={idx}>{line}</p>
-            )}
-          </article>
-        </section>
-      </div>
+            <article className="faq-body">
+              {faqText.trim().split("\n").map((line, idx) =>
+                line.trim() === "" ? <br key={idx} /> : <p key={idx}>{line}</p>
+              )}
+            </article>
+          </section>
+        </div>
+      </main>
 
       {/* footer réutilisé */}
       <footer className="site-footer">

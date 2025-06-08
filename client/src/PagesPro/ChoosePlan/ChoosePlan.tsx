@@ -1,20 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Container, Grid, Typography, Card, CardContent, Button, List, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material';
 import TopBarPro from '../../components/TopbarPro';
 import SidebarPro from '../../components/SidebarPro';
 import FooterPro from '../../components/FooterPro';
-import ImageHeaderPro from '../../components/ImageHeaderPro';
-import PersonIcon from '@mui/icons-material/Person';
-import BusinessIcon from '@mui/icons-material/Business';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { Radio } from '@mui/material';
-import strip1 from "../../images/strip1.png"
-import strip2 from "../../images/strip2.png"
-import strip3 from "../../images/strip3.png"
+import { User, Building2, Check, Plus, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
 
 export default function ChoosePlan() {
   const [step, setStep] = useState(1);
@@ -23,7 +11,6 @@ export default function ChoosePlan() {
   const [additionalServices, setAdditionalServices] = useState<string[]>([]);
   const [paymentMethod, setPaymentMethod] = useState<string>('');
   const [selectedPlatform, setSelectedPlatform] = useState('');
-
 
   const handleUserTypeSelect = (type: string) => {
     setUserType(type);
@@ -54,363 +41,346 @@ export default function ChoosePlan() {
 
   return (
     <div className='pro'>
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      {/* Header */}
-      <div className='pure'>
-      <TopBarPro />
-</div>
-<br />
-       {/* ░░ Carousel ░░ */}
-      <section className="partner-strip">
-      <img src={strip1} alt="Partner 1" />
-       <img src={strip2} alt="Partner 2" />
-       <img src={strip3} alt="Partner 3" />
-       </section>
-      {/* Main Content */}
-      <Container maxWidth="lg" sx={{ mt: 2 }}>
-        <Grid container spacing={2}>
-          {/* Header Images (full width) */}
+      <div className="min-h-screen flex flex-col">
+        {/* Header */}
+        <div className='pure'>
+          <TopBarPro />
+        </div>
+        <br />
+        
+        {/* Main Layout: Sidebar + Content */}
+        <div className="flex flex-1">
+          {/* Sidebar */}
+          <div className="flex-shrink-0">
+            <SidebarPro active='Plan'/>
+          </div>
+          
+          {/* Content Area */}
+          <div className="flex-1 p-6 bg-gray-50">
+            <div className="bg-white rounded-lg shadow-sm h-full p-8">
+              {step === 1 && (
+                <div className="text-center">
+                  <h1 className="text-4xl font-bold text-black mb-8">
+                    Create your Account
+                  </h1>
 
-          {/* Main Content */}
-          <Grid container spacing={2} sx={{ mt: 2 }}>
-            {/* Sidebar */}
-            <Grid item xs={12} md={3}>
-              <SidebarPro active='Plan'/>
-            </Grid>
+                  <div className="bg-gray-100 rounded-lg p-12 flex flex-col items-center gap-6 min-h-[500px] justify-center">
+                    <div
+                      className="bg-white rounded-lg p-6 w-full max-w-2xl cursor-pointer border-2 border-transparent hover:border-blue-300 hover:text-blue-400 transition-all duration-200 flex items-center gap-4"
+                      onClick={() => handleUserTypeSelect('doctor')}
+                    >
+                      <User size={48} className="text-blue-400" />
+                      <div className="text-left">
+                        <h3 className="text-xl font-semibold">Doctor</h3>
+                        <p className="text-gray-600">Individual medical practitioner</p>
+                      </div>
+                    </div>
 
-            {/* Steps Content */}
-            <Grid item xs={12} md={9}>
-            <Box sx={{
-              flex: 1,
-              p: 4,
-              bgcolor: 'white',   // Fond blanc
-              borderRadius: 2,
-              width: '800px',
-              maxWidth: '1000px',  // Largeur fixe
-              minHeight: '700px',  // Hauteur minimum fixe pour toutes les étapes
-              margin: '0 auto',
-              alignItems: 'center',
-            }}>
-            {step === 1 && (
-            <Box sx={{
-              p: 4,
-              textAlign: 'center'
-            }}>
-              <Typography variant="h4" sx={{ mb: 4, color: '#000' }}>
-                Create your Account
-              </Typography>
+                    <div
+                      className="bg-white rounded-lg p-6 w-full max-w-2xl cursor-pointer border-2 border-transparent hover:border-blue-300 hover:text-blue-400 transition-all duration-200 flex items-center gap-4"
+                      onClick={() => handleUserTypeSelect('clinic')}
+                    >
+                      <Building2 size={48} className="text-blue-400" />
+                      <div className="text-left">
+                        <h3 className="text-xl font-semibold">Hospital or Clinic</h3>
+                        <p className="text-gray-600">Healthcare facility</p>
+                      </div>
+                    </div>
 
-              <Box sx={{
-                bgcolor: '#f3f6fa',
-                display: 'flex',
-                flexDirection: 'column',
-                height: '500px',
-                marginTop: 2,
-                padding: 12,
-                gap: 3,
-                alignItems: 'center'
-              }}>
-                <Box
-                  sx={{
-                    bgcolor: 'white',
-                    borderRadius: 2,
-                    p: 3,
-                    width: '100%',
-                    maxWidth: '600px',
-                    cursor: 'pointer',
-                   
+                    <p className="text-gray-600">
+                      Already have an account?{' '}
+                      <span className="text-blue-400 cursor-pointer hover:underline">Sign in</span>                    </p>
                     
-                    '&:hover': { border: '1px solid #87CEFA', color: '#87CEFA' },
-
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 2
-                  }}
-                  onClick={() => handleUserTypeSelect('doctor')}
-                >
-                  <PersonIcon sx={{ fontSize: 48, color: '#87CEFA' }} />
-                  <Box sx={{ textAlign: 'left' }}>
-                    <Typography variant="h6">Doctor</Typography>
-                    <Typography variant="body2">Individual medical practitioner</Typography>
-                  </Box>
-                </Box>
-
-                <Box
-                  sx={{
-                    bgcolor: 'white',
-                    borderRadius: 2,
-                    p: 3,
-                    width: '100%',
-                    maxWidth: '600px',
-                    cursor: 'pointer',
-                    '&:hover': { border: '1px solid #87CEFA', color: '#87CEFA' },
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 2
-                  }}
-                  onClick={() => handleUserTypeSelect('clinic')}
-                >
-                  <BusinessIcon sx={{ fontSize: 48, color: '#87CEFA' }} />
-                  <Box sx={{ textAlign: 'left' }}>
-                    <Typography variant="h6">Hospital or Clinic</Typography>
-                    <Typography variant="body2">Healthcare facility</Typography>
-                  </Box>
-                </Box>
-                <Typography variant="body2">
-                    Already have an account?{' '}
-                    <span style={{ color: '#87CEFA', cursor: 'pointer' }}>Sign in</span>
-                    </Typography>
-              </Box>
-            </Box>
-          )}
-
-
-                {step === 2 && (
-                  <Box sx={{  borderRadius: 2, p: 4 }}>
-                    <Grid container spacing={3}>
-                      {/* Left side - Plan selection */}
-                      <Grid item xs={12} md={5}>
-                        <Typography variant="h5" sx={{ mb: 3 }}>
-                          {userType === 'doctor' ? 'Doctor Plan' : 'Clinic Plan'}
-                        </Typography>
-
-                        {userType === 'doctor' ? (
-                          <Card sx={{ borderRadius: 2, maxWidth: '320px', marginBottom: 2 }}>
-                            <CardContent>
-                              <Typography variant="h6" color="primary" gutterBottom>
+                    {/* Gros bouton Create Account */}
+                    <div className="w-full max-w-2xl mt-4">
+                      <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-6 px-8 rounded-xl text-xl transition-all duration-300 shadow-xl transform hover:scale-[1.02] active:scale-[0.98] border-0 focus:ring-4 focus:ring-blue-300 focus:outline-none">
+                        Create Account
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}              {step === 2 && (
+                <div className="rounded-lg p-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">                    {/* Left side - Plan selection */}
+                    <div className="space-y-6 flex flex-col items-center">
+                      <h2 className="text-2xl font-semibold mb-4 text-center">
+                        {userType === 'doctor' ? 'Doctor Plan' : 'Clinic Plan'}
+                      </h2>                      {userType === 'doctor' ? (
+                        <div className="flex justify-center">
+                          <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6 w-[331px] h-[346px] flex">
+                            {/* 4 icônes verticales à gauche, alignées avec le titre */}
+                            <div className="flex flex-col justify-start gap-3 mr-4 pt-1">
+                              <User size={24} className="text-blue-600" />
+                              <Building2 size={24} className="text-blue-600" />
+                              <CheckCircle2 size={24} className="text-blue-600" />
+                              <Plus size={24} className="text-blue-600" />
+                            </div>                            {/* Contenu principal */}
+                            <div className="flex-1">
+                              <h3 className="text-lg font-semibold text-black text-center mb-4">
                                 Doctor Subscription
-                              </Typography>
-                              <Typography variant="h3" gutterBottom>
-                                $150
-                              </Typography>
-                              <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-                                1 Doctor Profile
-                              </Typography>
-                              <List>
-                                {['Full Access to Dashboard', 'Patient Management System', 'Unlimited Live Chat with Patients'].map((item, idx) => (
-                                  <ListItem key={idx}>
-                                    <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
-                                    <ListItemText primary={item} />
-                                  </ListItem>
-                                ))}
-                              </List>
-                              <Button
-                                variant="contained"
-                                fullWidth
-                                sx={{ mt: 2 }}
+                              </h3>
+                              
+                              {/* Prix avec ancien prix barré en gris et nouveau prix en bleu clair */}
+                              <div className="text-center mb-4">
+                                <div className="text-sm text-gray-500 line-through mb-1">
+                                  $200
+                                </div>
+                                <div className="text-3xl font-bold text-blue-400">
+                                  $150
+                                </div>
+                              </div>
+                                {/* Textes alignés à gauche et plus gros */}
+                              <div className="space-y-2 mb-4">
+                                <div className="text-black text-base font-medium">
+                                  1 Doctor Profile
+                                </div>
+                                <div className="text-black text-base font-medium">
+                                  Full Access to Dashboard
+                                </div>
+                                <div className="text-black text-base font-medium">
+                                  Patient Management System
+                                </div>
+                                <div className="text-black text-base font-medium">
+                                  Unlimited Live Chat with Patients
+                                </div>
+                              </div>
+                              
+                              {/* Bouton compact à l'intérieur de la carte */}
+                              <button
+                                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 text-sm"
                                 onClick={() => handlePlanSelect('doctor')}
                               >
                                 Choose Plan
-                              </Button>
-                            </CardContent>
-                          </Card>
-                        ) : (
-                          <>
-                            {[{ price: "$300", doctors: "2 Doctor Profiles", id: 'clinic300' },
-                            { price: "$600", doctors: "6 Doctor Profiles", id: 'clinic600' }].map((plan, index) => (
-                              <Card key={index} sx={{ mb: 2, borderRadius: 2, maxWidth: '320px' }}>
-                                <CardContent>
-                                  <Typography variant="h6" color="primary" gutterBottom>
+                              </button>
+                            </div>
+                          </div>
+                        </div>                      ) : (
+                        <div className="space-y-4 flex justify-center">
+                          <div className="space-y-4">
+                            {[
+                              { 
+                                price: "$300", 
+                                originalPrice: "$400",
+                                doctors: "2 Doctor Profiles", 
+                                id: 'clinic300',
+                                features: [
+                                  "2 Doctor Profiles",
+                                  "Full Access to Dashboard",
+                                  "Clinic Management System", 
+                                  "Unlimited Live Chat with Patients"
+                                ]
+                              },
+                              { 
+                                price: "$600", 
+                                originalPrice: "$800",
+                                doctors: "6 Doctor Profiles", 
+                                id: 'clinic600',
+                                features: [
+                                  "6 Doctor Profiles",
+                                  "Full Access to Dashboard",
+                                  "Advanced Clinic Management",
+                                  "Unlimited Live Chat with Patients"
+                                ]
+                              }
+                            ].map((plan, index) => (
+                              <div key={index} className="bg-white border border-gray-200 rounded-lg shadow-sm p-6 w-[331px] h-[346px] flex">
+                                {/* 4 icônes verticales à gauche, alignées avec le titre */}
+                                <div className="flex flex-col justify-start gap-3 mr-4 pt-1">
+                                  <Building2 size={24} className="text-blue-600" />
+                                  <User size={24} className="text-blue-600" />
+                                  <CheckCircle2 size={24} className="text-blue-600" />
+                                  <Plus size={24} className="text-blue-600" />
+                                </div>
+
+                                {/* Contenu principal */}
+                                <div className="flex-1">
+                                  <h3 className="text-lg font-semibold text-black text-center mb-4">
                                     Clinic Subscription
-                                  </Typography>
-                                  <Typography variant="h3" gutterBottom>
-                                    {plan.price}
-                                  </Typography>
-                                  <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-                                    {plan.doctors}
-                                  </Typography>
-                                  <List>
-                                    <ListItem>
-                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
-                                      <ListItemText primary="Full Access to Dashboard" />
-                                    </ListItem>
-                                    <ListItem>
-                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
-                                      <ListItemText primary={index === 0 ? "Clinic Management System" : "Advanced Clinic Management"} />
-                                    </ListItem>
-                                    <ListItem>
-                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
-                                      <ListItemText primary="Unlimited Live Chat with Patients" />
-                                    </ListItem>
-                                  </List>
-                                  <Button
-                                    variant="contained"
-                                    fullWidth
-                                    sx={{ mt: 2 }}
+                                  </h3>
+                                  
+                                  {/* Prix avec ancien prix barré en gris et nouveau prix en bleu clair */}
+                                  <div className="text-center mb-4">
+                                    <div className="text-sm text-gray-500 line-through mb-1">
+                                      {plan.originalPrice}
+                                    </div>
+                                    <div className="text-3xl font-bold text-blue-400">
+                                      {plan.price}
+                                    </div>
+                                  </div>
+                                    
+                                  {/* Textes alignés à gauche et plus gros, sans encoches */}
+                                  <div className="space-y-2 mb-4">
+                                    {plan.features.map((feature, featureIndex) => (
+                                      <div key={featureIndex} className="text-black text-base font-medium">
+                                        {feature}
+                                      </div>
+                                    ))}
+                                  </div>
+                                  
+                                  {/* Bouton compact à l'intérieur de la carte */}
+                                  <button
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 text-sm"
                                     onClick={() => handlePlanSelect(plan.id)}
                                   >
                                     Choose Plan
-                                  </Button>
-                                </CardContent>
-                              </Card>
+                                  </button>
+                                </div>
+                              </div>
                             ))}
-                          </>
-                        )}
-                      </Grid>
-
-                      {/* Right side - Add services */}
-                      <Grid item xs={12} md={7}>
-                        <Typography variant="h5" sx={{ mb: 3 }}>
-                          Add Services
-                        </Typography>
-
+                          </div>
+                        </div>
+                      )}
+                    </div>                    {/* Right side - Add services - Design personnalisé */}
+                    <div className="flex flex-col items-center">
+                      <h2 className="text-2xl font-semibold mb-6 text-black text-center">
+                        Add Services
+                      </h2>                      <div className="space-y-3 flex flex-col items-center">
                         {services.map((service, index) => (
-                          <Card key={index} sx={{ mb: 2, borderRadius: 2, maxWidth: '320px' }}>
-                            <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                              <Box>
-                                <Typography variant="h6">{service.name}</Typography>
-                                <Typography variant="body2" color="text.secondary">{service.description}</Typography>
-                              </Box>
-                              <Box sx={{ textAlign: 'right' }}>
-                                <Typography variant="h6" color="primary" sx={{ mb: 1 }}>{service.price}</Typography>
-                                <Button
-                                  variant={additionalServices.includes(service.name) ? "contained" : "outlined"}
-                                  startIcon={<AddCircleOutlineIcon />}
-                                  onClick={() => handleServiceToggle(service.name)}
-                                >
-                                  {additionalServices.includes(service.name) ? 'Selected' : 'Select Service'}
-                                </Button>
-                              </Box>
-                            </CardContent>
-                          </Card>
+                          <div key={index} className="bg-white border border-gray-200 rounded-lg shadow-sm p-4 w-full max-w-md">
+                            {/* Header avec icône service + titre + icône info plus proche */}
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-2">
+                                {/* Icône à gauche du titre selon le service */}
+                                {service.name === 'Banner' && <Building2 size={20} className="text-black" />}
+                                {service.name === 'Top List' && <ArrowRight size={20} className="text-black" />}
+                                {service.name === 'Matching Service' && <User size={20} className="text-black" />}
+                                <h3 className="text-lg font-bold text-black">{service.name}</h3>
+                              </div>
+                              {/* Icône info grise ronde plus proche */}
+                              <div className="w-6 h-6 bg-gray-500 rounded-full flex items-center justify-center ml-4">
+                                <span className="text-white text-xs font-bold">i</span>
+                              </div>
+                            </div>
+
+                            {/* Prix en dessous du titre */}
+                            <div className="text-xl font-bold text-black mb-3">
+                              {service.price}
+                            </div>
+
+                            {/* Description plus grande */}
+                            <p className="text-lg text-black mb-3 leading-relaxed font-medium">
+                              {service.description}
+                            </p>
+
+                            {/* Bouton bleu */}
+                            <button
+                              className={`px-6 py-2 rounded-lg font-semibold text-sm transition-colors duration-200 ${
+                                additionalServices.includes(service.name)
+                                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                  : 'bg-blue-600 text-white hover:bg-blue-700'
+                              }`}
+                              onClick={() => handleServiceToggle(service.name)}
+                            >
+                              {service.name === 'Banner' && (additionalServices.includes(service.name) ? 'Remove Banner' : 'Select Banner')}
+                              {service.name === 'Top List' && (additionalServices.includes(service.name) ? 'Remove Top List' : 'Select Top List')}
+                              {service.name === 'Matching Service' && (additionalServices.includes(service.name) ? 'Remove Matching Service' : 'Select Matching Service')}
+                            </button>
+                          </div>
                         ))}
+                      </div>
+                    </div>
+                  </div>
 
-                        <Box sx={{ mt: 4, display: 'flex', justifyContent: 'space-between' }}>
-                          <Button variant="outlined" onClick={() => setStep(1)}>Back</Button>
-                          <Button
-                            variant="contained"
-                            onClick={handlePayment}
-                            endIcon={<ArrowForwardIcon />}
-                            disabled={!selectedPlan}
-                          >
-                            Continue to Payment
-                          </Button>
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                                  )}
+                  {/* Navigation buttons - Positioned at the bottom */}
+                  <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
+                    <button 
+                      className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                      onClick={() => setStep(1)}
+                    >
+                      <ArrowLeft size={16} />
+                      Back
+                    </button>
+                    <button
+                      className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                      onClick={handlePayment}
+                      disabled={!selectedPlan}
+                    >
+                      Continue to Payment
+                      <ArrowRight size={16} />
+                    </button>
+                  </div>
+                </div>
+              )}{step === 3 && (
+                <div className="rounded-lg p-4 text-center">
+                  <h2 className="text-3xl font-bold mb-8">
+                    Payment
+                  </h2>
 
-                  {step === 3 && (
-                    <Box sx={{
-                      borderRadius: 2,
-                      p: 4,
-                      textAlign: 'center'
-                    }}>
-                      <Typography variant="h4" sx={{ mb: 4 }}>
-                        Payment
-                      </Typography>
+                  <div className="bg-white rounded-lg p-6 max-w-lg mx-auto">
+                    <div className="space-y-4">
+                      {[
+                        { name: 'Google Pay', icon: '/icons/google-pay.png' },
+                        { name: 'PayPal', icon: '/icons/paypal.png' },
+                        { name: 'Apple Pay', icon: '/icons/apple-pay.png' },
+                        { name: 'Amazon Pay', icon: '/icons/amazon-pay.png' }
+                      ].map((platform, index) => (
+                        <div 
+                          key={index} 
+                          className="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-blue-300 hover:bg-gray-50 transition-all duration-200"
+                          onClick={() => setSelectedPlatform(platform.name)}
+                        >
+                          <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-4">
+                            <img src={platform.icon} alt={platform.name} className="w-8 h-8" />
+                          </div>
+                          <span className="flex-1 text-left font-semibold">
+                            {platform.name}
+                          </span>
+                          <div className="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center">
+                            {selectedPlatform === platform.name && (
+                              <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
 
-                      <Box sx={{
-                        bgcolor: '#fff',
-                        borderRadius: 2,
-                        p: 3,
-                        maxWidth: '500px',
-                        margin: '0 auto',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: 3
-                      }}>
-                        {[
-                          { name: 'Google Pay', icon: '/icons/google-pay.png' },
-                          { name: 'PayPal', icon: '/icons/paypal.png' },
-                          { name: 'Apple Pay', icon: '/icons/apple-pay.png' },
-                          { name: 'Amazon Pay', icon: '/icons/amazon-pay.png' }
-                        ].map((platform, index) => (
-                          <Box key={index} sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            p: 2,
-                            border: '2px solid #eee',
-                            borderRadius: 2,
-                            cursor: 'pointer',
-                            '&:hover': { borderColor: '#87CEFA', bgcolor: '#f9f9f9' }
-                          }}>
-                            <Box sx={{
-                              width: 50,
-                              height: 50,
-                              borderRadius: '50%',
-                              overflow: 'hidden',
-                              bgcolor: '#f0f0f0',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              mr: 2
-                            }}>
-                              <img src={platform.icon} alt={platform.name} style={{ width: '60%', height: '60%' }} />
-                            </Box>
-                            <Typography sx={{ flexGrow: 1, textAlign: 'left', fontWeight: 'bold' }}>
-                              {platform.name}
-                            </Typography>
-                            <Radio
-                              checked={selectedPlatform === platform.name}
-                              onChange={() => setSelectedPlatform(platform.name)}
-                              value={platform.name}
-                              name="payment-platform"
-                              color="primary"
-                            />
-                          </Box>
-                        ))}
-
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
-                          <Button
-                            variant="outlined"
-                            startIcon={<ArrowBackIcon />}
-                            onClick={() => setStep(2)}
-                          >
-                            Back
-                          </Button>
-                          <Button
-                            variant="contained"
-                            endIcon={<CheckCircleIcon />}
-                            onClick={() => setStep(4)}
-                            disabled={!selectedPlatform}
-                          >
-                            Confirm Payment
-                          </Button>
-                        </Box>
-                      </Box>
-                    </Box>
-                  )}
-
-                  {step === 4 && (
-                  <Box sx={{
-                    borderRadius: 2,
-                    p: 4,
-                    textAlign: 'center'
-                  }}>
-                    <Box sx={{
-                      bgcolor: '#fff',
-                      borderRadius: 2,
-                      p: 3,
-                      maxWidth: '400px',
-                      margin: '0 auto'
-                    }}>
-                      <CheckCircleOutlineIcon sx={{ fontSize: 80, color: 'success.main', mb: 2 }} />
-                      <Typography variant="h4" gutterBottom>
-                        Payment Successfully
-                      </Typography>
-                      <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-                        Thank you for purchasing our plan. We value you!
-                      </Typography>
-                      <Button
-                        variant="contained"
-                        onClick={() => window.location.href = '/PRO/dashboard'}
+                    <div className="flex justify-between mt-8">
+                      <button
+                        className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                        onClick={() => setStep(2)}
                       >
-                        Go to Dashboard
-                      </Button>
-                    </Box>
-                  </Box>
-                )}
-              </Box>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Container>
+                        <ArrowLeft size={16} />
+                        Back
+                      </button>
+                      <button
+                        className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        onClick={() => setStep(4)}
+                        disabled={!selectedPlatform}
+                      >
+                        Confirm Payment
+                        <CheckCircle2 size={16} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
-      {/* Footer */}
-      <FooterPro />
-    </Box>
+              {step === 4 && (
+                <div className="rounded-lg p-4 text-center">
+                  <div className="bg-white rounded-lg p-6 max-w-md mx-auto">
+                    <CheckCircle2 size={80} className="text-green-500 mx-auto mb-4" />
+                    <h2 className="text-3xl font-bold mb-4">
+                      Payment Successfully
+                    </h2>
+                    <p className="text-gray-600 mb-8">
+                      Thank you for purchasing our plan. We value you!
+                    </p>
+                    <button
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                      onClick={() => window.location.href = '/PRO/dashboard'}
+                    >
+                      Go to Dashboard
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <FooterPro />
+      </div>
     </div>
   );
 }

@@ -24,6 +24,8 @@ import Editprofile from './PagesPro/EditProfile/Editprofile';
 import ChoosePlan from './PagesPro/ChoosePlan/ChoosePlan';
 import PurchaseServicesPage from './PagesPro/PurchaseServicesPage';
 import NotificationsPage from './PagesPro/NotificationsPage';
+import DoctorListPage from './PagesPro/DoctorListPage';
+import ChangePasswordPage from './PagesPro/ChangePasswordPage';
 import ProfessionalCGU from './PagesPro/ProfessionalCGU';
 import ProfessionalDataPrivicy from './PagesPro/ProfessionalDataPrivicy';
 import Faq from './pages/info/Faq';
@@ -59,10 +61,9 @@ export default function App() {
       <Route path="/chat" element={<ChatPage />} />
       <Route path="/doctor/:id" element={<DoctorProfilePage />} />
       <Route path="/myBodyProject" element={<MyBodyProjectPage />} />
-      <Route path="/pro/edit" element={<Editprofile />} />
-      <Route path="/pro/plan" element={<ChoosePlan />} />
-      <Route path="/pro/purchase-services" element={<PurchaseServicesPage />} />
-      <Route path="/pro/notifications" element={<NotificationsPage />} />
+      <Route path="/pro/edit" element={<Editprofile />} />      
+      <Route path="/pro/plan" element={<ChoosePlan />} />      <Route path="/pro/purchase-services" element={<PurchaseServicesPage />} />      <Route path="/pro/notifications" element={<NotificationsPage />} />        <Route path="/pro/doctor-list" element={<DoctorListPage />} />
+      <Route path="/pro/password" element={<ChangePasswordPage />} />
       <Route path="/menu" element={<MenuPageMobile />} />
 
 

@@ -17,13 +17,12 @@
     background: var(--light-bg);
     color: var(--text-dark);
   }
-  
-  .navbar {
+    .navbar {
     background: var(--primary);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 32px;
+    padding: 0 2.5rem;
     height: 90px;
     color: var(--white);
   }
@@ -165,9 +164,7 @@
   .sidebar a:hover, .sidebar button:hover {
     background: #d4f4f4;
   }
-  
-  .profile-editor {
-    flex: 1;
+    .profile-editor {
     background: var(--white);
     border-radius: 12px;
     padding: 24px;
