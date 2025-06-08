@@ -29,6 +29,16 @@ import clinic1 from "../images/clinic1.png";
 import clinic2 from "../images/clinic2.png";
 import clinic3 from "../images/clinic3.png";
 import bodyMine from "../images/LogoBODYMINE.png";
+import img1 from "../images/1.png";
+import img2 from "../images/2.png";
+import img3 from "../images/3.png";
+import img4 from "../images/4.png";
+import img5 from "../images/5.png";
+import img6 from "../images/6.png";
+import img7 from "../images/7.png";
+import img8 from "../images/8.png";
+import img9 from "../images/9.png";
+import img10 from "../images/10.png";
 import { FaHeart, FaHeartbeat, FaRegHeart, FaUserMd } from "react-icons/fa";
 import Footer from "../components/Footer";
 import { IoFilterSharp } from "react-icons/io5";
@@ -75,22 +85,25 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
     { src: clinic1, alt: "New Clinic Dental Care" },
     { src: clinic2, alt: "Cosmetic Surgery" },
     { src: clinic3, alt: "New Cosmetic Surgery Website" },
+  ];  const specialities = [
+    {icon: <img src={img1} alt="Breast Surgery" className="specialty-icon" /> },
+    {icon: <img src={img2} alt="Facial Surgery" className="specialty-icon" /> },
+    {icon: <img src={img3} alt="Liposuction" className="specialty-icon" /> },
+    {icon: <img src={img4} alt="Abdominoplasty" className="specialty-icon" /> },
+    {icon: <img src={img5} alt="Dental Care" className="specialty-icon" /> },
+    {icon: <img src={img6} alt="Buttock Surgery" className="specialty-icon" /> },
+    {icon: <img src={img7} alt="Hair Surgery" className="specialty-icon" /> },
+    {icon: <img src={img8} alt="Hand Surgery" className="specialty-icon" /> },
+    {icon: <img src={img9} alt="Ear Surgery" className="specialty-icon" /> },
+    {icon: <img src={img10} alt="Intimate Surgery" className="specialty-icon" /> },
+    {icon: <img src={img1} alt="Reconstructive Surgery" className="specialty-icon" /> },
+    {icon: <img src={img2} alt="Non-Surgical Treatments" className="specialty-icon" /> },
   ];
-
-  const specialities = [
-    { name: "Breast Surgery", icon: <FiHeart /> },
-    { name: "Facial Surgery", icon: <FiSmile /> },
-    { name: "Liposuction", icon: <FiScissors /> },
-    { name: "Abdominoplasty", icon: <FiActivity /> },
-    { name: "Dental Care", icon: <FiUser /> },
-    { name: "Buttock Surgery", icon: <FiThumbsUp /> },
-    { name: "Hair Surgery", icon: <FiScissors /> },
-    { name: "Hand Surgery", icon: <FiBriefcase /> },
-    { name: "Ear Surgery", icon: <FiHeart /> },
-    { name: "Intimate Surgery", icon: <FiUserCheck /> },
-    { name: "Reconstructive Surgery", icon: <FiRefreshCw /> },
-    { name: "Non-Surgical Treatments", icon: <FiAward /> },
-  ];
+  
+  // Regrouper les spécialités par groupes de 5
+  const specialityGroups = Array.from({ length: Math.ceil(specialities.length / 5) }, (_, i) =>
+    specialities.slice(i * 5, i * 5 + 5)
+  );
   const specialitie = [
     'Breast surgery','Facial surgery','Liposuction','Abdominoplasty',
     'Dental care','Buttock surgery','Hair surgery','Hand Surgery',

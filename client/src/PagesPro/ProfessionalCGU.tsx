@@ -124,11 +124,10 @@ export default function ProfessionalCGU() {
                    <p>We’re here to support you anytime. Choose the best way to reach us.</p>
                  </div>
                  <img src={heroPic} alt="Support operator" className="support-img" />
-               </header>
-
-      {/* GRILLE */}
-      <div className="faq-grid">
+               </header>      {/* GRILLE */}
+      <main className="flex w-full">
         <SidebarPro active="FAQ" />
+        <div className="flex-1 flex flex-col gap-6 p-6">
 
         <section className="faq-card">
           <header className="faq-head">FAQ Professionnels&nbsp;– Bodymine</header>
@@ -139,7 +138,8 @@ export default function ProfessionalCGU() {
             )}
           </article>
         </section>
-      </div>
+        </div>
+      </main>
 
       {/* footer réutilisé */}
       <footer className="site-footer">

@@ -27,22 +27,20 @@ export default function ProfessionalSupport() {
       {/* --- barre de navigation réutilisable --- */}
       <TopbarPro />
 
-      <div className="main">
-        {/* --- sidebar commune --- */}
+      {/* Support header - bannière CSS classique comme CGU */}
+      <header className="support-header">
+        <div>
+          <h2>How can we help you?</h2>
+          <p>We're here to support you anytime. Choose the best way to reach us.</p>
+        </div>
+        <img src={heroPic} alt="Support operator" className="support-img" />
+      </header>
+
+      {/* Layout Flexbox avec sidebar collée à gauche */}
+      <main className="flex w-full">
         <SidebarPro active="Support" />
-
-        {/* --- contenu Support --- */}
-        <div className="support-layout">
-          {/* ── hero ── */}
-          <header className="support-header">
-            <div>
-              <h2>How can we help you&nbsp;?</h2>
-              <p>We’re here to support you anytime. Choose the best way to reach us.</p>
-            </div>
-            <img src={heroPic} alt="Support operator" className="support-img" />
-          </header>
-
-          {/* ── form + faq ── */}
+        <div className="flex-1 flex flex-col gap-6 p-6">
+          {/* Contenu Support avec structure CSS originale */}
           <div className="support-content">
             {/* formulaire de contact */}
             <section className="support-form-box">
@@ -96,7 +94,7 @@ export default function ProfessionalSupport() {
             <input readOnly value="support@bodymine.com" />
           </section>
         </div>
-      </div>
+      </main>
 
       {/* --- footer réutilisable --- */}
       <footer className="site-footer">
