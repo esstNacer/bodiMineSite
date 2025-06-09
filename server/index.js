@@ -12,7 +12,7 @@ import patientsRouter      from './routes/patients.js';
 import professionalsRouter from './routes/professionals.js';
 import authRouter          from './routes/auth.js';  
 import chatRoutes from './routes/chats.js';
-//import paymentsRoutes from './routes/payments.js';
+import paymentsRoutes from './routes/payments.js';
 import notificationRoutes from './routes/notifications.js';
 import projectRouter from './routes/projects.js';
 import ProfessionalsPhotoRouter from './routes/professionalPhotos.js'
@@ -108,7 +108,7 @@ app.use('/api/photos', ProfessionalsPhotoRouter);
 app.use('/api/photos', ProfessionalsPhotoRouter);
 app.use('/api/admin', adminRouter);
 
-//app.use('/api/premium_subscriptions', paymentsRoutes);
+app.use('/api/payments', paymentsRoutes);
 
 
 

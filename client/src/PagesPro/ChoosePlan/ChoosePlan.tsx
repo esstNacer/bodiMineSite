@@ -3,6 +3,28 @@ import TopBarPro from '../../components/TopbarPro';
 import SidebarPro from '../../components/SidebarPro';
 import FooterPro from '../../components/FooterPro';
 import { User, Building2, Check, Plus, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
+import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { Button } from '@mui/material';
+
+const planPrices: Record<string, number> = {
+  doctor: 150,
+  clinic300: 300,
+  clinic600: 600,
+};
+
+const servicePrices: Record<string, number> = {
+  Banner: 400,
+  'Top List': 100,
+  'Matching Service': 30,
+};
+
+function computeTotal(plan: string, services: string[]): number {
+  const base   = planPrices[plan]   ?? 0;
+  const extras = services.reduce((sum, s) => sum + (servicePrices[s] ?? 0), 0);
+  return base + extras;          // € (float).  Multipliez ×100 avant d’envoyer au backend.
+}
 
 export default function ChoosePlan() {
   const [step, setStep] = useState(1);
@@ -11,6 +33,83 @@ export default function ChoosePlan() {
   const [additionalServices, setAdditionalServices] = useState<string[]>([]);
   const [paymentMethod, setPaymentMethod] = useState<string>('');
   const [selectedPlatform, setSelectedPlatform] = useState('');
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+async function handleConfirm() {
+  if (!selectedPlatform) return;
+
+  /* ── 1. Calcule le montant ─────────────────────────────────── */
+  const totalPrice  = computeTotal(selectedPlan, additionalServices); // € float
+  const amountCents = Math.round(totalPrice * 100);                  // int
+  const currency    = 'eur';
+
+  try {
+    /* ── 2. Appel API backend (toujours) ──────────────────────── */
+    const { data } = await axios.post('/api/payments/create', {
+      platform: selectedPlatform,
+      amount  : amountCents,
+      currency,
+    });
+
+    /* ── 3. Route selon plateforme ────────────────────────────── */
+    switch (selectedPlatform) {
+      /* Apple Pay & Google Pay → Payment Element */
+      case 'Apple Pay':
+      case 'Google Pay': {
+        const stripe = await stripePromise;
+        setClientSecret(data.clientSecret);     // stocke → affichera PaymentElement
+        return;                                 // on sort : confirmation via formulaire
+      }
+
+      /* PayPal */
+      case 'PayPal':
+        window.location.href = data.approvalUrl;
+        return;
+
+      /* Amazon Pay */
+      case 'Amazon Pay':
+        window.location.href = data.amazonPayUrl;
+        return;
+
+      default:
+        alert('Moyen de paiement non pris en charge');
+    }
+  } catch (err: any) {
+    console.error(err);
+    alert(err.response?.data?.error ?? 'Erreur de paiement');
+  }
+}
+
+function WalletForm({ onSuccess }: { onSuccess: () => void }) {
+  const stripe   = useStripe();
+  const elements = useElements();
+
+  const submit = async () => {
+    if (!stripe || !elements) return;
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: { return_url: window.location.origin + '/payment-success' },
+      redirect: 'if_required',
+    });
+
+    if (error) {
+      alert(error.message);
+    } else {
+      onSuccess();          // passe à l’étape 4
+    }
+  };
+
+  return (
+    <>
+      <PaymentElement options={{ layout: 'tabs' }} />
+      <Button variant="contained" fullWidth onClick={submit} sx={{ mt: 2 }}>
+        Payer
+      </Button>
+    </>
+  );
+}
+
 
   const handleUserTypeSelect = (type: string) => {
     setUserType(type);
@@ -300,60 +399,75 @@ export default function ChoosePlan() {
                     </button>
                   </div>
                 </div>
-              )}{step === 3 && (
-                <div className="rounded-lg p-4 text-center">
-                  <h2 className="text-3xl font-bold mb-8">
-                    Payment
-                  </h2>
+              )}{/* ──────────────── STEP 3 : Payment (version Tailwind) ──────────────── */}
+{step === 3 && (
+  <div className="rounded-lg p-4 text-center">
+    <h2 className="text-3xl font-bold mb-8">Payment</h2>
 
-                  <div className="bg-white rounded-lg p-6 max-w-lg mx-auto">
-                    <div className="space-y-4">
-                      {[
-                        { name: 'Google Pay', icon: '/icons/google-pay.png' },
-                        { name: 'PayPal', icon: '/icons/paypal.png' },
-                        { name: 'Apple Pay', icon: '/icons/apple-pay.png' },
-                        { name: 'Amazon Pay', icon: '/icons/amazon-pay.png' }
-                      ].map((platform, index) => (
-                        <div 
-                          key={index} 
-                          className="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-blue-300 hover:bg-gray-50 transition-all duration-200"
-                          onClick={() => setSelectedPlatform(platform.name)}
-                        >
-                          <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-4">
-                            <img src={platform.icon} alt={platform.name} className="w-8 h-8" />
-                          </div>
-                          <span className="flex-1 text-left font-semibold">
-                            {platform.name}
-                          </span>
-                          <div className="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center">
-                            {selectedPlatform === platform.name && (
-                              <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="flex justify-between mt-8">
-                      <button
-                        className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-                        onClick={() => setStep(2)}
-                      >
-                        <ArrowLeft size={16} />
-                        Back
-                      </button>
-                      <button
-                        className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={() => setStep(4)}
-                        disabled={!selectedPlatform}
-                      >
-                        Confirm Payment
-                        <CheckCircle2 size={16} />
-                      </button>
-                    </div>
-                  </div>
+    <div className="bg-white rounded-lg p-6 max-w-lg mx-auto">
+      {/* ░░ 1. Choix du moyen de paiement ░░ */}
+      {!clientSecret ? (
+        <>
+          <div className="space-y-4">
+            {[
+              { name: 'Google Pay', icon: '/icons/google-pay.png' },
+              { name: 'PayPal',     icon: '/icons/paypal.png'     },
+              { name: 'Apple Pay',  icon: '/icons/apple-pay.png'  },
+              { name: 'Amazon Pay', icon: '/icons/amazon-pay.png' },
+            ].map((platform, idx) => (
+              <div
+                key={idx}
+                className="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer
+                           hover:border-blue-300 hover:bg-gray-50 transition-all duration-200"
+                onClick={() => setSelectedPlatform(platform.name)}
+              >
+                <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-4">
+                  <img src={platform.icon} alt={platform.name} className="w-8 h-8" />
                 </div>
-              )}
+
+                <span className="flex-1 text-left font-semibold">{platform.name}</span>
+
+                <div className="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center">
+                  {selectedPlatform === platform.name && (
+                    <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* ░░ Boutons navigation ░░ */}
+          <div className="flex justify-between mt-8">
+            <button
+              className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700
+                         rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              onClick={() => setStep(2)}
+            >
+              <ArrowLeft size={16} />
+              Back
+            </button>
+
+            <button
+              className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg
+                         hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleConfirm}
+              disabled={!selectedPlatform}
+            >
+              Confirm Payment
+              <CheckCircle2 size={16} />
+            </button>
+          </div>
+        </>
+      ) : (
+        /* ░░ 2. Stripe PaymentElement pour Apple / Google Pay ░░ */
+        <Elements stripe={stripePromise} options={{ clientSecret }}>
+          <WalletForm onSuccess={() => setStep(4)} />
+        </Elements>
+      )}
+    </div>
+  </div>
+)}
+
 
               {step === 4 && (
                 <div className="rounded-lg p-4 text-center">
