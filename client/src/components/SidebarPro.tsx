@@ -107,14 +107,14 @@ export default function SidebarPro({
   
 
   const items = [
-    { id: "Dashboard", label: "Dashboard",          icon: <Menu size={16}/>,       to: "/pro/dashboard"         },
-    { id: "Edit",      label: "Edit Profile",       icon: <User size={16}/>,       to: "/pro/edit"              },
-    { id: "Plan",      label: "Your Plan",          icon: <Star size={16}/>,       to: "/pro/plan"              },
-    {id: "DoctorEst", label: "Doctor list",        icon: <Notebook size={16}/>,   to: "/pro/doctor-list"        },
-    { id: "Purchase",  label: "Purchase Services",  icon: <FaMoneyBill size={16}/>,to: "/pro/purchase-services" },
-    { id: "Password",  label: "Change Password",    icon: <Lock size={16}/>,       to: "/pro/password"          },
-    { id: "Terms",     label: "Terms & Conditions", icon: <Paperclip size={16}/>,  to: "/pro/CGU"               },
-    { id: "Support",   label: "Support",            icon: <Headphones size={16}/>, to: "/pro/support"           },
+    { id: "Dashboard", label: "Dashboard",          icon: <Menu size={20}/>,       to: "/pro/dashboard"         },
+    { id: "Edit",      label: "Edit Profile",       icon: <User size={20}/>,       to: "/pro/edit"              },
+    { id: "Plan",      label: "Your Plan",          icon: <Star size={20}/>,       to: "/pro/plan"              },
+    {id: "DoctorEst", label: "Doctor list",        icon: <Notebook size={20}/>,   to: "/pro/doctor-list"        },
+    { id: "Purchase",  label: "Purchase Services",  icon: <FaMoneyBill size={20}/>,to: "/pro/purchase-services" },
+    { id: "Password",  label: "Change Password",    icon: <Lock size={20}/>,       to: "/pro/password"          },
+    { id: "Terms",     label: "Terms & Conditions", icon: <Paperclip size={20}/>,  to: "/pro/CGU"               },
+    { id: "Support",   label: "Support",            icon: <Headphones size={20}/>, to: "/pro/support"           },
   ];
 
   return (

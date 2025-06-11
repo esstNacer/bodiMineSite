@@ -4,13 +4,15 @@ import { useNavigate } from "react-router-dom"
 import TopbarPro from "../components/TopbarPro"
 import SidebarPro from "../components/SidebarPro"
 import FooterPro from "../components/FooterPro"
-import Carousel, { CarouselItem } from "../components/Carousel"
 import { usePro } from "../components/ProContext"
 import "../assets/ProfessionalDashboard.css" // Import du CSS dashboard professionnel
 
 import strip1 from "../images/strip1.png"
 import strip2 from "../images/strip2.png"
 import strip3 from "../images/strip3.png"
+
+import "../assets/NotificationsPage.css"
+
 
 interface Notification {
   notification_id: number
@@ -24,13 +26,6 @@ interface Notification {
   last_name: string
   photo_url: string | null
 }
-
-// Hero carousel items
-const heroItems: CarouselItem[] = [
-  { src: strip1, alt: "Partner banner" },
-  { src: strip2, alt: "Clinic banner" },
-  { src: strip3, alt: "Silicone industry banner" },
-]
 
 // “time ago” helper
 function timeSince(dateString: string) {
@@ -49,94 +44,46 @@ export default function NotificationsPage() {
   const professionalId = professional?.professional_id
   const navigate = useNavigate()
 
-  // Fausses notifications pour démonstration (similaires au dashboard)
-  const [notifications, setNotifications] = useState<Notification[]>([
-    {
-      notification_id: 1,
-      professional_id: professionalId || 1,
-      project_id: 101,
-      patient_id: 101,
-      first_name: "Sophie",
-      last_name: "Martin",
-      photo_url: "https://i.pravatar.cc/48?u=101",
-      message: "Je souhaiterais prendre rendez-vous pour une consultation la semaine prochaine. Pourriez-vous me confirmer vos disponibilités ?",
-      read: 0,
-      created_at: new Date(Date.now() - 1800000).toISOString(), // 30 minutes ago
-    },
-    {
-      notification_id: 2,
-      professional_id: professionalId || 1,
-      project_id: 102,
-      patient_id: 102,
-      first_name: "Thomas",
-      last_name: "Dubois",
-      photo_url: "https://i.pravatar.cc/48?u=102",
-      message: "Merci pour votre dernier conseil, j'ai vu une grande amélioration! Je voudrais programmer un suivi.",
-      read: 0,
-      created_at: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
-    },
-    {
-      notification_id: 3,
-      professional_id: professionalId || 1,
-      project_id: 103,
-      patient_id: 103,
-      first_name: "Emma",
-      last_name: "Laurent",
-      photo_url: "https://i.pravatar.cc/48?u=103",
-      message: "J'ai une question concernant le traitement que vous m'avez prescrit. Est-ce normal d'avoir ces effets ?",
-      read: 1,
-      created_at: new Date(Date.now() - 7200000).toISOString(), // 2 hours ago
-    },
-    {
-      notification_id: 4,
-      professional_id: professionalId || 1,
-      project_id: 104,
-      patient_id: 104,
-      first_name: "Lucas",
-      last_name: "Moreau",
-      photo_url: "https://i.pravatar.cc/48?u=104",
-      message: "Bonjour docteur, je souhaiterais modifier mon rendez-vous de demain si possible.",
-      read: 1,
-      created_at: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
-    },
-    {
-      notification_id: 5,
-      professional_id: professionalId || 1,
-      project_id: 105,
-      patient_id: 105,
-      first_name: "Camille",
-      last_name: "Bernard",
-      photo_url: "https://i.pravatar.cc/48?u=105",
-      message: "Suite à notre consultation, j'aimerais avoir des précisions sur les exercices recommandés.",
-      read: 1,
-      created_at: new Date(Date.now() - 86400000 - 3600000).toISOString(), // 1 day and 1 hour ago
-    },
-    {
-      notification_id: 6,
-      professional_id: professionalId || 1,
-      project_id: 106,
-      patient_id: 106,
-      first_name: "Antoine",
-      last_name: "Rousseau",
-      photo_url: "https://i.pravatar.cc/48?u=106",
-      message: "Merci pour la consultation d'hier. Les résultats sont-ils déjà disponibles ?",
-      read: 0,
-      created_at: new Date(Date.now() - 86400000 - 7200000).toISOString(), // 1 day and 2 hours ago
-    }
-  ])
+  const [notifications, setNotifications] = useState<Notification[]>([])
 
-  // Mark all as read when page loads (simulation)
+
   useEffect(() => {
-    if (professionalId) {
-      // Simulate marking notifications as read after 1 second
-      const timer = setTimeout(() => {
-        setNotifications(prevNotifs => 
-          prevNotifs.map(n => ({ ...n, read: 1 }))
+    if (!professionalId) return
+
+    // 1) Fetch
+    fetch(`/api/notifications/pro/${professionalId}`)
+      .then(res => res.json())
+      .then((data: Notification[]) => {
+        setNotifications(data)
+        // 2) Mark all as read
+        return fetch(
+          `/api/notifications/pro/${professionalId}/mark-read`,
+          { method: "PUT" }
         )
-      }, 1000)
-      
-      return () => clearTimeout(timer)
-    }
+      })
+      .then(() => {
+        // update local state
+        setNotifications(nots => nots.map(n => ({ ...n, read: 1 })))
+      })
+      .catch(console.error)
+    if (!professionalId) return
+
+    // 1) Fetch
+    fetch(`/api/notifications/pro/${professionalId}`)
+      .then(res => res.json())
+      .then((data: Notification[]) => {
+        setNotifications(data)
+        // 2) Mark all as read
+        return fetch(
+          `/api/notifications/pro/${professionalId}/mark-read`,
+          { method: "PUT" }
+        )
+      })
+      .then(() => {
+        // update local state
+        setNotifications(nots => nots.map(n => ({ ...n, read: 1 })))
+      })
+      .catch(console.error)
   }, [professionalId])
 
   // split today / yesterday
@@ -149,6 +96,8 @@ export default function NotificationsPage() {
   const yesterdayNotifs = notifications.filter(
     n => new Date(n.created_at).toDateString() === yesterdayDate
   )
+
+
   return (
     <div className="pro">
       <div className="pro-dash">
@@ -286,20 +235,21 @@ export default function NotificationsPage() {
                   </div>
                 )}
 
-                {todayNotifs.length === 0 && yesterdayNotifs.length === 0 && (
-                  <div className="text-center py-16">
-                    <div className="text-8xl mb-6">📭</div>
-                    <h3 className="text-3xl font-bold text-gray-700 mb-4">Aucune notification</h3>
-                    <p className="text-xl text-gray-500">Vous n'avez aucune notification pour le moment.</p>
-                  </div>
-                )}
-              </div>
+              {todayNotifs.length === 0 && yesterdayNotifs.length === 0 && (
+                <div className="empty-state">
+                  <div className="empty-icon">📭</div>
+                  <h3>Aucune notification</h3>
+                  <p>Vous n'avez aucune notification pour le moment.</p>
+                </div>
+              )}
             </div>
           </div>
-        </main>
+        </div>
+      </main>
 
-        <FooterPro />
-      </div>
+      <FooterPro />
+    </div>
+      <FooterPro />
     </div>
   )
 }

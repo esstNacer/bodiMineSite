@@ -16,6 +16,84 @@ export default function ChoosePlan() {
   const [additionalServices, setAdditionalServices] = useState<string[]>([]);
   const [paymentMethod, setPaymentMethod] = useState<string>('');
   const [selectedPlatform, setSelectedPlatform] = useState('');
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+async function handleConfirm() {
+  if (!selectedPlatform) return;
+
+  /* ── 1. Calcule le montant ─────────────────────────────────── */
+  const totalPrice  = computeTotal(selectedPlan, additionalServices); // € float
+  const amountCents = Math.round(totalPrice * 100);                  // int
+  const currency    = 'eur';
+
+  try {
+    /* ── 2. Appel API backend (toujours) ──────────────────────── */
+    const { data } = await axios.post('/api/payments/create', {
+      platform: selectedPlatform,
+      amount  : amountCents,
+      currency,
+    });
+
+    /* ── 3. Route selon plateforme ────────────────────────────── */
+    switch (selectedPlatform) {
+      /* Apple Pay & Google Pay → Payment Element */
+      case 'Apple Pay':
+      case 'Google Pay': {
+        const stripe = await stripePromise;
+        setClientSecret(data.clientSecret);     // stocke → affichera PaymentElement
+        return;                                 // on sort : confirmation via formulaire
+      }
+
+      /* PayPal */
+      case 'PayPal':
+        window.location.href = data.approvalUrl;
+        return;
+
+      /* Amazon Pay */
+      case 'Amazon Pay':
+        window.location.href = data.amazonPayUrl;
+        return;
+
+      default:
+        alert('Moyen de paiement non pris en charge');
+    }
+  } catch (err: any) {
+    console.error(err);
+    alert(err.response?.data?.error ?? 'Erreur de paiement');
+  }
+}
+
+function WalletForm({ onSuccess }: { onSuccess: () => void }) {
+  const stripe   = useStripe();
+  const elements = useElements();
+
+  const submit = async () => {
+    if (!stripe || !elements) return;
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: { return_url: window.location.origin + '/payment-success' },
+      redirect: 'if_required',
+    });
+
+    if (error) {
+      alert(error.message);
+    } else {
+      onSuccess();          // passe à l’étape 4
+    }
+  };
+
+  return (
+    <>
+      <PaymentElement options={{ layout: 'tabs' }} />
+      <Button variant="contained" fullWidth onClick={submit} sx={{ mt: 2 }}>
+        Payer
+      </Button>
+    </>
+  );
+}
+
+
 
   const handleUserTypeSelect = (type: string) => {
     setUserType(type);
@@ -43,6 +121,8 @@ export default function ChoosePlan() {
     { name: 'Top List', price: '€100', description: 'Featured placement in top listing' },
     { name: 'Matching Service', price: '€30/month', description: 'Receive phone notifications of patient enquiries' }
   ];
+
+
   return (
     <div className='pro'>
       <div className="pro-dash">
@@ -118,8 +198,7 @@ export default function ChoosePlan() {
                               <Building2 size={24} className="text-blue-600" />
                               <CheckCircle2 size={24} className="text-blue-600" />
                               <Plus size={24} className="text-blue-600" />
-                            </div>                            {/* Contenu principal */}
-                            <div className="flex-1">
+                            </div>                            {/* Contenu principal */}                            <div className="flex-1">
                               <h3 className="text-lg font-semibold text-black text-center mb-4">
                                 Doctor Subscription
                               </h3>
@@ -200,36 +279,65 @@ export default function ChoosePlan() {
                                 <div className="flex-1">
                                   <h3 className="text-lg font-semibold text-black text-center mb-4">
                                     Clinic Subscription
-                                  </h3>
-                                  
-                                  {/* Prix avec ancien prix barré en gris et nouveau prix en bleu clair */}
-                                  <div className="text-center mb-4">
-                                    <div className="text-sm text-gray-500 line-through mb-1">
-                                      {plan.originalPrice}
-                                    </div>
-                                    <div className="text-3xl font-bold text-blue-400">
-                                      {plan.price}
-                                    </div>
-                                  </div>
-                                    
-                                  {/* Textes alignés à gauche et plus gros, sans encoches */}
-                                  <div className="space-y-2 mb-4">
-                                    {plan.features.map((feature, featureIndex) => (
-                                      <div key={featureIndex} className="text-black text-base font-medium">
-                                        {feature}
-                                      </div>
-                                    ))}
-                                  </div>
-                                  
-                                  {/* Bouton compact à l'intérieur de la carte */}
-                                  <button
-                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 text-sm"
+                                  </Typography>
+                                  <Typography variant="h3" gutterBottom>
+                                    {plan.price}
+                                  </Typography>
+                                  <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+                                    {plan.doctors}
+                                  </Typography>
+                                  <List>
+                                    <ListItem>
+                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
+                                      <ListItemText primary="Full Access to Dashboard" />
+                                    </ListItem>
+                                    <ListItem>
+                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
+                                      <ListItemText primary={index === 0 ? "Clinic Management System" : "Advanced Clinic Management"} />
+                                    </ListItem>
+                                    <ListItem>
+                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
+                                      <ListItemText primary="Unlimited Live Chat with Patients" />
+                                    </ListItem>
+                                  </List>
+                                  <Button
+                                    variant="contained"
+                                    fullWidth
+                                    sx={{ mt: 2 }}
+                                  </Typography>
+                                  <Typography variant="h3" gutterBottom>
+                                    {plan.price}
+                                  </Typography>
+                                  <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+                                    {plan.doctors}
+                                  </Typography>
+                                  <List>
+                                    <ListItem>
+                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
+                                      <ListItemText primary="Full Access to Dashboard" />
+                                    </ListItem>
+                                    <ListItem>
+                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
+                                      <ListItemText primary={index === 0 ? "Clinic Management System" : "Advanced Clinic Management"} />
+                                    </ListItem>
+                                    <ListItem>
+                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
+                                      <ListItemText primary="Unlimited Live Chat with Patients" />
+                                    </ListItem>
+                                  </List>
+                                  <Button
+                                    variant="contained"
+                                    fullWidth
+                                    sx={{ mt: 2 }}
                                     onClick={() => handlePlanSelect(plan.id)}
                                   >
                                     Choose Plan
-                                  </button>
-                                </div>
-                              </div>
+                                  </Button>
+                                </CardContent>
+                              </Card>
+                                  </Button>
+                                </CardContent>
+                              </Card>
                             ))}
                           </div>
                         </div>
@@ -240,46 +348,24 @@ export default function ChoosePlan() {
                         Add Services
                       </h2>                      <div className="space-y-3 flex flex-col items-center">
                         {services.map((service, index) => (
-                          <div key={index} className="bg-white border border-gray-200 rounded-lg shadow-sm p-4 w-full max-w-md">
-                            {/* Header avec icône service + titre + icône info plus proche */}
-                            <div className="flex items-center justify-between mb-2">
-                              <div className="flex items-center gap-2">
-                                {/* Icône à gauche du titre selon le service */}
-                                {service.name === 'Banner' && <Building2 size={20} className="text-black" />}
-                                {service.name === 'Top List' && <ArrowRight size={20} className="text-black" />}
-                                {service.name === 'Matching Service' && <User size={20} className="text-black" />}
-                                <h3 className="text-lg font-bold text-black">{service.name}</h3>
-                              </div>
-                              {/* Icône info grise ronde plus proche */}
-                              <div className="w-6 h-6 bg-gray-500 rounded-full flex items-center justify-center ml-4">
-                                <span className="text-white text-xs font-bold">i</span>
-                              </div>
-                            </div>
-
-                            {/* Prix en dessous du titre */}
-                            <div className="text-xl font-bold text-black mb-3">
-                              {service.price}
-                            </div>
-
-                            {/* Description plus grande */}
-                            <p className="text-lg text-black mb-3 leading-relaxed font-medium">
-                              {service.description}
-                            </p>
-
-                            {/* Bouton bleu */}
-                            <button
-                              className={`px-6 py-2 rounded-lg font-semibold text-sm transition-colors duration-200 ${
-                                additionalServices.includes(service.name)
-                                  ? 'bg-blue-600 text-white hover:bg-blue-700'
-                                  : 'bg-blue-600 text-white hover:bg-blue-700'
-                              }`}
-                              onClick={() => handleServiceToggle(service.name)}
-                            >
-                              {service.name === 'Banner' && (additionalServices.includes(service.name) ? 'Remove Banner' : 'Select Banner')}
-                              {service.name === 'Top List' && (additionalServices.includes(service.name) ? 'Remove Top List' : 'Select Top List')}
-                              {service.name === 'Matching Service' && (additionalServices.includes(service.name) ? 'Remove Matching Service' : 'Select Matching Service')}
-                            </button>
-                          </div>
+                          <Card key={index} sx={{ mb: 2, borderRadius: 2, maxWidth: '320px' }}>
+                            <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                              <Box>
+                                <Typography variant="h6">{service.name}</Typography>
+                                <Typography variant="body2" color="text.secondary">{service.description}</Typography>
+                              </Box>
+                              <Box sx={{ textAlign: 'right' }}>
+                                <Typography variant="h6" color="primary" sx={{ mb: 1 }}>{service.price}</Typography>
+                                <Button
+                                  variant={additionalServices.includes(service.name) ? "contained" : "outlined"}
+                                  startIcon={<AddCircleOutlineIcon />}
+                                  onClick={() => handleServiceToggle(service.name)}
+                                >
+                                  {additionalServices.includes(service.name) ? 'Selected' : 'Select Service'}
+                                </Button>
+                              </Box>
+                            </CardContent>
+                          </Card>
                         ))}
                       </div>
                     </div>
@@ -381,9 +467,12 @@ export default function ChoosePlan() {
           </div>
         </main>
 
-        {/* Footer */}
-        <FooterPro />
-      </div>
+      {/* Footer */}
+      <FooterPro />
+    </Box>
+      {/* Footer */}
+      <FooterPro />
+    </Box>
     </div>
   );
 }
