@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../../assets/ProfessionalDashboard.css'; // Import du CSS dashboard professionnel
 import { 
   Box, 
   Typography, 
@@ -7,7 +8,7 @@ import {
   Container,
   Tabs,
   Tab
-} from '@mui/material';    
+} from '@mui/material';
 
 import TopbarPro from '../../components/TopbarPro';
 import SidebarPro from '../../components/SidebarPro';
@@ -25,39 +26,31 @@ import strip3 from "../../images/strip3.png"
 function BodyMineProfilePage() {
   const [tabValue, setTabValue] = useState(0);
 
-  const handleTabChange = (event, newValue) => {
+  const handleTabChange = (event: any, newValue: any) => {
     setTabValue(newValue);
   };
-
   return (
-    <> <div className='pro'>
-      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        {/* Header */}
-        <div className="pro">
-        <div className="pro-dash">
+    <div className="pro">
+      <div className="pro-dash">
+        {/* ░░ Top-bar ░░ */}
         <TopbarPro />
-</div>
-</div>
-<br />
-                          {/* ░░ Carousel ░░ */}
-                          <section className="partner-strip">
-                                    <img src={strip1} alt="Partner 1" />
-                                    <img src={strip2} alt="Partner 2" />
-                                    <img src={strip3} alt="Partner 3" />
-                                  </section>
-        {/* Main Content */}
-        <Container maxWidth="lg" sx={{ mt: 2 }}>
-          <Grid container spacing={2}>
-            {/* Profile Content */}
-            <Container maxWidth="lg" sx={{ mt: 4 }}>
-              <Grid container spacing={2}>
-                {/* Sidebar */}
-                
-                <SidebarPro active='Edit'/>
+        <br />
+        
+        {/* ░░ Carousel ░░ */}
+        <section className="partner-strip">
+                  <img src={strip1} alt="Partner 1" />
+                  <img src={strip2} alt="Partner 2" />
+                  <img src={strip3} alt="Partner 3" />
+                </section>
+        
+        {/* ░░ Layout ░░ */}
+        <main className="flex w-full">
+          {/* Sidebar */}
+          <SidebarPro active='Edit'/>
 
-                {/* Main Content */}
-                <Grid item xs={12} md={9}>
-                  <Paper sx={{ p: 3, backgroundColor: 'transparent' }}>
+          {/* Main Content */}          <div className="flex-1 flex flex-col gap-6 p-6">
+            <Container maxWidth="lg">
+              <Paper sx={{ p: 3, backgroundColor: 'transparent' }}>
                     <Typography 
                       variant="h6" 
                       component="h2" 
@@ -80,24 +73,18 @@ function BodyMineProfilePage() {
                         <Tab label="License" />
                         <Tab label="Media" />
                       </Tabs>
-                    </Box>
-
-                    {tabValue === 0 && <ProfInfo />}
+                    </Box>                    {tabValue === 0 && <ProfInfo />}
                     {tabValue === 1 && <CompleteInfo />}
                     {tabValue === 2 && <License />}
                     {tabValue === 3 && <Media />}
-                  </Paper>
-                </Grid>
-              </Grid>
-            </Container>
-          </Grid>
-        </Container>
-      </Box>
-
-      {/* Footer */}
-      <FooterPro />
+                  </Paper>            </Container>
+          </div>
+        </main>
+        
+        {/* Footer */}
+        <FooterPro />
       </div>
-    </>
+    </div>
   );
 }
 

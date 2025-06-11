@@ -62,7 +62,10 @@ export default function App() {
       <Route path="/doctor/:id" element={<DoctorProfilePage />} />
       <Route path="/myBodyProject" element={<MyBodyProjectPage />} />
       <Route path="/pro/edit" element={<Editprofile />} />      
-      <Route path="/pro/plan" element={<ChoosePlan />} />      <Route path="/pro/purchase-services" element={<PurchaseServicesPage />} />      <Route path="/pro/notifications" element={<NotificationsPage />} />        <Route path="/pro/doctor-list" element={<DoctorListPage />} />
+      <Route path="/pro/plan" element={<ChoosePlan />} />      
+      <Route path="/pro/purchase-services" element={<PurchaseServicesPage />} />      
+      <Route path="/pro/notifications" element={<NotificationsPage />} />        
+      <Route path="/pro/doctor-list" element={<DoctorListPage />} />
       <Route path="/pro/password" element={<ChangePasswordPage />} />
       <Route path="/menu" element={<MenuPageMobile />} />
 

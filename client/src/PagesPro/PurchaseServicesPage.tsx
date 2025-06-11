@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../assets/PurchaseServicesPage.css'
+import '../assets/ProfessionalDashboard.css' // Import du CSS dashboard professionnel
 
 import TopbarPro  from '../components/TopbarPro'
 import SidebarPro from '../components/SidebarPro'
@@ -128,93 +129,168 @@ export default function PurchaseServicesPage() {
     if (res.ok) setSuccess(true)
     else alert('Erreur lors du paiement')
   }
-
   // Écran « réussite »
   if (success) {
     return (
-      <div className="pure">
-        <TopbarPro />
-        <main className="grid">
-          <SidebarPro active="Purchase Services" />
-          <div className="content">
-            <div className="service-card">
-              <FiCheckCircle className="success-icon" />
-              <h3>Payment Successful</h3>
-              <p>Thank you for patronizing us today.<br/>We value you!</p>
-              <button className="select-button" onClick={() => navigate('/pro/dashboard')}>
-                Dashboard
-              </button>
+      <div className="pro">
+        <div className="pro-dash">
+          <TopbarPro />
+          <br />
+          
+          {/* ░░ Carousel ░░ */}
+          <section className="partner-strip">
+            <img src={strip1} alt="Partner 1" />
+            <img src={strip2} alt="Partner 2" />
+            <img src={strip3} alt="Partner 3" />
+          </section>
+          
+          {/* ░░ Layout ░░ */}
+          <main className="flex w-full">
+            {/* █ Sidebar - Collée à gauche */}
+            <SidebarPro active="Purchase" />
+            
+            <div className="flex-1 flex flex-col gap-6 p-6">
+              <div className="bg-white rounded-lg shadow-sm h-full p-8">
+                <div className="service-card">
+                  <FiCheckCircle className="success-icon" />
+                  <h3>Payment Successful</h3>
+                  <p>Thank you for patronizing us today.<br/>We value you!</p>
+                  <button className="select-button" onClick={() => navigate('/pro/dashboard')}>
+                    Dashboard
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </main>
-        <FooterPro />
+          </main>
+          
+          <FooterPro />
+        </div>
       </div>
     )
   }
-
   // UI principale
   return (
-    <div className='pro'>
-    <div className="pure">
-      <TopbarPro />
-
-      {/* Carousel */}
-      <br />
-              {/* ░░ Carousel ░░ */}
-              <section className="partner-strip">
-                        <img src={strip1} alt="Partner 1" />
-                        <img src={strip2} alt="Partner 2" />
-                        <img src={strip3} alt="Partner 3" />
-                      </section>
-
-      <main className="grid">
-        <SidebarPro active="Purchase" />
-        <div className="content">
-
-          {/* 1) Liste des services */}
+    <div className="pro">
+      <div className="pro-dash">
+        {/* ░░ Top-bar ░░ */}
+        <TopbarPro />
+        <br />
+        
+        {/* ░░ Carousel ░░ */}
+        <section className="partner-strip">
+          <img src={strip1} alt="Partner 1" />
+          <img src={strip2} alt="Partner 2" />
+          <img src={strip3} alt="Partner 3" />
+        </section>
+        
+        {/* ░░ Layout ░░ */}
+        <main className="flex w-full">
+          {/* █ Sidebar - Collée à gauche */}
+          <SidebarPro active="Purchase" />
+          
+          <div className="flex-1 flex flex-col gap-6 p-6">
+            <div className="bg-white rounded-lg shadow-sm h-full p-8">          {/* 1) Liste des services */}
           {!detailService && !paymentService && (
             <>
-              <h2 className="page-title">Add Promotional Services</h2>
-              <div className="services-list">
+              <h1 className="text-4xl font-bold text-black text-center mb-12">Add Promotional Services</h1>
+              <div className="space-y-6 max-w-4xl mx-auto">
                 {services.map(s => (
-                  <div key={s.id} className="service-card">
-                    <div className="service-summary">
-                      <s.Icon className="service-icon" />
-                      <span className="service-title">{s.title}</span>
-                      <span className="service-price">{s.price}€</span>
-                      <FiInfo className="info-icon" onClick={() => setDetailService(s.id)} />
+                  <div key={s.id} className="bg-white border border-gray-200 rounded-xl shadow-lg p-6 relative hover:shadow-xl transition-shadow duration-300">
+                    <div className="flex items-start gap-6">
+                      {/* Logo à gauche */}
+                      <div className="flex-shrink-0 w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center">
+                        <s.Icon className="w-8 h-8 text-blue-600" />
+                      </div>
+                      
+                      {/* Contenu principal */}
+                      <div className="flex-1 text-center">
+                        {/* Titre centré en gros et gras */}
+                        <h3 className="text-2xl font-bold text-black mb-4">
+                          {s.title}
+                        </h3>
+                        
+                        {/* Prix centré et en gras */}
+                        <div className="text-3xl font-bold text-black mb-6">
+                          {s.price}€
+                        </div>
+                        
+                        {/* Description */}
+                        <p className="text-gray-600 mb-6 leading-relaxed">
+                          {s.summary}
+                        </p>
+                        
+                        {/* Bouton bleu ciel */}
+                        <button 
+                          className="bg-sky-400 hover:bg-sky-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                          onClick={() => setPaymentService(s.id)}
+                        >
+                          Select {s.title}
+                        </button>
+                      </div>
+                      
+                      {/* Icône info en haut à droite */}
+                      <div className="flex-shrink-0">
+                        <FiInfo 
+                          className="text-gray-400 hover:text-blue-500 cursor-pointer w-6 h-6" 
+                          onClick={() => setDetailService(s.id)} 
+                        />
+                      </div>
                     </div>
-                    <p className="service-description">{s.summary}</p>
-                    <button className="select-button" onClick={() => setPaymentService(s.id)}>
-                      Select {s.title}
-                    </button>
                   </div>
                 ))}
               </div>
             </>
-          )}
-
-          {/* 2) Vue détaillée */}
+          )}{/* 2) Vue détaillée */}
           {detailService && !paymentService && (() => {
             const s = services.find(x => x.id === detailService)!
-            const DetailIcon = s.Icon
             return (
-              <div className="service-card">
-                <div className="service-summary">
-                  <DetailIcon className="service-icon" />
-                  <span className="service-title">{s.title}</span>
-                  <span className="service-price">{s.price}€</span>
-                  <FiInfo className="info-icon" onClick={() => setDetailService(null)} />
+              <div className="max-w-4xl mx-auto">
+                <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-8 relative">
+                  {/* Icône fermer en haut à droite */}
+                  <div className="absolute top-6 right-6">
+                    <FiInfo 
+                      className="text-gray-400 hover:text-blue-500 cursor-pointer w-8 h-8" 
+                      onClick={() => setDetailService(null)} 
+                    />
+                  </div>
+                  
+                  {/* Titre centré en gros et gras */}
+                  <h2 className="text-4xl font-bold text-black text-center mb-6 mt-2">
+                    {s.title}
+                  </h2>
+                  
+                  {/* Prix centré et en gras */}
+                  <div className="text-4xl font-bold text-black text-center mb-8">
+                    {s.price}€
+                  </div>
+                  
+                  {/* Image du service */}
+                  <div className="flex justify-center mb-8">
+                    <img src={s.detailImg} alt={s.title} className="max-w-full h-auto rounded-lg shadow-md" />
+                  </div>
+                  
+                  {/* Description détaillée */}
+                  <div className="text-gray-700 text-center space-y-4 mb-8 leading-relaxed">
+                    {s.detailText.split('\n\n').map((para, idx) => (
+                      <p key={idx} className="text-lg">
+                        {para.startsWith('**') ? 
+                          <strong className="text-black text-xl">{para.slice(2, -2)}</strong> : 
+                          para
+                        }
+                      </p>
+                    ))}
+                  </div>
+                  
+                  {/* Bouton bleu ciel */}
+                  <div className="flex justify-center">
+                    <button 
+                      className="bg-sky-400 hover:bg-sky-500 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-200 text-lg"
+                      onClick={() => { setPaymentService(s.id); setDetailService(null); }}
+                    >
+                      Select {s.title}
+                    </button>
+                  </div>
                 </div>
-                <img src={s.detailImg} alt={s.title} className="detail-img" />
-                {s.detailText.split('\n\n').map((para, idx) => (
-                  <p key={idx}>
-                    {para.startsWith('**') ? <strong>{para.slice(2, -2)}</strong> : para}
-                  </p>
-                ))}
-                <button className="select-button" onClick={() => { setPaymentService(s.id); setDetailService(null); }}>
-                  Select {s.title}
-                </button>
               </div>
             )
           })()}
@@ -239,19 +315,19 @@ export default function PurchaseServicesPage() {
                       {opt.label}
                     </label>
                   )
-                })}
-                <button className="select-button" onClick={handleConfirm}>
+                })}                <button className="select-button" onClick={handleConfirm}>
                   Confirm Payment
                 </button>
               </div>
             </>
           )}
 
-        </div>
-      </main>
+            </div>
+          </div>
+        </main>
 
-      <FooterPro />
-    </div>
+        <FooterPro />
+      </div>
     </div>
   )
 }

@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import '../../assets/ProfessionalDashboard.css'; // Import du CSS dashboard professionnel
 import TopBarPro from '../../components/TopbarPro';
 import SidebarPro from '../../components/SidebarPro';
 import FooterPro from '../../components/FooterPro';
 import { User, Building2, Check, Plus, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
+
+import strip1 from "../../images/strip1.png";
+import strip2 from "../../images/strip2.png";
+import strip3 from "../../images/strip3.png";
 
 export default function ChoosePlan() {
   const [step, setStep] = useState(1);
@@ -38,25 +43,26 @@ export default function ChoosePlan() {
     { name: 'Top List', price: '€100', description: 'Featured placement in top listing' },
     { name: 'Matching Service', price: '€30/month', description: 'Receive phone notifications of patient enquiries' }
   ];
-
   return (
     <div className='pro'>
-      <div className="min-h-screen flex flex-col">
-        {/* Header */}
-        <div className='pure'>
-          <TopBarPro />
-        </div>
+      <div className="pro-dash">
+        {/* ░░ Top-bar ░░ */}
+        <TopBarPro />
         <br />
         
-        {/* Main Layout: Sidebar + Content */}
-        <div className="flex flex-1">
-          {/* Sidebar */}
-          <div className="flex-shrink-0">
-            <SidebarPro active='Plan'/>
-          </div>
+        {/* ░░ Carousel ░░ */}
+        <section className="partner-strip">
+          <img src={strip1} alt="Partner 1" />
+          <img src={strip2} alt="Partner 2" />
+          <img src={strip3} alt="Partner 3" />
+        </section>
+        
+        {/* ░░ Layout ░░ */}
+        <main className="flex w-full">
+          {/* █ Sidebar - Collée à gauche */}
+          <SidebarPro active='Plan'/>
           
-          {/* Content Area */}
-          <div className="flex-1 p-6 bg-gray-50">
+          <div className="flex-1 flex flex-col gap-6 p-6">
             <div className="bg-white rounded-lg shadow-sm h-full p-8">
               {step === 1 && (
                 <div className="text-center">
@@ -99,10 +105,8 @@ export default function ChoosePlan() {
                     </div>
                   </div>
                 </div>
-              )}              {step === 2 && (
-                <div className="rounded-lg p-6">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">                    {/* Left side - Plan selection */}
-                    <div className="space-y-6 flex flex-col items-center">
+              )}              {step === 2 && (                <div className="rounded-lg p-6">                  <div className="flex flex-col lg:flex-row justify-between items-start w-full px-20 space-y-12 lg:space-y-0">                    {/* Left side - Plan selection */}
+                    <div className="w-full lg:w-5/12 space-y-6 flex flex-col items-center p-8 mr-0 lg:mr-32">
                       <h2 className="text-2xl font-semibold mb-4 text-center">
                         {userType === 'doctor' ? 'Doctor Plan' : 'Clinic Plan'}
                       </h2>                      {userType === 'doctor' ? (
@@ -231,7 +235,7 @@ export default function ChoosePlan() {
                         </div>
                       )}
                     </div>                    {/* Right side - Add services - Design personnalisé */}
-                    <div className="flex flex-col items-center">
+                    <div className="w-full lg:w-5/12 flex flex-col items-center p-8 ml-0 lg:ml-32">
                       <h2 className="text-2xl font-semibold mb-6 text-black text-center">
                         Add Services
                       </h2>                      <div className="space-y-3 flex flex-col items-center">
@@ -373,10 +377,9 @@ export default function ChoosePlan() {
                     </button>
                   </div>
                 </div>
-              )}
-            </div>
+              )}            </div>
           </div>
-        </div>
+        </main>
 
         {/* Footer */}
         <FooterPro />
