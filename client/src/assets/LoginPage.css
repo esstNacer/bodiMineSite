@@ -353,7 +353,7 @@
   max-width: 400px;
   background: white;
   border-radius: 20px;
-  padding: 24px;
+  padding: 20px 16px; /* Réduit le padding en mobile pour plus d'espace */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   text-align: start;
 }
@@ -455,7 +455,8 @@
 }
 
 .btn.secondary.professional {
-  margin-bottom: 0px;
+  margin-top: 10px !important; /* Espace au-dessus du bouton */
+  margin-bottom: 30px !important; /* Augmente l'espacement en mobile */
   background-color: #4DA6C0;
   color: #fff;
 }
@@ -477,7 +478,12 @@
   position: relative;
   font-size: 12px;
   color: #A0AEC0;
-  margin-bottom: 16px;
+  text-align: center; /* Centre le texte */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 100px; /* Ajoute un peu de padding */
+  margin: 30px 0; /* Augmente l'espace au-dessus et en-dessous en mobile */
 }
 
 .divider::before,

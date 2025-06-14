@@ -1,13 +1,30 @@
 import React, { useState } from 'react';
-import '../../assets/ProfessionalDashboard.css'; // Import du CSS dashboard professionnel
 import TopBarPro from '../../components/TopbarPro';
 import SidebarPro from '../../components/SidebarPro';
 import FooterPro from '../../components/FooterPro';
 import { User, Building2, Check, Plus, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { loadStripe } from '@stripe/stripe-js';
+import axios from 'axios';
+import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { Button } from '@mui/material';
 
-import strip1 from "../../images/strip1.png";
-import strip2 from "../../images/strip2.png";
-import strip3 from "../../images/strip3.png";
+const planPrices: Record<string, number> = {
+  doctor: 150,
+  clinic300: 300,
+  clinic600: 600,
+};
+
+const servicePrices: Record<string, number> = {
+  Banner: 400,
+  'Top List': 100,
+  'Matching Service': 30,
+};
+
+function computeTotal(plan: string, services: string[]): number {
+  const base   = planPrices[plan]   ?? 0;
+  const extras = services.reduce((sum, s) => sum + (servicePrices[s] ?? 0), 0);
+  return base + extras;          // € (float).  Multipliez ×100 avant d’envoyer au backend.
+}
 
 export default function ChoosePlan() {
   const [step, setStep] = useState(1);
@@ -94,7 +111,6 @@ function WalletForm({ onSuccess }: { onSuccess: () => void }) {
 }
 
 
-
   const handleUserTypeSelect = (type: string) => {
     setUserType(type);
     setStep(2);
@@ -122,27 +138,24 @@ function WalletForm({ onSuccess }: { onSuccess: () => void }) {
     { name: 'Matching Service', price: '€30/month', description: 'Receive phone notifications of patient enquiries' }
   ];
 
-
   return (
     <div className='pro'>
-      <div className="pro-dash">
-        {/* ░░ Top-bar ░░ */}
-        <TopBarPro />
+      <div className="min-h-screen flex flex-col">
+        {/* Header */}
+        <div className='pure'>
+          <TopBarPro />
+        </div>
         <br />
         
-        {/* ░░ Carousel ░░ */}
-        <section className="partner-strip">
-          <img src={strip1} alt="Partner 1" />
-          <img src={strip2} alt="Partner 2" />
-          <img src={strip3} alt="Partner 3" />
-        </section>
-        
-        {/* ░░ Layout ░░ */}
-        <main className="flex w-full">
-          {/* █ Sidebar - Collée à gauche */}
-          <SidebarPro active='Plan'/>
+        {/* Main Layout: Sidebar + Content */}
+        <div className="flex flex-1">
+          {/* Sidebar */}
+          <div className="flex-shrink-0">
+            <SidebarPro active='Plan'/>
+          </div>
           
-          <div className="flex-1 flex flex-col gap-6 p-6">
+          {/* Content Area */}
+          <div className="flex-1 p-6 bg-gray-50">
             <div className="bg-white rounded-lg shadow-sm h-full p-8">
               {step === 1 && (
                 <div className="text-center">
@@ -185,8 +198,10 @@ function WalletForm({ onSuccess }: { onSuccess: () => void }) {
                     </div>
                   </div>
                 </div>
-              )}              {step === 2 && (                <div className="rounded-lg p-6">                  <div className="flex flex-col lg:flex-row justify-between items-start w-full px-20 space-y-12 lg:space-y-0">                    {/* Left side - Plan selection */}
-                    <div className="w-full lg:w-5/12 space-y-6 flex flex-col items-center p-8 mr-0 lg:mr-32">
+              )}              {step === 2 && (
+                <div className="rounded-lg p-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">                    {/* Left side - Plan selection */}
+                    <div className="space-y-6 flex flex-col items-center">
                       <h2 className="text-2xl font-semibold mb-4 text-center">
                         {userType === 'doctor' ? 'Doctor Plan' : 'Clinic Plan'}
                       </h2>                      {userType === 'doctor' ? (
@@ -198,7 +213,8 @@ function WalletForm({ onSuccess }: { onSuccess: () => void }) {
                               <Building2 size={24} className="text-blue-600" />
                               <CheckCircle2 size={24} className="text-blue-600" />
                               <Plus size={24} className="text-blue-600" />
-                            </div>                            {/* Contenu principal */}                            <div className="flex-1">
+                            </div>                            {/* Contenu principal */}
+                            <div className="flex-1">
                               <h3 className="text-lg font-semibold text-black text-center mb-4">
                                 Doctor Subscription
                               </h3>
@@ -279,93 +295,86 @@ function WalletForm({ onSuccess }: { onSuccess: () => void }) {
                                 <div className="flex-1">
                                   <h3 className="text-lg font-semibold text-black text-center mb-4">
                                     Clinic Subscription
-                                  </Typography>
-                                  <Typography variant="h3" gutterBottom>
-                                    {plan.price}
-                                  </Typography>
-                                  <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-                                    {plan.doctors}
-                                  </Typography>
-                                  <List>
-                                    <ListItem>
-                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
-                                      <ListItemText primary="Full Access to Dashboard" />
-                                    </ListItem>
-                                    <ListItem>
-                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
-                                      <ListItemText primary={index === 0 ? "Clinic Management System" : "Advanced Clinic Management"} />
-                                    </ListItem>
-                                    <ListItem>
-                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
-                                      <ListItemText primary="Unlimited Live Chat with Patients" />
-                                    </ListItem>
-                                  </List>
-                                  <Button
-                                    variant="contained"
-                                    fullWidth
-                                    sx={{ mt: 2 }}
-                                  </Typography>
-                                  <Typography variant="h3" gutterBottom>
-                                    {plan.price}
-                                  </Typography>
-                                  <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-                                    {plan.doctors}
-                                  </Typography>
-                                  <List>
-                                    <ListItem>
-                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
-                                      <ListItemText primary="Full Access to Dashboard" />
-                                    </ListItem>
-                                    <ListItem>
-                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
-                                      <ListItemText primary={index === 0 ? "Clinic Management System" : "Advanced Clinic Management"} />
-                                    </ListItem>
-                                    <ListItem>
-                                      <ListItemIcon><CheckCircleOutlineIcon color="primary" /></ListItemIcon>
-                                      <ListItemText primary="Unlimited Live Chat with Patients" />
-                                    </ListItem>
-                                  </List>
-                                  <Button
-                                    variant="contained"
-                                    fullWidth
-                                    sx={{ mt: 2 }}
+                                  </h3>
+                                  
+                                  {/* Prix avec ancien prix barré en gris et nouveau prix en bleu clair */}
+                                  <div className="text-center mb-4">
+                                    <div className="text-sm text-gray-500 line-through mb-1">
+                                      {plan.originalPrice}
+                                    </div>
+                                    <div className="text-3xl font-bold text-blue-400">
+                                      {plan.price}
+                                    </div>
+                                  </div>
+                                    
+                                  {/* Textes alignés à gauche et plus gros, sans encoches */}
+                                  <div className="space-y-2 mb-4">
+                                    {plan.features.map((feature, featureIndex) => (
+                                      <div key={featureIndex} className="text-black text-base font-medium">
+                                        {feature}
+                                      </div>
+                                    ))}
+                                  </div>
+                                  
+                                  {/* Bouton compact à l'intérieur de la carte */}
+                                  <button
+                                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 text-sm"
                                     onClick={() => handlePlanSelect(plan.id)}
                                   >
                                     Choose Plan
-                                  </Button>
-                                </CardContent>
-                              </Card>
-                                  </Button>
-                                </CardContent>
-                              </Card>
+                                  </button>
+                                </div>
+                              </div>
                             ))}
                           </div>
                         </div>
                       )}
                     </div>                    {/* Right side - Add services - Design personnalisé */}
-                    <div className="w-full lg:w-5/12 flex flex-col items-center p-8 ml-0 lg:ml-32">
+                    <div className="flex flex-col items-center">
                       <h2 className="text-2xl font-semibold mb-6 text-black text-center">
                         Add Services
                       </h2>                      <div className="space-y-3 flex flex-col items-center">
                         {services.map((service, index) => (
-                          <Card key={index} sx={{ mb: 2, borderRadius: 2, maxWidth: '320px' }}>
-                            <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                              <Box>
-                                <Typography variant="h6">{service.name}</Typography>
-                                <Typography variant="body2" color="text.secondary">{service.description}</Typography>
-                              </Box>
-                              <Box sx={{ textAlign: 'right' }}>
-                                <Typography variant="h6" color="primary" sx={{ mb: 1 }}>{service.price}</Typography>
-                                <Button
-                                  variant={additionalServices.includes(service.name) ? "contained" : "outlined"}
-                                  startIcon={<AddCircleOutlineIcon />}
-                                  onClick={() => handleServiceToggle(service.name)}
-                                >
-                                  {additionalServices.includes(service.name) ? 'Selected' : 'Select Service'}
-                                </Button>
-                              </Box>
-                            </CardContent>
-                          </Card>
+                          <div key={index} className="bg-white border border-gray-200 rounded-lg shadow-sm p-4 w-full max-w-md">
+                            {/* Header avec icône service + titre + icône info plus proche */}
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-2">
+                                {/* Icône à gauche du titre selon le service */}
+                                {service.name === 'Banner' && <Building2 size={20} className="text-black" />}
+                                {service.name === 'Top List' && <ArrowRight size={20} className="text-black" />}
+                                {service.name === 'Matching Service' && <User size={20} className="text-black" />}
+                                <h3 className="text-lg font-bold text-black">{service.name}</h3>
+                              </div>
+                              {/* Icône info grise ronde plus proche */}
+                              <div className="w-6 h-6 bg-gray-500 rounded-full flex items-center justify-center ml-4">
+                                <span className="text-white text-xs font-bold">i</span>
+                              </div>
+                            </div>
+
+                            {/* Prix en dessous du titre */}
+                            <div className="text-xl font-bold text-black mb-3">
+                              {service.price}
+                            </div>
+
+                            {/* Description plus grande */}
+                            <p className="text-lg text-black mb-3 leading-relaxed font-medium">
+                              {service.description}
+                            </p>
+
+                            {/* Bouton bleu */}
+                            <button
+                              className={`px-6 py-2 rounded-lg font-semibold text-sm transition-colors duration-200 ${
+                                additionalServices.includes(service.name)
+                                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                  : 'bg-blue-600 text-white hover:bg-blue-700'
+                              }`}
+                              onClick={() => handleServiceToggle(service.name)}
+                            >
+                              {service.name === 'Banner' && (additionalServices.includes(service.name) ? 'Remove Banner' : 'Select Banner')}
+                              {service.name === 'Top List' && (additionalServices.includes(service.name) ? 'Remove Top List' : 'Select Top List')}
+                              {service.name === 'Matching Service' && (additionalServices.includes(service.name) ? 'Remove Matching Service' : 'Select Matching Service')}
+                            </button>
+                          </div>
                         ))}
                       </div>
                     </div>
@@ -390,60 +399,75 @@ function WalletForm({ onSuccess }: { onSuccess: () => void }) {
                     </button>
                   </div>
                 </div>
-              )}{step === 3 && (
-                <div className="rounded-lg p-4 text-center">
-                  <h2 className="text-3xl font-bold mb-8">
-                    Payment
-                  </h2>
+              )}{/* ──────────────── STEP 3 : Payment (version Tailwind) ──────────────── */}
+{step === 3 && (
+  <div className="rounded-lg p-4 text-center">
+    <h2 className="text-3xl font-bold mb-8">Payment</h2>
 
-                  <div className="bg-white rounded-lg p-6 max-w-lg mx-auto">
-                    <div className="space-y-4">
-                      {[
-                        { name: 'Google Pay', icon: '/icons/google-pay.png' },
-                        { name: 'PayPal', icon: '/icons/paypal.png' },
-                        { name: 'Apple Pay', icon: '/icons/apple-pay.png' },
-                        { name: 'Amazon Pay', icon: '/icons/amazon-pay.png' }
-                      ].map((platform, index) => (
-                        <div 
-                          key={index} 
-                          className="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-blue-300 hover:bg-gray-50 transition-all duration-200"
-                          onClick={() => setSelectedPlatform(platform.name)}
-                        >
-                          <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-4">
-                            <img src={platform.icon} alt={platform.name} className="w-8 h-8" />
-                          </div>
-                          <span className="flex-1 text-left font-semibold">
-                            {platform.name}
-                          </span>
-                          <div className="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center">
-                            {selectedPlatform === platform.name && (
-                              <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="flex justify-between mt-8">
-                      <button
-                        className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-                        onClick={() => setStep(2)}
-                      >
-                        <ArrowLeft size={16} />
-                        Back
-                      </button>
-                      <button
-                        className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                        onClick={() => setStep(4)}
-                        disabled={!selectedPlatform}
-                      >
-                        Confirm Payment
-                        <CheckCircle2 size={16} />
-                      </button>
-                    </div>
-                  </div>
+    <div className="bg-white rounded-lg p-6 max-w-lg mx-auto">
+      {/* ░░ 1. Choix du moyen de paiement ░░ */}
+      {!clientSecret ? (
+        <>
+          <div className="space-y-4">
+            {[
+              { name: 'Google Pay', icon: '/icons/google-pay.png' },
+              { name: 'PayPal',     icon: '/icons/paypal.png'     },
+              { name: 'Apple Pay',  icon: '/icons/apple-pay.png'  },
+              { name: 'Amazon Pay', icon: '/icons/amazon-pay.png' },
+            ].map((platform, idx) => (
+              <div
+                key={idx}
+                className="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer
+                           hover:border-blue-300 hover:bg-gray-50 transition-all duration-200"
+                onClick={() => setSelectedPlatform(platform.name)}
+              >
+                <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-4">
+                  <img src={platform.icon} alt={platform.name} className="w-8 h-8" />
                 </div>
-              )}
+
+                <span className="flex-1 text-left font-semibold">{platform.name}</span>
+
+                <div className="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center">
+                  {selectedPlatform === platform.name && (
+                    <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* ░░ Boutons navigation ░░ */}
+          <div className="flex justify-between mt-8">
+            <button
+              className="flex items-center gap-2 px-6 py-3 border border-gray-300 text-gray-700
+                         rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              onClick={() => setStep(2)}
+            >
+              <ArrowLeft size={16} />
+              Back
+            </button>
+
+            <button
+              className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg
+                         hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleConfirm}
+              disabled={!selectedPlatform}
+            >
+              Confirm Payment
+              <CheckCircle2 size={16} />
+            </button>
+          </div>
+        </>
+      ) : (
+        /* ░░ 2. Stripe PaymentElement pour Apple / Google Pay ░░ */
+        <Elements stripe={stripePromise} options={{ clientSecret }}>
+          <WalletForm onSuccess={() => setStep(4)} />
+        </Elements>
+      )}
+    </div>
+  </div>
+)}
+
 
               {step === 4 && (
                 <div className="rounded-lg p-4 text-center">
@@ -463,16 +487,14 @@ function WalletForm({ onSuccess }: { onSuccess: () => void }) {
                     </button>
                   </div>
                 </div>
-              )}            </div>
+              )}
+            </div>
           </div>
-        </main>
+        </div>
 
-      {/* Footer */}
-      <FooterPro />
-    </Box>
-      {/* Footer */}
-      <FooterPro />
-    </Box>
+        {/* Footer */}
+        <FooterPro />
+      </div>
     </div>
   );
 }

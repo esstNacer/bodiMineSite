@@ -1,50 +1,14 @@
+/* Import global header styles */
+@import './global-header.css';
+
+/* Utiliser le même header que les autres pages */
+
 .chat .page {
   display: flex;
   flex-direction: column;
   font-family: 'Segoe UI', sans-serif;
   min-height: 100vh;
   background: #f9f9f9;
-}
-
-/* Navbar */
-.chat .navbar {
-  background: #96DCD7;
-  height: 90px;
-  padding: 0 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-}
-.chat .nav-left, 
-.chat .nav-right {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-.chat .menu a {
-  color: white;
-  font-weight: 600;
-  text-decoration: none;
-  margin: 0 12px;
-}
-
-.chat .avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-}
-.chat .status {
-  display: block;
-  font-size: 0.8rem;
-  margin-top: 2px;
-  font-weight: 500;
-}
-.status.online {
-  color: #38d27c;
-}
-.status.offline {
-  color: #b0b0b0;
 }
 
 /* Banner carousel */

@@ -322,11 +322,10 @@ export default function DoctorListPage() {
           ) : (
             <p style={{ padding: '1rem', textAlign: 'center', gridColumn: '1/-1' }}>
               No results found
-            </p>
-          )}
+            </p>          )}
         </div>
       </main>
-
+      
       <Footer />
     </div>
     </div>

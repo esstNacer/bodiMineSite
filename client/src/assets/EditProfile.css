@@ -216,7 +216,7 @@
   .column {
   display: flex;
   flex-direction: column;
-  gap: 16px;            /* espace vertical entre champs */
+  gap: 24px;            /* Augmenté de 16px à 24px pour plus d'espace vertical entre champs */
 }
 
 .column h3 {
@@ -228,18 +228,17 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-}
-  label {
+}  label {
     display: flex;
     flex-direction: column;
     width: 100%;
     font-weight: 550;    
     color: #083A50;
+    margin-bottom: 8px;   /* Ajout d'un margin-bottom pour plus d'espace */
   }
-  
-  input, select {
-    margin-top: 6px;
-    padding: 10px;
+    input, select {
+    margin-top: 8px;      /* Augmenté de 6px à 8px */
+    padding: 12px;        /* Augmenté de 10px à 12px pour plus d'espace interne */
     border: 1px solid black;
     border-radius: 8px;
     font-size: 14px;
