@@ -116,15 +116,18 @@ export default function ProfessionalCGU() {
       {/* top-bar partagée */}
       <TopbarPro />
 
-      {/* HERO (identique Support) */}
-      
-     <header className="support-header">
-                 <div>
-                   <h2>How can we help you&nbsp;?</h2>
-                   <p>We’re here to support you anytime. Choose the best way to reach us.</p>
-                 </div>
-                 <img src={heroPic} alt="Support operator" className="support-img" />
-               </header>      {/* GRILLE */}
+      {/* Support header - bannière unifiée */}
+      <div className="support-header2">
+        <div>
+          <h2>How can we help you?</h2>
+          <p>We're here to support you anytime. Choose the best way to reach us.</p>
+        </div>
+        <div className='support-doctor-wrapper'>
+          <img src={heroPic} className="support-hero2" alt="help" />
+        </div>
+      </div>
+
+      {/* GRILLE */}
       <main className="flex w-full">
         <SidebarPro active="FAQ" />
         <div className="flex-1 flex flex-col gap-6 p-6">

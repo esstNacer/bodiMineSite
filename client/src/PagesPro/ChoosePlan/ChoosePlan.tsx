@@ -8,6 +8,14 @@ import axios from 'axios';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { Button } from '@mui/material';
 
+// Import des images du carrousel comme sur le dashboard
+import strip1 from '../../images/strip1.png';
+import strip2 from '../../images/strip2.png';
+import strip3 from '../../images/strip3.png';
+
+// Import du CSS pour le style du carrousel
+import '../../assets/ProfessionalDashboard.css';
+
 const planPrices: Record<string, number> = {
   doctor: 150,
   clinic300: 300,
@@ -137,22 +145,26 @@ function WalletForm({ onSuccess }: { onSuccess: () => void }) {
     { name: 'Top List', price: '€100', description: 'Featured placement in top listing' },
     { name: 'Matching Service', price: '€30/month', description: 'Receive phone notifications of patient enquiries' }
   ];
-
   return (
     <div className='pro'>
-      <div className="min-h-screen flex flex-col">
+      <div className="pro-dash">
         {/* Header */}
         <div className='pure'>
           <TopBarPro />
         </div>
         <br />
         
+        {/* ░░ Carousel des images partenaires comme sur le dashboard ░░ */}
+        <section className="partner-strip">
+          <img src={strip1} alt="Partner 1" />
+          <img src={strip2} alt="Partner 2" />
+          <img src={strip3} alt="Partner 3" />
+        </section>
+        
         {/* Main Layout: Sidebar + Content */}
-        <div className="flex flex-1">
+        <main className="flex w-full">
           {/* Sidebar */}
-          <div className="flex-shrink-0">
-            <SidebarPro active='Plan'/>
-          </div>
+          <SidebarPro active='Plan'/>
           
           {/* Content Area */}
           <div className="flex-1 p-6 bg-gray-50">
@@ -484,13 +496,12 @@ function WalletForm({ onSuccess }: { onSuccess: () => void }) {
                       onClick={() => window.location.href = '/PRO/dashboard'}
                     >
                       Go to Dashboard
-                    </button>
-                  </div>
+                    </button>                  </div>
                 </div>
               )}
             </div>
           </div>
-        </div>
+        </main>
 
         {/* Footer */}
         <FooterPro />

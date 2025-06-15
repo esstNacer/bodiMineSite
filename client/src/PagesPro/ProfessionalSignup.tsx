@@ -10,6 +10,8 @@ import success from "../images/success.png"
 import { usePro } from '../components/ProContext';
 import '../assets/ProfessionalSignup.css';
 import '../assets/ProfessionalLoginPage.css'
+// Import du CSS pour le style du carrousel aligné
+import '../assets/ProfessionalDashboard.css';
 
 interface ProForm {
   full_name: string;

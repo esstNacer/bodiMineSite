@@ -1,12 +1,13 @@
 // src/pages/PurchaseServicesPage.tsx
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import '../assets/PurchaseServicesPage.css'
-import '../assets/ProfessionalDashboard.css' // Import du CSS dashboard professionnel
 
 import TopbarPro  from '../components/TopbarPro'
 import SidebarPro from '../components/SidebarPro'
 import FooterPro  from '../components/FooterPro'
+
+// Import du CSS pour le style du carrousel aligné
+import '../assets/ProfessionalDashboard.css'
 
 // Carousel images
 import strip1 from '../images/strip1.png'
@@ -182,7 +183,8 @@ export default function PurchaseServicesPage() {
           <img src={strip2} alt="Partner 2" />
           <img src={strip3} alt="Partner 3" />
         </section>
-        
+  
+
         {/* ░░ Layout ░░ */}
         <main className="flex w-full">
           {/* █ Sidebar - Collée à gauche */}
@@ -221,7 +223,7 @@ export default function PurchaseServicesPage() {
                         
                         {/* Bouton bleu ciel */}
                         <button 
-                          className="bg-sky-400 hover:bg-sky-500 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                          className="bg-[#70b7e2] hover:bg-sky-600 text-white font-semibold py-3 w-full rounded-lg transition-colors duration-200"
                           onClick={() => setPaymentService(s.id)}
                         >
                           Select {s.title}
@@ -283,8 +285,7 @@ export default function PurchaseServicesPage() {
                   
                   {/* Bouton bleu ciel */}
                   <div className="flex justify-center">
-                    <button 
-                      className="bg-sky-400 hover:bg-sky-500 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-200 text-lg"
+                    <button
                       onClick={() => { setPaymentService(s.id); setDetailService(null); }}
                     >
                       Select {s.title}

@@ -298,11 +298,53 @@
 /* zone support centrale */
 .support-zone { display: flex; flex-direction: column; gap: 28px; }
 
-.support-header{
-  display:flex;justify-content:space-between;align-items:center;
-  background:#fff;border-radius:16px;padding:24px 32px;box-shadow:0 4px 14px rgb(0 0 0 / .05);
+/* Bannière unifiée pour les pages support pro - alignée comme partner-strip */
+.support-header2 {
+  background: #ecfafa;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: calc(100% - 144px);
+  margin: 0 72px 20px 72px;
 }
-.support-hero{width:180px;max-width:40%;}
+
+.support-header2 h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.support-header2 p {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+}
+
+.support-doctor-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.support-doctor-wrapper::before {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle at center, #92ded9 0%, #eefaff 100%);
+  border-radius: 50% 50% 40% 60% / 60% 40% 60% 50%;
+  z-index: 1;
+}
+
+.support-hero2 {
+  width: 450px;
+  max-width: 100%;
+  z-index: 2;
+}
 
 .support-grid{
   display:grid;grid-template-columns:1fr 260px;gap:28px;

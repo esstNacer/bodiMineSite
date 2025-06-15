@@ -412,7 +412,7 @@
   font-size: 1rem;
   font-weight: 600;
   border-radius: var(--pro-radius);
-  background: var(--pro-blue);
+  background: var(--pro-blue-dark);
   color: #fff;
   transition: background .2s;
 }
@@ -454,4 +454,13 @@
 .sidebar .profile-card .notif-btn:focus {
   background: var(--pro-blue-dark);
   color: #fff;
+}
+
+/* Force la couleur du header pro sur tous les boutons */
+.pure button {
+  background: #70b7e2 !important;
+}
+
+.pure button:hover {
+  background: #379dd1 !important;
 }

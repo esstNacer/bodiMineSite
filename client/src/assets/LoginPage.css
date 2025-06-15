@@ -20,7 +20,7 @@
   margin: 0;
 }
 
-.login body {
+.login body { 
   background: var(--bg-light);
   color: inherit;
   font-family: inherit;
@@ -140,6 +140,7 @@
   flex-direction: column;
   justify-content: center;/* centre le contenu verticalement          */
   text-align: center;
+  animation: slideInFromLeft 1.5s ease-out;
 }
 
 .login .slide-title {
@@ -149,6 +150,7 @@
   letter-spacing: 0.5px;
   text-transform: uppercase;
   margin-bottom: 2px;
+  animation: fadeInUp 2s ease-out;
 }
 
 .login .slide-subtitle {
@@ -157,6 +159,7 @@
   color: #1a1a1a;
   margin: 0 auto 24px;
   max-width: 300px;
+  animation: fadeInUp 2.5s ease-out;
 }
 .login .btn.primary {
   justify-content: center;
@@ -169,12 +172,14 @@
   font-size: 16px;
   font-weight: 600;
   text-align: center;
-  transition: background-color 0.3s ease;
+  transition: all 0.6s ease;
   cursor: pointer;
 }
 
 .login .btn.primary:hover {
   background-color: #a8d5d2; /* un peu plus foncé au hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(150, 220, 215, 0.4);
 }
 
 .login .slide-img {
@@ -182,6 +187,8 @@
   max-width: 1000px;       /* plafonne la largeur absolue              */
   height: auto;           /* conserve le ratio                         */
   margin: 0 auto 1.2rem;
+  animation: scaleIn 3s ease-out;
+  transition: transform 0.8s ease-in-out;
 }
 
 .login .dots {
@@ -197,11 +204,13 @@
   background-color: #d1f2f2;
   border-radius: 50%;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: all 0.8s ease;
+  animation: fadeInUp 3.5s ease-out;
 }
 
 .login .dot.active {
   background-color: #00b7b0;
+  animation: dotPulse 2s infinite;
 }
 
 /* ---------------------------------------
@@ -213,6 +222,7 @@
   margin: center;
   gap: 18px;
   width: 100%;
+  animation: slideInFromRight 1.8s ease-out;
 }
 
 .login .signin label {
@@ -265,12 +275,14 @@
   font-size: 16px;
   font-weight: 600;
   text-align: center;
-  transition: background-color 0.3s ease;
+  transition: all 0.6s ease;
   cursor: pointer;
 }
 
 .login .btn.secondary:hover {
   background-color: #68a2d8; /* Un peu plus foncé en hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(125, 180, 230, 0.4);
 }
 
 .login .btn.oauth {
@@ -356,6 +368,7 @@
   padding: 20px 16px; /* Réduit le padding en mobile pour plus d'espace */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   text-align: start;
+  animation: scaleIn 2s ease-out;
 }
 
 /* 3. Logo */
@@ -363,6 +376,7 @@
   justify-self: center;
   width: 150px;
   margin-bottom: 5px;
+  animation: pulse 3s ease-in-out infinite;
 }
 
 /* 4. Titres */
@@ -370,12 +384,14 @@
   font-size: 24px;
   margin-bottom: 8px;
   color: #0E2A34;
+  animation: fadeInUp 2.5s ease-out;
 }
 
 .login-card__subtitle {
   font-size: 14px;
   margin-bottom: 4px;
   color: #4A555C;
+  animation: fadeInUp 3s ease-out;
 }
 
 /* 5. Form */
@@ -446,6 +462,7 @@
   border: none;
   cursor: pointer;
   margin-bottom: 16px;
+  transition: all 0.6s ease;
 }
 
 .btn.primary {
@@ -454,11 +471,23 @@
   color: #fff;
 }
 
+.btn.primary:hover,
+.btn.primary:active {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(117, 213, 204, 0.4);
+}
+
 .btn.secondary.professional {
   margin-top: 10px !important; /* Espace au-dessus du bouton */
   margin-bottom: 30px !important; /* Augmente l'espacement en mobile */
   background-color: #4DA6C0;
   color: #fff;
+}
+
+.btn.secondary.professional:hover,
+.btn.secondary.professional:active {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(77, 166, 192, 0.4);
 }
 
 /* Lien “Sign Up” */
@@ -555,4 +584,69 @@
   z-index: 1;
 }
 
+}
+
+/* Animations plus longues et fluides */
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes dotPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
 }

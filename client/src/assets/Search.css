@@ -270,11 +270,12 @@ html, body {
 /* ─── 1. On empêche tout scroll quand on est en mode filtres ─────────────────── */
 .home-wrapper, 
 .page {
-  min-height: 150vh !important;
+  min-height: auto;
   height: auto !important;
   display: flex;
   flex-direction: column;
   margin: 0;
+  padding: 0;
   overflow: visible !important;
   overflow-y: auto !important;
 }
@@ -300,12 +301,10 @@ body {
   z-index: 20;
 }
 /* ─── 3. Le conteneur des filtres est fixé entre header et bottom ─────────── */
-.filters-wrapper {
-  margin-bottom: 5px;
-  margin-top: 50px;
-  left: 0;
+.filters-wrapper {  margin-bottom: 0;
+  margin-top: 10px;left: 0;
   right: 0;
-  padding: 1rem;
+  padding: 0.5rem;
   background: #fff;
   display: flex;
   flex-direction: column;
@@ -328,9 +327,11 @@ body {
 }
 .main-content{
   padding: 0;
-  flex: 1;
+  flex: none;
   display: flex;
   flex-direction: column;
+  min-height: auto;
+  margin-bottom: 0;
 }
 
 /* ─── 4. Récupération de votre layout interne ─────────────────────────────── */
