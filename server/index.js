@@ -4,6 +4,7 @@ import session from 'express-session';
 import passport from './passport.js'; // Import ton passport configuré
 import jwt from 'jsonwebtoken';  // <-- ajoute ça tout en haut si pas encore fait
 import dotenv from 'dotenv';
+import 'dotenv/config';
 
 // Charger les variables d’environnement
 dotenv.config();
