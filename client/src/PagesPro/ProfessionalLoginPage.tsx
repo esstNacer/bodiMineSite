@@ -2,6 +2,8 @@
 import React, { FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../assets/ProfessionalLoginPage.css';
+// Import du CSS pour le style du carrousel aligné
+import '../assets/ProfessionalDashboard.css';
 
 /* --- visuels --- */
 import logo       from '../images/LogoBODYMINE.png';

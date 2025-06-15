@@ -42,9 +42,8 @@ export default function LoginPage(): JSX.Element {
   const [remember, setRemember] = useState<boolean>(false);
   const [error, setError]       = useState<string>('');
   const navigate                = useNavigate();
-
   useEffect(() => {
-    const id = setInterval(() => setIndex(i => (i + 1) % slides.length), 4000);
+    const id = setInterval(() => setIndex(i => (i + 1) % slides.length), 5000); // 8 secondes au lieu de 4
     return () => clearInterval(id);
   }, []);
 

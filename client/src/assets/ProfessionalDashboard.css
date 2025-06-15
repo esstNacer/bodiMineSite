@@ -19,18 +19,18 @@
 
 /***************  Top-bar  ***************/
 .pro .topbar{
-  height:68px;
+  height:88px;
   background:var(--pro-blue);
   border-bottom:1px solid var(--pro-border);
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 34px
+  padding:0 40px
 }
-.pro .logo{height:46px}
-.pro .topbar-right{display:flex;align-items:center;gap:26px}
-.pro .lang{cursor:pointer;font-weight:600;color:#fff}
-.pro .avatar-sm{width:42px;height:42px;border-radius:50%}
-.pro .doc-info{display:flex;flex-direction:column;font-size:.8rem;line-height:1.3;color:#fff}
-.pro .online{color:#11c24d;font-weight:600}
+.pro .logo{height:60px}
+.pro .topbar-right{display:flex;align-items:center;gap:32px}
+.pro .lang{cursor:pointer;font-weight:600;color:#fff;font-size:1.1rem}
+.pro .avatar-sm{width:56px;height:56px;border-radius:50%}
+.pro .doc-info{display:flex;flex-direction:column;font-size:1rem;line-height:1.3;color:#fff}
+.pro .online{color:#11c24d;font-weight:600;font-size:1rem}
 
 /***************  Carousel  ***************/
 .pro .carousel{
@@ -64,9 +64,9 @@
 /***************  Layout grid  ***************/
 .pro .grid{
   display:grid;
-  grid-template-columns:240px 340px 1fr;
+  grid-template-columns:480px 340px 1fr;
   gap:24px;
-  max-width:1400px;
+  max-width:1640px;
   margin:24px auto;
   padding:0 24px;
   grid-auto-rows: 1fr;
@@ -79,7 +79,11 @@
 .pro .sidebar{
   background:#fff;border:1px solid var(--pro-border);
   border-radius:var(--pro-radius);
-  padding:22px;display:flex;flex-direction:column;gap:26px
+  padding:22px;display:flex;flex-direction:column;gap:26px;
+  width:480px !important;
+  min-width:480px !important;
+  max-width:480px !important;  flex-shrink:0 !important;
+  margin-left:72px;
 }
 .pro .profile-card{display:flex;align-items:center;gap:12px}
 .pro .profile-card img{width:52px;height:52px;border-radius:50%}
@@ -243,6 +247,19 @@
   cursor: pointer;
 }
 
+/***************  Partner Strip (Banderole)  ***************/
+.pro .partner-strip{
+  max-width: calc(100% - 144px); /* 72px de chaque côté pour aligner avec la sidebar */
+  margin: 0 72px 20px 72px; /* Même alignement que la sidebar */
+  padding: 0px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 10px;
+}
+.pro .partner-strip img{
+  width:100%;height:250px;object-fit:cover;border-radius:var(--pro-radius)
+}
+
 /***************  Responsive  ***************/
 @media(max-width:1120px){
   .pro .grid{grid-template-columns:220px 1fr}
@@ -252,6 +269,11 @@
   .pro .grid{display:block}
   .pro .sidebar{display:none}
   .pro .chatbox{margin-top:24px}
+  /* Sur mobile, le carrousel redevient pleine largeur car la sidebar est cachée */
+  .pro .partner-strip{
+    max-width: 100%;
+    margin: 0 20px 20px 20px; /* Juste un petit padding sur mobile */
+  }
 }
 /* Container profile-card positionné en relatif pour le bouton */
 .sidebar .profile-card {

@@ -1,0 +1,135 @@
+/* Global Header Styles - Utilisé par toutes les pages */
+
+.navbar {
+  background: #96DCD7;
+  color: #fff;
+  height: 90px;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 5%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-family: "Segoe UI", Arial, sans-serif !important; /* Force la même police partout */
+  font-size: 16px !important; /* Force la même taille de base */
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+.navbar * {
+  font-family: inherit !important; /* Force tous les éléments enfants à hériter */
+}
+
+.navbar .logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar .logo img {
+  height: 55px;
+  width: auto;
+}
+
+.navbar nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.navbar nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600 !important;
+  font-size: 16px !important; /* Force la même taille pour tous les liens */
+  margin: 0 1.2rem;
+  position: relative;
+  transition: color 0.2s ease;
+  white-space: nowrap; /* Empêche les retours à la ligne */
+}
+
+.navbar nav a:hover {
+  color: #e0f7f7;
+}
+
+.navbar nav a.active::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: #fff;
+  bottom: -6px;
+  left: 0;
+}
+
+.navbar .profile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar .profile .avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+.navbar .profile .name {
+  font-weight: 600 !important;
+  font-size: 14px !important; /* Force la taille du nom */
+  color: #fff;
+  white-space: nowrap; /* Empêche les retours à la ligne */
+}
+
+.navbar .profile .status {
+  color: #38d27c;
+  font-size: 12px !important; /* Force la taille du statut */
+  white-space: nowrap;
+}
+
+/* Forces supplémentaires pour éviter tout décalage */
+.navbar {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+/* Normalise tous les espaces dans le header */
+.navbar .logo,
+.navbar nav,
+.navbar .profile {
+  flex-shrink: 0; /* Empêche les éléments de rétrécir */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.75rem 3%;
+  }
+  
+  .navbar nav {
+    gap: 1rem;
+  }
+  
+  .navbar nav a {
+    margin: 0 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .navbar {
+    display: none;
+  }
+}

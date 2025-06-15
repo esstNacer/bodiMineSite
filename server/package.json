@@ -8,9 +8,13 @@
     "dev": "nodemon app.js"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@amazonpay/amazon-pay-api-sdk-nodejs": "github:amzn/amazon-pay-api-sdk-nodejs",
     "@paypal/checkout-server-sdk": "^1.0.3",
     "@stripe/stripe-js": "^7.3.1",
+=======
+    "@paypal/checkout-server-sdk": "^1.0.3",
+>>>>>>> origin/front_dev
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",

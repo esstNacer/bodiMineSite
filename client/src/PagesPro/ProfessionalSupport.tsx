@@ -25,16 +25,16 @@ export default function ProfessionalSupport() {
   return (
     <div className="pro page">
       {/* --- barre de navigation réutilisable --- */}
-      <TopbarPro />
-
-      {/* Support header - bannière CSS classique comme CGU */}
-      <header className="support-header">
+      <TopbarPro />      {/* Support header - bannière unifiée comme côté client */}
+      <div className="support-header2">
         <div>
           <h2>How can we help you?</h2>
           <p>We're here to support you anytime. Choose the best way to reach us.</p>
         </div>
-        <img src={heroPic} alt="Support operator" className="support-img" />
-      </header>
+        <div className='support-doctor-wrapper'>
+          <img src={heroPic} className="support-hero2" alt="help" />
+        </div>
+      </div>
 
       {/* Layout Flexbox avec sidebar collée à gauche */}
       <main className="flex w-full">

@@ -322,11 +322,10 @@ export default function DoctorListPage() {
           ) : (
             <p style={{ padding: '1rem', textAlign: 'center', gridColumn: '1/-1' }}>
               No results found
-            </p>
-          )}
+            </p>          )}
         </div>
       </main>
-
+      
       <Footer />
     </div>
     </div>
@@ -517,13 +516,19 @@ export default function DoctorListPage() {
                     )}
                   </div>
                 </>
-              )}
-            </main>
+              )}            </main>
           </div>
         </div>
       )}
 
-           {isMobile && <BottomNav />}
+      {isMobile && (
+        <>
+          <Footer className="responsive-footer" />
+          {/* Ajout d'un conteneur blanc derrière la barre de navigation mobile */}
+          <div className="fixed bottom-0 left-0 right-0 h-20 bg-white" style={{zIndex: 999}}></div>
+          <BottomNav />
+        </>
+      )}
            </>
   );
 }

@@ -79,16 +79,16 @@ export default function ProfessionalFaq() {
   return (
     <div className="pro faq-page">
       {/* top-bar partagée */}
-      <TopbarPro />
-
-      {/* Support header - bannière pleine largeur avec Tailwind */}
-      <header className="w-full max-w-none mx-0 bg-[#ecfafa] rounded-xl p-8 text-left flex justify-between items-center mb-6 px-4">
+      <TopbarPro />      {/* Support header - bannière unifiée */}
+      <div className="support-header2">
         <div>
-          <h2 className="text-3xl font-bold">How can we help you&nbsp;?</h2>
-          <p className="text-gray-600 mt-1.5 text-[15px]">We're here to support you anytime. Choose the best way to reach us.</p>
+          <h2>How can we help you?</h2>
+          <p>We're here to support you anytime. Choose the best way to reach us.</p>
         </div>
-        <img src={heroPic} alt="Support operator" className="h-[170px] mr-8" />
-      </header>      {/* GRILLE */}
+        <div className='support-doctor-wrapper'>
+          <img src={heroPic} className="support-hero2" alt="help" />
+        </div>
+      </div>{/* GRILLE */}
       <main className="flex w-full">
         <SidebarPro active="FAQ" />
         <div className="flex-1 flex flex-col gap-6 p-6">

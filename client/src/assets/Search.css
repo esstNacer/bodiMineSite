@@ -1,20 +1,30 @@
 /* src/assets/DoctorListPage.css */
 
+/* FORCE LE SCROLL PARTOUT */
+html, body {
+  overflow: auto !important;
+  height: auto !important;
+  min-height: 100vh !important;
+}
+
 .page {
     font-family: 'Segoe UI', sans-serif;
     background: #f9f9f9;
     color: #333;
-    min-height: 100vh;
+    min-height: auto;
+    height: auto !important;
     display: flex;
     flex-direction: column;
+    overflow: visible !important;
   }
   .html, .body{
-    overflow: scroll;
+    overflow: auto;
   }
   .styled-select {
     padding: 8px 12px;
     border-radius: 10px;
-    border: 1px solid #ccc;
+   /* on laisse défiler uniquement si vraiment besoin à l'intérieur (ici non) */
+  overflow: visible; border: 1px solid #ccc;
     font-size: 14px;
     min-width: 180px;
     background-color: white;
@@ -26,18 +36,8 @@
     border-color: #00cfcf;
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 207, 207, 0.3);
-  }
-  
-  /* Navbar */
-  .navbar {
-    background: #7ddbdc;
-    padding: 0 2rem;
-    height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: white;
-  }
+  }  
+  /* Navbar - supprimé pour éviter les conflits avec Header.tsx */
   
   .nav-left, .nav-right {
     display: flex;
@@ -65,11 +65,11 @@
   .status {
     color: #38d27c;
     font-size: 12px;
-  }
-  
-  /* Main Content */
-  .main-content {
+  }  /* Main Content */  .main-content {
     padding: 2rem;
+    min-height: auto;
+    padding-bottom: 2rem;
+    overflow: visible !important;
   }
   
   /* Filters in card style */
@@ -240,8 +240,7 @@
     font-weight: 600;
     margin-bottom: 8px;
   }
-  
-  .footer-block ul,
+    .footer-block ul,
   .footer-block p {
     font-size: 0.9rem;
     line-height: 1.5;
@@ -256,7 +255,8 @@
     font-size: 1.2rem;
     margin-top: 12px;
   }
-  /* =========================================================
+
+/* =========================================================
    📱  DOCTOR-LIST – Responsive (≤ 600 px)  v2
    Remplace ou fusionne ce bloc avec l’ancien.
 ========================================================= */
@@ -269,12 +269,28 @@
 
 /* ─── 1. On empêche tout scroll quand on est en mode filtres ─────────────────── */
 .home-wrapper, 
-.page, 
+.page {
+  min-height: auto;
+  height: auto !important;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  overflow: visible !important;
+  overflow-y: auto !important;
+}
+
 html, 
 body {
   min-height: 100dvh;
-  height: 100%;
   margin: 0;
+  overflow-y: auto !important;
+  height: auto !important;
+}
+
+/* Force scroll pour toute la page */
+body {
+  overflow: visible !important;
 }
 
 /* ─── 2. Votre header (MobileNavbar) garde sa taille naturelle ───────────── */
@@ -285,12 +301,10 @@ body {
   z-index: 20;
 }
 /* ─── 3. Le conteneur des filtres est fixé entre header et bottom ─────────── */
-.filters-wrapper {
-  margin-bottom: 5px;
-  margin-top: 50px;
-  left: 0;
+.filters-wrapper {  margin-bottom: 0;
+  margin-top: 10px;left: 0;
   right: 0;
-  padding: 1rem;
+  padding: 0.5rem;
   background: #fff;
   display: flex;
   flex-direction: column;
@@ -313,6 +327,11 @@ body {
 }
 .main-content{
   padding: 0;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  min-height: auto;
+  margin-bottom: 0;
 }
 
 /* ─── 4. Récupération de votre layout interne ─────────────────────────────── */
@@ -564,4 +583,28 @@ body {
 /* 5. Chats, images, etc. */
 /* (vos règles existantes pour .doctor-img, .heart-icon, .chat-btn, etc.) */
 
+/* 6. Footer mobile */
+.home-wrapper .footer,
+.page .footer {
+  margin-top: auto;
+  position: relative;
+  z-index: 100;
+  background: #96DCD7;
+  margin-bottom: 0;
+  padding: 40px 0;
+  min-height: 100px;
+  order: 999;
 }
+
+/* Empêcher les éléments de dépasser du footer */
+.page::after,
+.home-wrapper::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background: transparent;
+  position: relative;
+  z-index: 101;
+}
+
+} /* Fermeture du media query @media (max-width: 991px) */

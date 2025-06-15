@@ -67,7 +67,7 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
   const navigate = useNavigate();
   const location = useLocation();
   const [slide, setSlide] = useState(0);
-  const [openedSections, setOpenedSections] = useState<string[]>([]);
+  const [openedSections, setOpenedSections] = useState<string[]>(["speciality", "doctors", "clinics", "articles"]);
 
   const [query,       setQuery]       = useState('');
   const [localisation,    setLocation]    = useState('');
@@ -401,7 +401,7 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
             <li className="relative pl-12 mb-4 text-lg leading-snug before:content-['2'] before:absolute before:left-0 before:top-0 before:w-10 before:h-10 before:rounded-full before:bg-[#7ddbdc] before:text-white before:flex before:items-center before:justify-center before:font-medium before:text-xl before:border before:border-[#7ddbdc] before:z-10">Select based on experience, fee or rating.</li>
             <li className="relative pl-12 mb-4 text-lg leading-snug before:content-['3'] before:absolute before:left-0 before:top-0 before:w-10 before:h-10 before:rounded-full before:bg-[#7ddbdc] before:text-white before:flex before:items-center before:justify-center before:font-medium before:text-xl before:border before:border-[#7ddbdc] before:z-10">Start chat and ask questions with your Doctors.</li>
           </ol>
-          <div className="flex justify-center">
+          <div className="flex justify-end">
             <Link to="/how-it-works" className="mt-4 px-6 py-2 rounded-full text-base font-medium shadow-sm transition-colors bg-transparent border-2 border-[#04C2C2] text-[#04C2C2] hover:bg-[#92ded9] hover:text-white focus:outline-none focus:ring-2 focus:ring-[#04C2C2] focus:ring-offset-2">
               Read more
             </Link>
@@ -530,26 +530,22 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
         >
           <FiChevronRight className="text-xl" />
         </button>
-      </section>
-  
-      {/* Sections */}
-      <section className="sections">
-  {/* Specialities */}  <div className={`section section-speciality ${openedSections.includes("speciality") ? 'open' : ''}`}>
-    <h2 onClick={() => handleToggleSection("speciality")} className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center">
-      Our Speciality <a onClick={(e) => {e.stopPropagation(); handleProtectedNavigation("/search")}} className="ml-4 text-lg md:text-2xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
-    </h2>
-    <div className="section-content">      {openedSections.includes("speciality") && (
-        <ScrollCarousel id="speciality-carousel" showArrows={true}>
-          {specialities.map((spec, index) => (
-            <div key={index} className="scroll-carousel-item min-w-[120px] bg-white rounded-xl shadow-md p-4 text-center flex flex-col items-center justify-center">
-              <div className="text-[2.5rem] text-[#19c7c7] mb-2">{spec.icon}</div>
-              <div className="font-bold text-base text-[#222]">{spec.name}</div>
-            </div>
-          ))}
-        </ScrollCarousel>
-      )}
-    </div>
-  </div>
+      </section>      {/* Sections */}
+      <section className="sections pb-24">
+        {/* Specialities */}
+        <div className={`section section-speciality ${openedSections.includes("speciality") ? 'open' : ''}`}>
+          <h2 onClick={() => handleToggleSection("speciality")} className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 flex items-center">
+            Our Speciality <a onClick={(e) => {e.stopPropagation(); handleProtectedNavigation("/search")}} className="ml-4 text-base md:text-xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
+          </h2>
+          {openedSections.includes("speciality") && (
+            <ScrollCarousel id="speciality-carousel" containerRef={specialityRef} showArrows={true} className="speciality-carousel-wrapper">              {specialities.map((spec, index) => (
+                <div key={index} className="scroll-carousel-item min-w-[120px] p-4 text-center flex flex-col items-center justify-center">
+                  <div className="text-[2rem] text-[#19c7c7] mb-2">{spec.icon}</div>
+                </div>
+              ))}
+            </ScrollCarousel>
+          )}
+        </div>
   {/* Doctors */}  <div className={`section section-doctors ${openedSections.includes("doctors") ? 'open' : ''}`}>
   <h2 onClick={() => handleToggleSection("doctors")} className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center">
       Top <span className="ml-2">Doctors</span> <a onClick={(e) => {e.stopPropagation(); handleProtectedNavigation("/search")}} className="ml-4 text-xl md:text-3xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
@@ -589,7 +585,8 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
         </ScrollCarousel>
       )}
     </div>
-  </div>{/* Clinics */}  <div className={`section section-clinics ${openedSections.includes("clinics") ? 'open' : ''}`}>
+  </div>{/* Clinics */}
+  <div className={`section section-clinics ${openedSections.includes("clinics") ? 'open' : ''}`}>
     <h2 onClick={() => handleToggleSection("clinics")} className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 flex items-center">
       Top <span className="ml-2">Clinics</span> <a onClick={(e) => {e.stopPropagation(); handleProtectedNavigation("/search")}} className="ml-4 text-xl md:text-3xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
     </h2>
@@ -653,10 +650,6 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
   </div>
 
 </section>
-
-  
-      {/* Footer */}
-      <Footer />
   
     </div>
     )}
@@ -741,20 +734,21 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
       </section>
   
       {/* Sections */}
-      <section className="sections">        {/* Specialities */}        <div className={`section section-speciality ${openedSections.includes("speciality") ? 'open' : ''}`}>
+      <section className="sections pb-24">        {/* Specialities */}        <div className={`section section-speciality ${openedSections.includes("speciality") ? 'open' : ''}`}>
           <h2 onClick={() => handleToggleSection("speciality")} className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 flex items-center">
             Our Speciality <a onClick={(e) => {e.stopPropagation(); handleProtectedNavigation("/search")}} className="ml-4 text-base md:text-xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
           </h2>      {openedSections.includes("speciality") && (
             <ScrollCarousel id="speciality-carousel" containerRef={specialityRef} showArrows={true} className="speciality-carousel-wrapper">
               {specialities.map((spec, index) => (
-                <div key={index} className="scroll-carousel-item min-w-[110px] bg-white rounded-xl shadow-md p-3 text-center flex flex-col items-center justify-center">
+                <div key={index} className="scroll-carousel-item">
                   <div className="text-[2rem] text-[#19c7c7] mb-2">{spec.icon}</div>
-                  <div className="font-bold text-sm text-[#222]">{spec.name}</div>
                 </div>
               ))}
             </ScrollCarousel>)
           }
-        </div>        {/* Doctors */}        <div className={`section section-doctors ${openedSections.includes("doctors") ? 'open' : ''}`}>
+        </div>        
+        
+        {/* Doctors */}        <div className={`section section-doctors ${openedSections.includes("doctors") ? 'open' : ''}`}>
   <h2 onClick={() => handleToggleSection("doctors")} className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 flex items-center">
     Top <span className="ml-2">Doctors</span>
     <a onClick={(e) => {e.stopPropagation(); handleProtectedNavigation("/search")}} className="ml-4 text-base md:text-xl font-medium text-[#04C2C2] hover:underline cursor-pointer">See All</a>
@@ -866,15 +860,16 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
               ))}
             </ScrollCarousel>
           )}
-        </div>
-  
-      </section>
+        </div>      </section>
   
       
-  
     </div>      )}
         {/* Footer with responsive Tailwind styling */}
       <Footer className="responsive-footer" />
+      {/* Ajout d'un conteneur blanc derrière la barre de navigation mobile */}
+      {isMobile && (
+        <div className="fixed bottom-0 left-0 right-0 h-20 bg-white" style={{zIndex: 999}}></div>
+      )}
       {isMobile && <BottomNav />}
        </>
   );

@@ -60,32 +60,31 @@ export default function ProfessionalDashboard() {
   const [draft, setDraft] = useState("");  const [messageFilter, setMessageFilter] = useState<"active" | "ended">("active");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentWeek, setCurrentWeek] = useState(0); // 0 = semaine actuelle, -1 = semaine précédente, etc.
-  
-  // Données factices pour le dashboard
+    // Données factices pour le dashboard
   const getWeekData = (weekOffset: number) => {
     const baseDate = new Date();
     baseDate.setDate(baseDate.getDate() - (weekOffset * 7));
     
-    // Messages reçus par jour de la semaine (factices)
+    // Messages reçus par jour de la semaine (données simples et ordonnées)
     const messagesData = [
-      { day: 'Lun', count: Math.floor(Math.random() * 15) + 5 },
-      { day: 'Mar', count: Math.floor(Math.random() * 18) + 3 },
-      { day: 'Mer', count: Math.floor(Math.random() * 20) + 8 },
-      { day: 'Jeu', count: Math.floor(Math.random() * 16) + 6 },
-      { day: 'Ven', count: Math.floor(Math.random() * 22) + 10 },
-      { day: 'Sam', count: Math.floor(Math.random() * 12) + 2 },
-      { day: 'Dim', count: Math.floor(Math.random() * 8) + 1 }
+      { day: 'Lun', count: 5 },
+      { day: 'Mar', count: 8 },
+      { day: 'Mer', count: 12 },
+      { day: 'Jeu', count: 15 },
+      { day: 'Ven', count: 18 },
+      { day: 'Sam', count: 10 },
+      { day: 'Dim', count: 3 }
     ];
     
-    // Vues de profil par jour (factices)
+    // Vues de profil par jour (données simples et ordonnées)
     const profileViewsData = [
-      { day: 'Lun', count: Math.floor(Math.random() * 50) + 20 },
-      { day: 'Mar', count: Math.floor(Math.random() * 60) + 25 },
-      { day: 'Mer', count: Math.floor(Math.random() * 70) + 30 },
-      { day: 'Jeu', count: Math.floor(Math.random() * 65) + 28 },
-      { day: 'Ven', count: Math.floor(Math.random() * 80) + 35 },
-      { day: 'Sam', count: Math.floor(Math.random() * 45) + 15 },
-      { day: 'Dim', count: Math.floor(Math.random() * 40) + 10 }
+      { day: 'Lun', count: 25 },
+      { day: 'Mar', count: 32 },
+      { day: 'Mer', count: 28 },
+      { day: 'Jeu', count: 35 },
+      { day: 'Ven', count: 40 },
+      { day: 'Sam', count: 22 },
+      { day: 'Dim', count: 15 }
     ];
     
     return { messagesData, profileViewsData, weekStart: baseDate };
@@ -208,292 +207,353 @@ export default function ProfessionalDashboard() {
                 </section>        {/* ░░ Layout ░░ */}
         <main className="flex w-full">
           {/* █ Sidebar - Collée à gauche */}
-          <SidebarPro active="Dashboard" />
-
-          <div className="flex-1 flex flex-col gap-6 p-6">
-            {/* █ Top row: Notifications et Analytics côte à côte */}
-            <div className="top-widgets-row">
-              {/* █ Notifications compact */}
-              <section className="widget notification-compact">
-                <header>
-                  <h5>
-                    Notifications <span className="count">{notifications.filter(n => !n.read).length}</span>
+          <SidebarPro active="Dashboard" />          <div className="flex-1 flex flex-col gap-6 p-6">            {/* █ Top row: Notifications à gauche et Analytics à droite - 50/50 */}
+            <div className="flex gap-6 h-80">
+              {/* █ Notifications compact - À GAUCHE (50%) */}              <section className="flex-1 bg-white rounded-lg border border-gray-200 p-6 overflow-hidden flex flex-col">
+                <header className="flex items-center justify-between mb-4">
+                  <h5 className="text-xl font-semibold text-gray-900">
+                    Notifications 
+                    <span className="ml-2 bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
+                      {notifications.filter(n => !n.read).length}
+                    </span>
                   </h5>
-                  <a href="/pro/notifications" className="view-all">Voir tout</a>
-                </header>
-                <div className="notification-compact-list">
-                {notifications.slice(0, 3).map(notification => (
-                  <div 
-                    key={notification.id} 
-                    className={`notification-item ${notification.read ? 'read' : 'unread'}`}
-                    onClick={() => window.location.href = "/pro/notifications"}
-                  >
-                    <img 
-                      src={notification.patientPhoto} 
-                      alt={notification.patientName} 
-                      className="notification-avatar"
-                    />
-                    <div className="notification-content">
-                      <div className="notification-header">
-                        <h3>{notification.patientName}</h3>
-                        <span className="notification-time">
-                          {new Date(notification.timestamp).toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: true
-                          })}
-                        </span>
-                      </div>
-                      <div className="notification-footer">
-                        <p className="notification-preview">
-                          {notification.message.length > 30 
-                            ? `${notification.message.substring(0, 30)}...` 
-                            : notification.message
-                          }
-                        </p>
-                        <span className="message-count">3</span>
+                  <a href="/pro/notifications" className="text-blue-600 hover:text-blue-800 text-base font-medium">
+                    Voir tout
+                  </a>                </header>
+                <div className="flex-1 overflow-y-auto space-y-3">
+                  {notifications.slice(0, 4).map(notification => (
+                    <div 
+                      key={notification.id} 
+                      className={`flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-colors ${
+                        notification.read ? 'bg-gray-50 hover:bg-gray-100' : 'bg-blue-50 hover:bg-blue-100'
+                      }`}
+                      onClick={() => window.location.href = "/pro/notifications"}
+                    >
+                      <img 
+                        src={notification.patientPhoto} 
+                        alt={notification.patientName} 
+                        className="w-10 h-10 rounded-full object-cover flex-shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">                        <div className="flex items-center justify-between mb-1">
+                          <h3 className="text-base font-medium text-gray-900 truncate">
+                            {notification.patientName}
+                          </h3>
+                          <span className="text-sm text-gray-500 flex-shrink-0 ml-2">
+                            {new Date(notification.timestamp).toLocaleTimeString([], {
+                              hour: '2-digit',
+                              minute: '2-digit',
+                              hour12: true
+                            })}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <p className="text-base text-gray-600 truncate">
+                            {notification.message.length > 25 
+                              ? `${notification.message.substring(0, 25)}...` 
+                              : notification.message
+                            }
+                          </p>
+                          <span className="bg-red-500 text-white text-sm px-3 py-1 rounded-full flex-shrink-0 ml-2">
+                            3
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>                ))}
-              </div>
-            </section>
-
-            {/* █ Dashboard Analytics */}
-            <section className="widget dashboard-analytics">
-              <header>
-                <h5>Analytics</h5>
-                <div className="week-navigation">
-                  <button 
-                    className="week-nav-btn"
-                    onClick={() => setCurrentWeek(currentWeek - 1)}
-                    title="Semaine précédente"
-                  >
-                    <ChevronLeft size={16} />
-                  </button>
-                  <span className="week-info">
-                    {currentWeek === 0 ? "Cette semaine" : 
-                     currentWeek === -1 ? "Semaine dernière" : 
-                     `Il y a ${Math.abs(currentWeek)} semaines`}
-                  </span>
-                  <button 
-                    className="week-nav-btn"
-                    onClick={() => setCurrentWeek(currentWeek + 1)}
-                    disabled={currentWeek >= 0}
-                    title="Semaine suivante"
-                  >
-                    <ChevronRight size={16} />
-                  </button>
+                  ))}
                 </div>
-              </header>
-                <div className="analytics-content">
-                {/* Graphique unifié */}
-                <div className="chart-section unified-chart">
-                  <div className="chart-legend">
-                    <div className="legend-item">
-                      <span className="legend-color messages-color"></span>
-                      <span>Messages reçus</span>
-                    </div>
-                    <div className="legend-item">
-                      <span className="legend-color profile-views-color"></span>
-                      <span>Vues de profil</span>
-                    </div>
+              </section>
+
+              {/* █ Dashboard Analytics - À DROITE (50%) */}              <section className="flex-1 bg-white rounded-lg border border-gray-200 p-6">
+                <header className="flex items-center justify-between mb-4">
+                  <h5 className="text-xl font-semibold text-gray-900">Analytics</h5>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      className="p-1 rounded hover:bg-gray-100 disabled:opacity-50"
+                      onClick={() => setCurrentWeek(currentWeek - 1)}
+                      title="Semaine précédente"
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+                    <span className="text-base text-gray-600 min-w-[120px] text-center">
+                      {currentWeek === 0 ? "Cette semaine" : 
+                       currentWeek === -1 ? "Semaine dernière" : 
+                       `Il y a ${Math.abs(currentWeek)} semaines`}
+                    </span>
+                    <button 
+                      className="p-1 rounded hover:bg-gray-100 disabled:opacity-50"
+                      onClick={() => setCurrentWeek(currentWeek + 1)}
+                      disabled={currentWeek >= 0}
+                      title="Semaine suivante"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
                   </div>
-                    <div className="chart-container unified-chart-container">
-                    {/* Axe Y avec échelle */}
-                    <div className="y-axis">
-                      {[100, 80, 60, 40, 20, 0].map((value) => (
-                        <div key={value} className="y-axis-tick">
-                          <span className="y-axis-label">{value}</span>
-                          <div className="y-axis-line"></div>
+                </header>
+                
+                {/* Légende des graphiques */}
+                <div className="flex gap-4 mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 bg-blue-500 rounded-sm"></span>
+                    <span className="text-base text-gray-600">Messages reçus</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 bg-green-500 rounded-sm"></span>
+                    <span className="text-base text-gray-600">Vues de profil</span>
+                  </div>
+                </div>                {/* Graphique en barres avec axes */}
+                <div className="mb-4">
+                  <div className="bg-gray-50 rounded-lg p-3 relative">
+                    {/* Zone de graphique avec axes */}
+                    <div className="flex">
+                      {/* Axe Y (ordonnées) */}
+                      <div className="flex flex-col justify-between h-32 mr-3 text-sm text-gray-500">
+                        {(() => {
+                          const maxValue = Math.max(
+                            ...currentWeekData.messagesData.map(d => d.count),
+                            ...currentWeekData.profileViewsData.map(d => d.count)
+                          );
+                          const steps = 4;
+                          const stepValue = Math.ceil(maxValue / steps);
+                          return Array.from({ length: steps + 1 }, (_, i) => (
+                            <div key={i} className="text-right">
+                              {maxValue - (i * stepValue)}
+                            </div>
+                          ));
+                        })()}
+                      </div>
+                      
+                      {/* Zone des barres */}
+                      <div className="flex-1 relative">
+                        {/* Lignes de grille horizontales */}
+                        <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
+                          {Array.from({ length: 5 }, (_, i) => (
+                            <div key={i} className="w-full border-t border-gray-300 opacity-30"></div>
+                          ))}
+                        </div>
+                        
+                        {/* Barres de données */}
+                        <div className="h-32 flex items-end justify-between gap-2 relative">
+                          {currentWeekData.messagesData.map((data, index) => {
+                            const profileViews = currentWeekData.profileViewsData[index]?.count || 0;
+                            const maxValue = Math.max(
+                              ...currentWeekData.messagesData.map(d => d.count),
+                              ...currentWeekData.profileViewsData.map(d => d.count)
+                            );
+                            const messageHeight = maxValue > 0 ? (data.count / maxValue) * 120 : 6;
+                            const profileHeight = maxValue > 0 ? (profileViews / maxValue) * 120 : 6;
+                            
+                            return (
+                              <div key={index} className="flex-1 flex justify-center">
+                                {/* Barres côte à côte */}
+                                <div className="flex items-end gap-1">
+                                  {/* Barre Messages */}
+                                  <div className="flex flex-col items-center">
+                                    <div 
+                                      className="w-5 bg-blue-500 rounded-t transition-all duration-500 hover:bg-blue-600"
+                                      style={{ height: `${messageHeight}px`, minHeight: '6px' }}
+                                      title={`Messages: ${data.count}`}
+                                    ></div>
+                                  </div>
+                                  
+                                  {/* Barre Vues */}
+                                  <div className="flex flex-col items-center">
+                                    <div 
+                                      className="w-5 bg-green-500 rounded-t transition-all duration-500 hover:bg-green-600"
+                                      style={{ height: `${profileHeight}px`, minHeight: '6px' }}
+                                      title={`Vues: ${profileViews}`}
+                                    ></div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Axe X (abscisses) */}
+                    <div className="flex ml-6 mt-2">
+                      {currentWeekData.messagesData.map((data, index) => (
+                        <div key={index} className="flex-1 text-center">
+                          <span className="text-xs text-gray-600 font-medium">
+                            {data.day}
+                          </span>
                         </div>
                       ))}
                     </div>
-                    
-                    {/* Zone des barres */}
-                    <div className="chart-bars-area">
-                      {currentWeekData.messagesData.map((_, index) => {
-                        const messageCount = currentWeekData.messagesData[index].count;
-                        const profileCount = currentWeekData.profileViewsData[index].count;
-                        const day = currentWeekData.messagesData[index].day;
-                        
-                        const maxMessages = Math.max(...currentWeekData.messagesData.map(d => d.count));
-                        const maxProfiles = Math.max(...currentWeekData.profileViewsData.map(d => d.count));
-                        
-                        const messageHeight = Math.max((messageCount / maxMessages) * 100, 5);
-                        const profileHeight = Math.max((profileCount / maxProfiles) * 80, 5); // Légèrement plus petit
-                        
-                        return (
-                          <div key={index} className="chart-day-container">
-                            <div className="chart-bars-group">
-                              <div 
-                                className="chart-bar messages-bar"
-                                style={{ height: `${messageHeight}%` }}
-                                title={`${day}: ${messageCount} messages`}
-                              ></div>
-                              <div 
-                                className="chart-bar profile-views-bar"
-                                style={{ height: `${profileHeight}%` }}
-                                title={`${day}: ${profileCount} vues`}
-                              ></div>
-                            </div>
-                            <span className="chart-label">{day}</span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                  
-                  <div className="chart-totals">
-                    <div className="total-item">
-                      <span className="total-label">Total Messages:</span>
-                      <span className="total-value">{currentWeekData.messagesData.reduce((sum, d) => sum + d.count, 0)}</span>
-                    </div>
-                    <div className="total-item">
-                      <span className="total-label">Total Vues:</span>
-                      <span className="total-value">{currentWeekData.profileViewsData.reduce((sum, d) => sum + d.count, 0)}</span>
-                    </div>
                   </div>                </div>
-              </div>            </section>
-            </div> {/* Fin de top-widgets-row */}
-
-            {/* █ Bottom row: Messages et Chat côte à côte */}
-            <div className="bottom-widgets-row">
-              {/* █ Messages list */}
-              <section className="widget messages">
-                <header>
-                  <div className="messages-header-top">
-                    <h5>
-                      Messages <span className="count">
+              </section>
+            </div> {/* Fin de top-widgets-row */}            {/* █ Bottom row: Messages et Chat côte à côte en Tailwind */}
+            <div className="flex gap-6 h-[600px]">
+              {/* █ Messages list - Colonne de gauche */}
+              <div className="w-1/4 bg-white rounded-lg border border-gray-200 flex flex-col"><div className="p-4 border-b border-gray-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <h5 className="text-xl font-semibold text-gray-900">
+                      Messages 
+                      <span className="ml-2 bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
                         {patients.filter(p => p.status === messageFilter).length}
                       </span>
-                    </h5>
-                    <div className="message-filter-switch">
+                    </h5>                    <div className="flex bg-gray-100 rounded-lg p-1">
                       <button 
-                        className={`filter-btn ${messageFilter === "active" ? "active" : ""}`}
+                        className={`px-4 py-2 text-base font-medium rounded-md transition-colors ${
+                          messageFilter === "active" 
+                            ? "bg-white text-blue-600 shadow-sm" 
+                            : "text-gray-600 hover:text-gray-900"
+                        }`}
                         onClick={() => setMessageFilter("active")}
                       >
                         Active
                       </button>
                       <button 
-                        className={`filter-btn ${messageFilter === "ended" ? "active" : ""}`}
+                        className={`px-4 py-2 text-base font-medium rounded-md transition-colors ${
+                          messageFilter === "ended" 
+                            ? "bg-white text-blue-600 shadow-sm" 
+                            : "text-gray-600 hover:text-gray-900"
+                        }`}
                         onClick={() => setMessageFilter("ended")}
                       >
                         Ended
                       </button>
                     </div>
-                  </div>
-                  <input 
+                  </div>                  <input 
+                    className="w-full px-4 py-3 border border-gray-300 rounded-md text-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder="Rechercher…" 
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
-                </header>
+                </div>
 
-                <ul className="msg-list">
+                <div className="flex-1 overflow-y-auto p-2">
                   {patients
+                    .filter(p => p.status === messageFilter)
                     .filter(p => {
-                      // Filtrage par type de message
-                      return p.status === messageFilter;
-                    })
-                    .filter(p => {
-                      // Filtrage par terme de recherche
                       if (!searchTerm.trim()) return true;
                       const fullName = `${p.first_name} ${p.last_name}`.toLowerCase();
                       return fullName.includes(searchTerm.toLowerCase());
                     })
                     .map((p) => (
-                    <li
+                    <div
                       key={p.patient_id}
-                      className={`
-                        ${current?.patient_id === p.patient_id ? "active" : ""}
-                        ${p.status === "ended" ? "ended-message" : "active-message"}
-                      `}
+                      className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors mb-2 ${
+                        current?.patient_id === p.patient_id 
+                          ? "bg-blue-50 border border-blue-200" 
+                          : "hover:bg-gray-50"
+                      }`}
                       onClick={() => setCurrent(p)}
                     >
-                      <img
-                        src={
-                          p.photo_url ||
-                          `https://i.pravatar.cc/36?u=${p.patient_id}`
-                        }
-                      />
-                      <div>
-                        <h3>
+                      <div className="relative">
+                        <img
+                          className="w-10 h-10 rounded-full object-cover"
+                          src={p.photo_url || `https://i.pravatar.cc/40?u=${p.patient_id}`}
+                          alt={`${p.first_name} ${p.last_name}`}
+                        />
+                        <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white ${
+                          p.isOnline ? "bg-green-400" : "bg-gray-400"
+                        }`}></div>
+                      </div>                      <div className="flex-1 min-w-0">
+                        <h3 className="text-base font-medium text-gray-900 truncate">
                           {p.first_name} {p.last_name}
                         </h3>
-                        <div className="message-meta">
-                          <span className={`status-indicator ${p.status}`}>{p.status}</span>
-                          <p>{p.favorite_specialization || "Patient"}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-sm font-medium ${
+                            p.status === "active" 
+                              ? "bg-green-100 text-green-800" 
+                              : "bg-gray-100 text-gray-800"
+                          }`}>
+                            {p.status}
+                          </span>
+                          <p className="text-sm text-gray-500 truncate">
+                            {p.favorite_specialization || "Patient"}
+                          </p>
                         </div>
                       </div>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-
-              {/* █ Chatbox */}
-              {current && (
-                <section className="chat-box"><header className="chat-head">
-                <div className="chat-head-left">
-                  <div className="profile-container">
-                    <img
-                      src={current.photo_url || `https://i.pravatar.cc/40?u=${current.patient_id}`}
-                      alt={`${current.first_name} ${current.last_name}`}
-                      className="chat-profile-pic"
-                    />
-                    <div className="status-container-bottom">
-                      <span className={`status-dot ${current.isOnline ? "online" : "offline"}`}></span>
                     </div>
-                  </div>
-                  <div className="user-info">
-                    <h5>
-                      {current.first_name} {current.last_name}
-                    </h5>
-                    <span className="status-text">{current.isOnline ? "Online" : "Offline"}</span>
-                  </div>
+                  ))}
                 </div>
-                <div className="chat-head-right">
-                  <span className="role">
-                    {current.favorite_specialization || "Patient"}
-                  </span>
-                  <button className="btn call-btn">
-                    <Phone size={14} /> Call
-                  </button>
-                </div>
-              </header>
-
-              <div className="chat-body">
-                {msgs.map((m, i) => (
-                  <div
-                    key={i}
-                    className={m.sender === "pro" ? "msg mine" : "msg"}
-                  >
-                    <p>{m.message}</p>
-                    <span>
-                      {new Date(m.timestamp).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </span>
-                  </div>
-                ))}
               </div>
 
-              <footer className="chat-foot">
-                <input
-                  value={draft}
-                  onChange={(e) => setDraft(e.target.value)}
-                  placeholder="Send a message…"
-                />
-                <button
-                  className="btn tiny send"
-                  disabled={!draft.trim()}
-                  onClick={send}
-                >
-                  <MessageSquare size={14} />
-                </button>              </footer>
-                </section>
-              )}
-            </div> {/* Fin de bottom-widgets-row */}
+              {/* █ Chatbox - Colonne de droite */}
+              <div className="flex-1 bg-white rounded-lg border border-gray-200 flex flex-col">
+                {current ? (
+                  <>
+                    <div className="p-4 border-b border-gray-200 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="relative">
+                          <img
+                            className="w-10 h-10 rounded-full object-cover"
+                            src={current.photo_url || `https://i.pravatar.cc/40?u=${current.patient_id}`}
+                            alt={`${current.first_name} ${current.last_name}`}
+                          />
+                          <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white ${
+                            current.isOnline ? "bg-green-400" : "bg-gray-400"
+                          }`}></div>
+                        </div>                        <div>
+                          <h5 className="text-base font-semibold text-gray-900">
+                            {current.first_name} {current.last_name}
+                          </h5>
+                          <span className="text-sm text-gray-500">
+                            {current.isOnline ? "En ligne" : "Hors ligne"} • {current.favorite_specialization || "Patient"}
+                          </span>
+                        </div>
+                      </div>
+                      <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-base font-medium rounded-md hover:bg-blue-700 transition-colors">
+                        <Phone size={16} />
+                        Appeler
+                      </button>
+                    </div>
+
+                    <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                      {msgs.map((m, i) => (
+                        <div
+                          key={i}
+                          className={`flex ${m.sender === "pro" ? "justify-end" : "justify-start"}`}
+                        >                          <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                            m.sender === "pro" 
+                              ? "bg-blue-600 text-white" 
+                              : "bg-gray-100 text-gray-900"
+                          }`}>
+                            <p className="text-base">{m.message}</p>
+                            <span className={`text-sm mt-1 block ${
+                              m.sender === "pro" ? "text-blue-100" : "text-gray-500"
+                            }`}>
+                              {new Date(m.timestamp).toLocaleTimeString([], {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="p-4 border-t border-gray-200">                      <div className="flex gap-3">
+                        <input
+                          className="flex-1 px-4 py-3 border border-gray-300 rounded-md text-base placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          value={draft}
+                          onChange={(e) => setDraft(e.target.value)}
+                          placeholder="Tapez votre message…"
+                          onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && send()}
+                        />
+                        <button
+                          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                          disabled={!draft.trim()}
+                          onClick={send}
+                        >
+                          <MessageSquare size={18} />
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                ) : (                  <div className="flex-1 flex items-center justify-center text-gray-500">
+                    <div className="text-center">
+                      <MessageSquare size={64} className="mx-auto mb-4 text-gray-300" />
+                      <p className="text-xl font-medium">Aucune conversation sélectionnée</p>
+                      <p className="text-base">Choisissez une conversation pour commencer à discuter</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div> {/* Fin de right-column */}
         </main>
 
