@@ -38,7 +38,7 @@ const MenuPageMobile = () => {
   /* items internes  (→ chevron) */
   const internal: MenuItem[] = [
     { id: 'edit', label: 'Edit Profile',        icon: <FiSettings />, route: '/editProfile' },
-    { id: 'pwd',  label: 'Change Password',     icon: <FiLock />,     route: '/change-password' },
+    { id: 'pwd',  label: 'Change Password',     icon: <FiLock />,     route: '/changePassword' },
     { id: 'proj', label: 'My body project',     icon: <FiStar />,     route: '/myBodyProject' },
   ];
 

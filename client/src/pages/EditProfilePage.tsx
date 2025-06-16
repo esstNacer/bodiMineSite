@@ -244,8 +244,7 @@ console.log(user?.photo_url)
                 <FiUser /> Edit Profile
               </Link>
             </li>
-            <li>
-              <Link to="/changePassword">
+            <li>              <Link to="/changePassword">
                 <FiLock /> Change Password
               </Link>
             </li>
