@@ -8,8 +8,43 @@ export const Professionals = {
   /* -------- READ -------- */
   findAll: async () => {
     const [rows] = await pool.query(
-      `SELECT *, DATE_FORMAT(practice_start_date, '%Y-%m-%d') AS practice_start_date
-       FROM professionals`
+      `/* ─── Professionals + abonnement actif OU, à défaut, le plus récent ─── */
+SELECT
+  pr.*,
+  DATE_FORMAT(pr.practice_start_date, '%Y-%m-%d')           AS practice_start_date,
+  ps.subscriptions_name                                     AS subscription_name,
+  DATE_FORMAT(ps.end_date, '%Y-%m-%d')                      AS subscription_end,
+  ps.value                                                  AS subscription_value
+FROM professionals AS pr
+
+/* sous-requête : choisi d’abord l’abonnement actif,
+   sinon le dernier abonnement enregistré pour chaque pro */
+LEFT JOIN (
+  SELECT s1.*
+  FROM premium_subscriptions AS s1
+  JOIN (
+        SELECT
+          professional_id,
+          /* date de l’abonnement actif s’il existe */
+          MAX(CASE WHEN status = 'active' THEN start_date END) AS active_start,
+          /* date du dernier abonnement (tous statuts confondus) */
+          MAX(start_date)                                      AS last_start
+        FROM premium_subscriptions
+        GROUP BY professional_id
+  ) AS pick
+    ON pick.professional_id = s1.professional_id
+   AND (
+        /* on prend l’actif si présent … */
+        (pick.active_start IS NOT NULL AND s1.start_date = pick.active_start)
+        /* … sinon le plus récent (last_start) */
+        OR
+        (pick.active_start IS NULL      AND s1.start_date = pick.last_start)
+       )
+) AS ps
+  ON ps.professional_id = pr.professional_id
+
+ORDER BY pr.created_at DESC;
+`
     );
     return rows;
   },

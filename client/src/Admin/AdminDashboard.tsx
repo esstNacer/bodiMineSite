@@ -1,285 +1,292 @@
-// src/pages/admin/AdminDashboard.tsx
-// -----------------------------------------------------------------------------
-// Admin dashboard displaying key metrics and latest records.
-// -----------------------------------------------------------------------------
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
-  FiChevronRight,
-  FiUsers,
-  FiUserPlus,
-  FiMonitor,
-  FiBell,
-  FiTrendingUp,
-  FiUserCheck,
-} from "react-icons/fi";
-import AdminSidebar from "./AdminSidebar";
-import "./styles/AdminDashboard.css";
+  BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, ResponsiveContainer,
+} from "recharts";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import Calendar from "react-calendar";
+import * as Toast from "@radix-ui/react-toast";
+import { useNavigate } from "react-router-dom";
+import CalendarWithEvents from "@/components/CalendarWithEvents";
 
-/* ————————————————————————————————————————————————
-  Types & Interfaces
-———————————————————————————————————————————————— */
-interface DashboardStats {
-  patients: number;
-  professionals: number;
-  professionalsPremium: number;
-  projects: number;
-  activeSubscriptions: number;
-  activePromotions: number;
-  unreadNotifications: number;
-}
+const pieColors = ["#34d399", "#60a5fa"];
 
-/* ————————————————————————————————————————————————
-  Helper components
-———————————————————————————————————————————————— */
-interface StatCardProps {
-  icon: React.ReactNode;
-  label: string;
-  value: number | string;
-}
+export default function AdminDashboard() {
+  const [stats, setStats] = useState({ users: 0, pros: 0, projects: 0, messages: 0, services: 0, revenue: 0 });
+  const [barData, setBarData] = useState([]);
+  const [pieData, setPieData] = useState([]);
+  const [showToast, setShowToast] = useState(true);
+  const [clinics, setClinics] = useState([]);
+    const [professionals, setProfessionals] = useState([]);
+  const [payments, setPayments] = useState([]);
+    const [tickets, setTickets] = useState([]);
 
-const StatCard: React.FC<StatCardProps> = ({ icon, label, value }) => (
-  <div className="stat-card card">
-    <div className="stat-icon">{icon}</div>
-    <div className="stat-info">
-      <h3>{value}</h3>
-      <p>{label}</p>
-    </div>
-  </div>
-);
+      const navigate = useNavigate();
+  
 
-interface RecentTableProps {
-  title: string;
-  api: string;
-  to: string;
-}
+useEffect(() => {
+  const fetchStats = async () => {
+    try {
+      const response = await fetch("/api/admin/dashboard-stats");
+      const data = await response.json();
+console.log(data)
+      setStats({
+        users: data.users,
+        pros: data.pros,
+        projects: data.projects,
+        messages: data.messages,
+        services: data.services,
+        revenue: data.revenue,
+      });
 
-const RecentTable: React.FC<RecentTableProps> = ({ title, api, to }) => {
-  const [rows, setRows] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+      setBarData(data.servicesByMonth);
+      setPieData(data.subscriptionDistribution);
+    } catch (error) {
+      console.error("Erreur de récupération des stats :", error);
+    }
+    fetch("/api/admin/clinics")
+    .then(res => res.json())
+    .then(data => setClinics(data))
+    .catch(err => console.error("Erreur cliniques:", err));
+    
+    fetch("/api/admin/professionals")
+    .then(res => res.json())
+    .then(data => setProfessionals(data))
+    .catch(err => console.error("Erreur cliniques:", err));
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(api);
-        if (!res.ok) throw new Error("Failed to fetch");
-        const data = await res.json();
-        setRows(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [api]);
+    fetch("/api/admin/payments")
+    .then(res => res.json())
+    .then(data => setPayments(data))
+    .catch(err => console.error("Erreur cliniques:", err));
+
+        fetch("/api/admin/tickets")
+    .then(res => res.json())
+    .then(data => setTickets(data))
+    .catch(err => console.error("Erreur cliniques:", err));
+  };
+
+  fetchStats();
+}, []);
+
 
   return (
-    <section className="recent-table card">
-      <div className="table-header">
-        <h2>{title}</h2>
-        <Link to={to} className="see-all">
-          See all
-        </Link>
-      </div>
+    <Toast.Provider swipeDirection="right">
+      <div className="min-h-screen flex">
+        {/* Sidebar */}
+        <aside className="w-64 bg-gray-900 text-white p-6 space-y-6">
+          <h2 className="text-xl font-bold">BodyMine Admin</h2>
+          <nav className="space-y-2">
+            <a href="/admin/dashboard" className="block hover:text-blue-400">Dashboard</a>
+            <a href="/admin/professionals" className="block hover:text-blue-400">Professionals</a>
+            <a href="/admin/services" className="block hover:text-blue-400">Projet Patient</a>
+            <a href="/admin/payments" className="block hover:text-blue-400">Paiements</a>
+          </nav>
+        </aside>
 
-      {loading ? (
-        <p className="muted">Loading…</p>
-      ) : rows.length === 0 ? (
-        <p className="muted">No data found.</p>
-      ) : (
-        <table>
+        {/* Main */}
+        <main className="flex-1 bg-gray-50 p-8 overflow-y-auto">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold">Tableau de bord</h1>
+            <Button variant="outline" onClick={()=>navigate("/home")}>Déconnexion</Button>
+          </div>
+
+
+
+          {/* Stat Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-6 mb-8">
+            <Card><CardHeader>Patients</CardHeader><CardContent><p className="text-2xl font-semibold">{stats.users}</p></CardContent></Card>
+            <Card><CardHeader>Professionals</CardHeader><CardContent><p className="text-2xl font-semibold">{stats.pros}</p></CardContent></Card>
+            <Card><CardHeader>My Body Projects</CardHeader><CardContent><p className="text-2xl font-semibold">{stats.projects}</p></CardContent></Card>
+            <Card><CardHeader>Nombre de chats</CardHeader><CardContent><p className="text-2xl font-semibold">{stats.messages}</p></CardContent></Card>            
+            <Card><CardHeader>Services vendus</CardHeader><CardContent><p className="text-2xl font-semibold">{stats.services}</p></CardContent></Card>
+            <Card><CardHeader>Revenus</CardHeader><CardContent><p className="text-2xl font-semibold">{stats.revenue.toLocaleString()} €</p></CardContent></Card>
+          </div>
+
+          {/* Graphiques */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+            <Card>
+              <CardHeader>Services vendus par mois</CardHeader>
+              <CardContent className="h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={barData}>
+                    <XAxis dataKey="mois" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="services" fill="#4f46e5" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>Répartition abonnements professionals</CardHeader>
+              <CardContent className="h-[300px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={pieData} dataKey="value" nameKey="type" cx="50%" cy="50%" outerRadius={80} label>
+                      {pieData.map((_, index) => (
+                        <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Map + Calendar */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+            <Card>
+  <CardHeader>Localisation des cliniques</CardHeader>
+  <CardContent className="h-[300px]">
+    <MapContainer center={[36.75, 3.06]} zoom={5} className="h-full w-full rounded-xl z-0">
+      <TileLayer
+        attribution='&copy; OpenStreetMap'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      {clinics.map((clinic, index) => (
+        <Marker
+          key={index}
+          position={[clinic.latitude, clinic.longitude]}
+        >
+          <Popup>
+            <strong>{clinic.name}</strong><br />
+            {clinic.address}, {clinic.city}
+          </Popup>
+        </Marker>
+      ))}
+    </MapContainer>
+  </CardContent>
+</Card>
+
+
+            <Card>
+  <CardHeader>Événements à venir</CardHeader>
+  <CardContent>
+    <CalendarWithEvents />
+  </CardContent>
+</Card>
+          </div>
+
+          {/* Timeline */}
+          <Card className="mb-10">
+            <CardHeader>Historique des activités</CardHeader>
+            <CardContent>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-4">
+                  <span className="mt-1 h-2 w-2 bg-green-500 rounded-full" />
+                  <div>
+                    <p><strong>Sara Benali</strong> a ajouté un nouveau service</p>
+                    <span className="text-sm text-gray-500">il y a 2h</span>
+                  </div>
+                </li>
+                <li className="flex items-start gap-4">
+                  <span className="mt-1 h-2 w-2 bg-blue-500 rounded-full" />
+                  <div>
+                    <p><strong>Ali Merabet</strong> a modifié son profil</p>
+                    <span className="text-sm text-gray-500">il y a 6h</span>
+                  </div>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          {/* Chat admin simplifié */}
+         
+
+          {/* Table avec Tabs */}
+       <Card className="mb-10">
+      <CardHeader>Comptes professionals</CardHeader>
+      <CardContent>
+        <Tabs defaultValue="users">
+          <TabsList>
+            <TabsTrigger value="users">Utilisateurs</TabsTrigger>
+            <TabsTrigger value="payments">Paiements</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="users">
+            <table className="w-full mt-4 text-left">
+              <thead>
+                <tr>
+                  <th className="py-2">Nom</th>
+                  <th className="py-2">Email</th>
+                  <th className="py-2">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {professionals.map((pro, i) => (
+                  <tr key={i} className="border-t">
+                    <td className="py-2">{pro.full_name}</td>
+                    <td className="py-2">{pro.email}</td>
+                    <td className="py-2">{new Date(pro.created_at).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </TabsContent>
+
+          <TabsContent value="payments">
+            <table className="w-full mt-4 text-left">
+              <thead>
+                <tr>
+                  <th className="py-2">Nom</th>
+                  <th className="py-2">Montant</th>
+                  <th className="py-2">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {payments.map((pay, i) => (
+                  <tr key={i} className="border-t">
+                    <td className="py-2">{pay.full_name}</td>
+                    <td className="py-2">{pay.value} €</td>
+                    <td className="py-2">{new Date(pay.start_date).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
+
+          {/* Tickets support */}
+      <Card>
+      <CardHeader>My Body Project</CardHeader>
+      <CardContent>
+        <table className="w-full text-left">
           <thead>
             <tr>
-              {Object.keys(rows[0])
-                .slice(0, 4)
-                .map((k) => (
-                  <th key={k}>{k.replace(/_/g, " ")}</th>
-                ))}
+              <th className="py-2">N° Ticket</th>
+              <th className="py-2">Patient</th>
+              <th className="py-2">Professionnel</th>
+              <th className="py-2">Projet</th>
+              <th className="py-2">Budget (€)</th>
+              <th className="py-2">Statut</th>
             </tr>
           </thead>
           <tbody>
-            {rows.map((row, i) => (
-              <tr key={i}>
-                {Object.values(row)
-                  .slice(0, 4)
-                  .map((v, idx) => (
-                    <td key={idx}>{String(v)}</td>
-                  ))}
+            {tickets.map((t, i) => (
+              <tr key={i} className="border-t">
+                <td className="py-2">#{t.ticket_id}</td>
+                <td className="py-2">{t.patient_first_name} {t.patient_last_name}</td>
+                <td className="py-2">{t.professional_name}</td>
+                <td className="py-2">{t.project_title}</td>
+                <td className="py-2">{t.budget}</td>
+              <td className={`py-2 ${t.status === "Fini" ? "text-red-500" : "text-green-600"}`}>
+  {t.status}
+</td>
+
               </tr>
             ))}
           </tbody>
         </table>
-      )}
-    </section>
-  );
-};
-
-/* ————————————————————————————————————————————————
-  Main component
-———————————————————————————————————————————————— */
-export default function AdminDashboard() {
-  const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch("/api/admin/summary");
-        if (!res.ok) throw new Error("Unable to load summary");
-        const data = await res.json();
-        setStats(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
-
-  return (
-    <div className="admin-wrapper">
-      <AdminSidebar active="/admin" />
-
-      <main className="admin-main">
-        {/* Breadcrumb */}
-        <nav className="breadcrumb">
-          <span>Dashboard</span>
-          <FiChevronRight />
-          <span>Overview</span>
-        </nav>
-
-        <h1 className="page-title">Admin Overview</h1>
-
-        {loading || !stats ? (
-          <p className="muted">Loading dashboard…</p>
-        ) : (
-          <>
-            {/* ===== Stats grid ===== */}
-            <section className="stats-grid">
-              <StatCard
-                icon={<FiUsers size={28} />}
-                label="Patients"
-                value={stats.patients}
-              />
-              <StatCard
-                icon={<FiUserPlus size={28} />}
-                label="Professionals"
-                value={stats.professionals}
-              />
-              <StatCard
-                icon={<FiUserCheck size={28} />}
-                label="Premium Professionals"
-                value={stats.professionalsPremium}
-              />
-              <StatCard
-                icon={<FiMonitor size={28} />}
-                label="Projects"
-                value={stats.projects}
-              />
-              <StatCard
-                icon={<FiTrendingUp size={28} />}
-                label="Active Subs"
-                value={stats.activeSubscriptions}
-              />
-              <StatCard
-                icon={<FiTrendingUp size={28} />}
-                label="Promotions"
-                value={stats.activePromotions}
-              />
-              <StatCard
-                icon={<FiBell size={28} />}
-                label="Unread Notifs"
-                value={stats.unreadNotifications}
-              />
-            </section>
-
-            {/* ===== Latest records ===== */}
-            <div className="two-col">
-              <RecentTable
-                title="Latest Patients"
-                api="/api/admin/patients?limit=5"
-                to=""
-              />
-              <RecentTable
-                title="Latest Professionals"
-                api="/api/admin/professionals?limit=5"
-                to="/admin/professionals"
-              />
-            </div>
-          </>
-        )}
-      </main>
-    </div>
+      </CardContent>
+    </Card>
+        </main>
+      </div>
+    </Toast.Provider>
   );
 }
-
-/* ————————————————————————————————————————————————
-  Quick styling hints (Add to styles/AdminDashboard.css)
-———————————————————————————————————————————————— */
-/*
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 24px;
-  margin-bottom: 32px;
-}
-
-.stat-card {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 24px;
-}
-
-.stat-icon {
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f7fa;
-  border-radius: 50%;
-}
-
-.stat-info h3 {
-  margin: 0;
-  font-size: 1.6rem;
-  font-weight: 700;
-}
-
-.recent-table {
-  margin-bottom: 32px;
-  overflow-x: auto;
-}
-
-.recent-table table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.recent-table th,
-.recent-table td {
-  padding: 10px 14px;
-  border-bottom: 1px solid #e9ecef;
-  text-align: left;
-  white-space: nowrap;
-}
-
-.table-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-}
-
-.see-all {
-  font-size: 0.9rem;
-  color: var(--primary-color);
-}
-
-.two-col {
-  display: grid;
-  gap: 24px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-*/

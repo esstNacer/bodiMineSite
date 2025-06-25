@@ -27,11 +27,13 @@ CREATE TABLE patients (
 -- Table : clinics
 CREATE TABLE clinics (
   clinic_id INT PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(255) NOT NULL,
-  address VARCHAR(255),
+  `name` VARCHAR(255) NOT NULL,
+  `address` VARCHAR(255),
   city VARCHAR(100),
   country VARCHAR(100),
   email VARCHAR(255) UNIQUE,
+  latitude DECIMAL(10, 7),
+  longitude DECIMAL(10, 7),
   phone_number VARCHAR(15),
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -124,6 +126,7 @@ CREATE TABLE premium_subscriptions (
   end_date DATETIME,
   subscriptions_name VARCHAR(50),
   `status` ENUM('active', 'inactive'),
+  `value` INT,
   FOREIGN KEY (professional_id) REFERENCES professionals(professional_id)
 );
 

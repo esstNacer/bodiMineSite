@@ -1,6 +1,9 @@
 // src/App.tsx
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import 'leaflet/dist/leaflet.css';
+import 'react-calendar/dist/Calendar.css';
+
 
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
@@ -30,6 +33,7 @@ import ProfessionalCGU from './PagesPro/ProfessionalCGU';
 import ProfessionalDataPrivicy from './PagesPro/ProfessionalDataPrivicy';
 import Faq from './pages/info/Faq';
 import MenuPageMobile from './pages/MenuPage';
+
 
 import AddBlogPage from './Admin/AddBlogPage';
 import BannerPage from './Admin/BannerPage';

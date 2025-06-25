@@ -7,6 +7,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { Button } from '@mui/material';
+import { usePro } from '../../components/ProContext';
 
 // Import des images du carrousel comme sur le dashboard
 import strip1 from '../../images/strip1.png';
@@ -35,6 +36,8 @@ function computeTotal(plan: string, services: string[]): number {
 }
 
 export default function ChoosePlan() {
+   const { professional, proToken, proLogout } = usePro();
+    const proId = professional?.professional_id;
   const [step, setStep] = useState(1);
   const [userType, setUserType] = useState<string>('');
   const [selectedPlan, setSelectedPlan] = useState<string>('');
@@ -57,12 +60,13 @@ async function handleConfirm() {
       platform: selectedPlatform,
       amount  : amountCents,
       currency,
+      professional_id : proId,
     });
 
     /* ── 3. Route selon plateforme ────────────────────────────── */
     switch (selectedPlatform) {
       /* Apple Pay & Google Pay → Payment Element */
-      case 'Apple Pay':
+      case 'Cash':
       case 'Google Pay': {
         const stripe = await stripePromise;
         setClientSecret(data.clientSecret);     // stocke → affichera PaymentElement
@@ -425,7 +429,7 @@ function WalletForm({ onSuccess }: { onSuccess: () => void }) {
               { name: 'Google Pay', icon: '/icons/google-pay.png' },
               { name: 'PayPal',     icon: '/icons/paypal.png'     },
               { name: 'Apple Pay',  icon: '/icons/apple-pay.png'  },
-              { name: 'Amazon Pay', icon: '/icons/amazon-pay.png' },
+              { name: 'Cash', icon: '/icons/amazon-pay.png' },
             ].map((platform, idx) => (
               <div
                 key={idx}

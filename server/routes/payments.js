@@ -1,9 +1,14 @@
 /* ──────────────────────────  routes/payments.js  ───────────────────────── */
-import 'dotenv/config';                 // ← charge .env AVANT toute lecture
+import 'dotenv/config';
 import express from 'express';
 import Stripe from 'stripe';
 import paypal from '@paypal/checkout-server-sdk';
-import { AmazonPayClient } from '@amazonpay/amazon-pay-api-sdk-nodejs';
+import { createRequire } from 'node:module';
+import fs from 'fs';
+import db from '../db.js'; // connexion MySQL
+
+const require = createRequire(import.meta.url);
+const AmazonPay = require('@amazonpay/amazon-pay-api-sdk-nodejs');
 
 const router = express.Router();
 
@@ -28,36 +33,49 @@ const paypalEnv = isLive
 const paypalClient = new paypal.core.PayPalHttpClient(paypalEnv);
 
 /* ---------- 3. AMAZON PAY (SDK v2) ------------------------------------- */
-const amazonClient = new AmazonPayClient({
+/*const amazonClient = AmazonPay.createCheckoutSessionClient({
   publicKeyId: process.env.AMAZON_PAY_PUBLIC_KEY_ID,
-  privateKey : process.env.AMAZON_PAY_PRIVATE_KEY,
-  region     : process.env.AMAZON_PAY_REGION || 'EU',   // 'EU', 'US', 'JP'
-  environment: process.env.AMAZON_PAY_ENV    || 'SANDBOX',
-  merchantId : process.env.AMAZON_PAY_MERCHANT_ID,
-  storeId    : process.env.AMAZON_PAY_STORE_ID,
-});
+  privateKey: fs.readFileSync('./keys/private.pem', 'utf8'),
+  region: process.env.AMAZON_PAY_REGION || 'EU',
+  sandbox: process.env.AMAZON_PAY_ENV !== 'LIVE',
+});*/
 
 /* ---------- 4. /api/payments/create ------------------------------------ */
 router.post('/create', async (req, res) => {
-  const { amount, currency, platform } = req.body;
-  if (!amount || !currency || !platform) {
-    return res.status(400).json({ error: 'amount, currency et platform requis' });
+  const { amount, currency, platform, professional_id } = req.body;
+
+  if (!amount || !currency || !platform || !professional_id) {
+    return res.status(400).json({ error: 'amount, currency, platform et professional_id requis' });
   }
 
   try {
+    // Définir dates d’abonnement (1 mois)
+    const startDate = new Date();
+    const endDate = new Date();
+    endDate.setMonth(endDate.getMonth() + 1);
+
     switch (platform) {
       /* Stripe : Apple Pay / Google Pay */
-      case 'Apple Pay':
+      case 'Cash':
       case 'Google Pay': {
         const intent = await stripe.paymentIntents.create({
-          amount: Number(amount),                     // en cents
+          amount: Number(amount),
           currency: currency.toLowerCase(),
-          automatic_payment_methods: { enabled: true }
+          automatic_payment_methods: { enabled: true },
         });
+
+        // Insérer en base
+        await db.execute(
+          `INSERT INTO premium_subscriptions 
+           (professional_id, start_date, end_date, subscriptions_name, status, value)
+           VALUES (?, ?, ?, ?, ?, ?)`,
+          [professional_id, startDate, endDate, 'Stripe', 'active', (amount / 100).toFixed(2)]
+        );
+
         return res.json({ clientSecret: intent.client_secret });
       }
 
-      /* PayPal : création d’order */
+      /* PayPal */
       case 'PayPal': {
         const request = new paypal.orders.OrdersCreateRequest();
         request.prefer('return=representation');
@@ -66,7 +84,7 @@ router.post('/create', async (req, res) => {
           purchase_units: [
             {
               amount: {
-                value: (amount / 100).toFixed(2),     // PayPal attend un décimal
+                value: (amount / 100).toFixed(2),
                 currency_code: currency.toUpperCase(),
               },
             },
@@ -74,8 +92,15 @@ router.post('/create', async (req, res) => {
         });
 
         const order = await paypalClient.execute(request);
-        const approvalUrl =
-          order.result.links.find((l) => l.rel === 'approve')?.href;
+        const approvalUrl = order.result.links.find((l) => l.rel === 'approve')?.href;
+
+        // Insérer en base
+        await db.execute(
+          `INSERT INTO premium_subscriptions 
+           (professional_id, start_date, end_date, subscriptions_name, status, value)
+           VALUES (?, ?, ?, ?, ?, ?)`,
+          [professional_id, startDate, endDate, 'PayPal', 'active', (amount / 100).toFixed(2)]
+        );
 
         return res.json({ orderId: order.result.id, approvalUrl });
       }
@@ -94,6 +119,15 @@ router.post('/create', async (req, res) => {
             },
           },
         });
+
+        // Insérer en base
+        await db.execute(
+          `INSERT INTO premium_subscriptions 
+           (professional_id, start_date, end_date, subscriptions_name, status, value)
+           VALUES (?, ?, ?, ?, ?, ?)`,
+          [professional_id, startDate, endDate, 'Amazon Pay', 'active', (amount / 100).toFixed(2)]
+        );
+
         return res.json({
           sessionId: session.checkoutSessionId,
           amazonPayUrl: session.webCheckoutDetails.amazonPayRedirectUrl,

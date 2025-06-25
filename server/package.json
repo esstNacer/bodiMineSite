@@ -1,20 +1,17 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon index.js"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@amazonpay/amazon-pay-api-sdk-nodejs": "github:amzn/amazon-pay-api-sdk-nodejs",
     "@paypal/checkout-server-sdk": "^1.0.3",
     "@stripe/stripe-js": "^7.3.1",
-=======
-    "@paypal/checkout-server-sdk": "^1.0.3",
->>>>>>> origin/front_dev
+    "axios": "^1.10.0",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
@@ -29,6 +26,6 @@
     "zip": "^1.2.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^3.1.10"
   }
 }

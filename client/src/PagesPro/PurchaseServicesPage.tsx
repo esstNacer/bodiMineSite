@@ -1,6 +1,8 @@
 // src/pages/PurchaseServicesPage.tsx
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { loadStripe } from '@stripe/stripe-js';
 
 import TopbarPro  from '../components/TopbarPro'
 import SidebarPro from '../components/SidebarPro'
@@ -22,6 +24,9 @@ import matchingDetail from '../images/promo-matching-detail.png'
 // Icons
 import { FiInfo, FiImage, FiList, FiUsers, FiCheckCircle } from 'react-icons/fi'
 import { FaGoogle, FaPaypal, FaApple, FaAmazon, FaMoneyBillWave } from 'react-icons/fa'
+import { usePro } from '../components/ProContext';
+import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { Button } from '@mui/material';
 
 // Types
 type ServiceID = 'banner' | 'toplist' | 'matching'
@@ -97,6 +102,9 @@ const paymentOptions = [
 
 export default function PurchaseServicesPage() {
   const navigate = useNavigate()
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY as string);
+ const { professional, proToken, proLogout } = usePro();
+    const proId = professional?.professional_id;
 
   // Carousel
   const carousel = [strip1, strip2, strip3]
@@ -109,27 +117,114 @@ export default function PurchaseServicesPage() {
   const [paymentService, setPaymentService] = useState<ServiceID | null>(null)
   const [paymentMethod, setPaymentMethod] = useState<string>('google')
   const [success, setSuccess] = useState(false)
+    const [clientSecret, setClientSecret] = useState<string | null>(null);
+  
 
-  // ID du pro (à récupérer depuis contexte / auth)
-  const professionalId = 1
 
   // Traitement du paiement
-  const handleConfirm = async () => {
-    if (!paymentService) return
-    const price = services.find(s => s.id === paymentService)!.price
-    const res = await fetch('/api/premium_subscriptions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        professional_id: professionalId,
-        subscriptions_name: paymentService,
-        price,
-        payment_method: paymentMethod
-      })
-    })
-    if (res.ok) setSuccess(true)
-    else alert('Erreur lors du paiement')
+
+async function handleConfirm() {
+  if (!paymentService) return;
+
+  const selectedService = services.find(s => s.id === paymentService);
+  if (!selectedService) return;
+
+  const amountCents = selectedService.price * 100;
+  const currency = 'eur';
+  const platform = formatPlatform(paymentMethod); // "Google Pay", etc.
+
+  try {
+    const { data } = await axios.post('/api/payments/create', {
+      platform,
+      amount: amountCents,
+      currency,
+      professional_id: proId, // ← s'assurer qu'il existe !
+    });
+
+    switch (platform) {
+      /* Stripe - Apple Pay / Google Pay / Cash */
+      case 'Apple Pay':
+      case 'Google Pay':
+      case 'Cash': {
+        if (!data.clientSecret) {
+          alert('Erreur : clientSecret introuvable');
+          return;
+        }
+
+        // Stripe payment confirmation affiché via PaymentElement dans le composant WalletForm
+        setClientSecret(data.clientSecret); // ← déclenche affichage du formulaire
+        return;
+      }
+
+      /* PayPal */
+      case 'PayPal': {
+        if (!data.approvalUrl) {
+          alert('Erreur : URL PayPal manquante');
+          return;
+        }
+        window.location.href = data.approvalUrl;
+        return;
+      }
+
+      /* Amazon Pay */
+      case 'Amazon Pay': {
+        if (!data.amazonPayUrl) {
+          alert('Erreur : URL Amazon Pay manquante');
+          return;
+        }
+        window.location.href = data.amazonPayUrl;
+        return;
+      }
+
+      default:
+        alert('Moyen de paiement non pris en charge');
+    }
+  } catch (err: any) {
+    console.error(err);
+    alert(err.response?.data?.error ?? 'Erreur lors du paiement.');
   }
+}
+
+function WalletForm({ onSuccess }: { onSuccess: () => void }) {
+  const stripe   = useStripe();
+  const elements = useElements();
+
+  const submit = async () => {
+    if (!stripe || !elements) return;
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: { return_url: window.location.origin + '/payment-success' },
+      redirect: 'if_required',
+    });
+
+    if (error) {
+      alert(error.message);
+    } else {
+      onSuccess();          // passe à l’étape 4
+    }
+  };
+
+  return (
+    <>
+      <PaymentElement options={{ layout: 'tabs' }} />
+      <Button variant="contained" fullWidth onClick={submit} sx={{ mt: 2 }}>
+        Payer
+      </Button>
+    </>
+  );
+}
+
+function formatPlatform(method: string): string {
+  switch (method) {
+    case 'google': return 'Google Pay'
+    case 'apple':  return 'Apple Pay'
+    case 'paypal': return 'PayPal'
+    case 'amazon': return 'Amazon Pay'
+    case 'cash':   return 'Cash'
+    default:       return 'Cash'
+  }
+}
   // Écran « réussite »
   if (success) {
     return (
@@ -298,30 +393,62 @@ export default function PurchaseServicesPage() {
 
           {/* 3) Formulaire de paiement */}
           {paymentService && (
-            <>
-              <h2 className="page-title">Payment</h2>
-              <div className="payment-card">
-                {paymentOptions.map(opt => {
-                  const Icon = opt.Icon
-                  return (
-                    <label key={opt.id} className="payment-option">
-                      <input
-                        type="radio"
-                        name="payment"
-                        value={opt.id}
-                        checked={paymentMethod === opt.id}
-                        onChange={() => setPaymentMethod(opt.id)}
-                      />
-                      <Icon className="payment-icon" />
-                      {opt.label}
-                    </label>
-                  )
-                })}                <button className="select-button" onClick={handleConfirm}>
-                  Confirm Payment
-                </button>
+  <div className="rounded-lg p-4 text-center">
+    <h2 className="text-3xl font-bold mb-8">Payment</h2>
+
+    <div className="bg-white rounded-lg p-6 max-w-lg mx-auto">
+      {/* ░░ 1. Choix du moyen de paiement ou Stripe form ░░ */}
+      {!clientSecret ? (
+        <>
+          <div className="space-y-4">
+            {[
+              { id: 'google', name: 'Google Pay', icon: '/icons/google-pay.png' },
+              { id: 'paypal', name: 'PayPal',     icon: '/icons/paypal.png' },
+              { id: 'apple',  name: 'Apple Pay',  icon: '/icons/apple-pay.png' },
+              { id: 'amazon', name: 'Amazon Pay', icon: '/icons/amazon-pay.png' },
+              { id: 'cash',   name: 'Cash',       icon: '/icons/cash.png' }
+            ].map(platform => (
+              <div
+                key={platform.id}
+                className="flex items-center p-4 border-2 border-gray-200 rounded-lg cursor-pointer
+                           hover:border-blue-300 hover:bg-gray-50 transition-all duration-200"
+                onClick={() => setPaymentMethod(platform.id)}
+              >
+                <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-4">
+                  <img src={platform.icon} alt={platform.name} className="w-8 h-8" />
+                </div>
+
+                <span className="flex-1 text-left font-semibold">{platform.name}</span>
+
+                <div className="w-5 h-5 border-2 border-gray-300 rounded-full flex items-center justify-center">
+                  {paymentMethod === platform.id && (
+                    <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
+                  )}
+                </div>
               </div>
-            </>
-          )}
+            ))}
+          </div>
+
+          <div className="flex justify-end mt-8">
+            <button
+              className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg
+                         hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={handleConfirm}
+              disabled={!paymentMethod}
+            >
+              Confirm Payment
+            </button>
+          </div>
+        </>
+      ) : (
+        <Elements stripe={stripePromise} options={{ clientSecret }}>
+          <WalletForm onSuccess={() => setSuccess(true)} />
+        </Elements>
+      )}
+    </div>
+  </div>
+)}
+
 
             </div>
           </div>
