@@ -127,5 +127,47 @@ ORDER BY mp.date_line DESC;
   }
 });
 
+// 🏆 Offrir un abonnement à un professionnel
+router.post("/offert", async (req, res) => {
+  const { professional_id, subscriptions_name, end_date } = req.body;
+  if (!professional_id || !subscriptions_name || !end_date) {
+    return res.status(400).json({ message: "Paramètres manquants" });
+  }
+
+  const start_date = new Date();     // maintenant
+  const value      = 0;              // gratuit
+
+  const connection = await db.getConnection(); // récupère une connexion dédiée
+  try {
+    await connection.beginTransaction();
+
+    // 1️⃣  Insertion dans premium_subscriptions
+    await connection.query(
+      `INSERT INTO premium_subscriptions 
+         (professional_id, start_date, end_date, subscriptions_name, status, value)
+       VALUES (?, ?, ?, ?, 'active', ?)`,
+      [professional_id, start_date, end_date, subscriptions_name, value]
+    );
+
+    // 2️⃣  Passage du pro en premium
+    await connection.query(
+      `UPDATE professionals 
+          SET is_premium = TRUE
+        WHERE professional_id = ?`,
+      [professional_id]
+    );
+
+    await connection.commit();
+    res.json({ message: "Abonnement offert avec succès" });
+  } catch (error) {
+    await connection.rollback();
+    console.error("Erreur offre abonnement :", error);
+    res.status(500).send("Erreur serveur lors de l’offre d’abonnement");
+  } finally {
+    connection.release();
+  }
+});
+
+
 
 export default router;

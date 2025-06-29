@@ -17,11 +17,15 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FiEdit3, FiTrash, FiPlus } from "react-icons/fi";
+import { FiEdit3, FiTrash, FiPlus, FiGift } from "react-icons/fi";
 import * as Toast from "@radix-ui/react-toast";
+import { toast } from "sonner"; // ou react-hot-toast / shadcn toast
+
+
 
 //
 // ─── TYPES ──────────────────────────────────────────────────────────────────────
@@ -57,6 +61,9 @@ interface Clinic {
   email: string | null;
 }
 
+type SubscriptionType = "basic" | "standard" | "premium";
+
+
 //
 // ─── PAGE COMPONENT ─────────────────────────────────────────────────────────────
 //
@@ -64,14 +71,19 @@ interface Clinic {
 export default function ProfessionalPage() {
   const [pros, setPros] = useState<Professional[]>([]);
   const [clinics, setClinics] = useState<Clinic[]>([]);
-
+// ID numérique
+const [selectedPro, setSelectedPro] = useState<number | null>(null);
   // dialogs
   const [showProDialog, setShowProDialog] = useState(false);
   const [showClinicDialog, setShowClinicDialog] = useState(false);
-
+ const [showGiftDialog, setShowGiftDialog] = useState(false);
   // editable records
   const [editPro, setEditPro] = useState<Partial<Professional> | null>(null);
   const [editClinic, setEditClinic] = useState<Partial<Clinic> | null>(null);
+const [subscriptionType, setSubscriptionType] = useState("premium");
+ const [endDate, setEndDate] = useState("");
+
+
 
   //
   // ─── DATA FETCH ───────────────────────────────────────────────────────────────
@@ -80,6 +92,11 @@ export default function ProfessionalPage() {
     fetchProfessionals();
     fetchClinics();
   }, []);
+
+  useEffect(() => {
+  if (selectedPro) setShowGiftDialog(true);
+}, [selectedPro]);
+
 
   async function fetchProfessionals() {
     const res = await fetch("/api/professional");
@@ -145,6 +162,33 @@ export default function ProfessionalPage() {
     fetchProfessionals();
   }
 
+
+  const offerSubscription = async (professionalId: number, type: string, endDate: string) => {
+  try {
+    const res =await fetch(`/api/admin/offert`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ professional_id: professionalId, subscriptions_name: type, end_date: endDate }),
+    });
+    if (res.ok) {
+  setPros(prev =>
+    prev.map(pro =>
+      pro.professional_id === professionalId
+        ? { ...pro, is_premium: true }      // mutation locale
+        : pro
+    )
+  );
+
+  toast.success("Abonnement offert avec succès !");
+}
+
+  } catch (err) {
+    console.error(err);
+    alert("Erreur lors de l’attribution de l’abonnement.");
+  }
+};
+
+
   //
   // ─── CRUD CLINICS ─────────────────────────────────────────────────────────────
   //
@@ -199,7 +243,7 @@ export default function ProfessionalPage() {
           <a href="/admin/dashboard" className="block hover:text-blue-400">Dashboard</a>
           <a href="/admin/professionals" className="block hover:text-blue-400">Professionals</a>
           <a href="/admin/services" className="block hover:text-blue-400">Projet Patient</a>
-          <a href="/admin/payments" className="block hover:text-blue-400">Paiements</a>
+          <a href="/admin/banners" className="block hover:text-blue-400">bannnieres</a>
         </nav>
       </aside>
 
@@ -262,6 +306,13 @@ export default function ProfessionalPage() {
                         >
                           <FiTrash />
                         </button>
+                        <button
+  className="tbl-btn"
+  onClick={() => setSelectedPro(p.professional_id)}
+>
+  <FiGift /> {/* Icône cadeau par exemple */}
+</button>
+
                       </td>
                     </tr>
                   ))}
@@ -497,6 +548,49 @@ export default function ProfessionalPage() {
           </DialogContent>
         </Dialog>
       )}
+      {showGiftDialog && (
+  <Dialog open={showGiftDialog} onOpenChange={setShowGiftDialog}>
+    <DialogContent className="w-full max-w-md">
+      <DialogHeader>
+        <DialogTitle>Offrir un abonnement</DialogTitle>
+        <DialogDescription>
+          Choisissez le type d’abonnement et la date de fin pour ce professionnel.
+        </DialogDescription>
+      </DialogHeader>
+
+      <div className="space-y-4">
+        <select
+          className="w-full border rounded p-2"
+          value={subscriptionType}
+          onChange={(e) => setSubscriptionType(e.target.value)}
+        >
+          <option value="basic">Basique</option>
+          <option value="standard">Standard</option>
+          <option value="premium">Premium</option>
+        </select>
+
+        <input
+          type="date"
+          className="w-full border rounded p-2"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
+
+        <Button
+          onClick={async () => {
+            if (selectedPro === null) return;
+            await offerSubscription(selectedPro, subscriptionType, endDate);
+            setShowGiftDialog(false);
+            setSelectedPro(null);
+          }}
+        >
+          Offrir l’abonnement
+        </Button>
+      </div>
+    </DialogContent>
+  </Dialog>
+)}
+
     </Card>
     </main>
     </div>

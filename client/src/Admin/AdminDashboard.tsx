@@ -81,7 +81,7 @@ console.log(data)
             <a href="/admin/dashboard" className="block hover:text-blue-400">Dashboard</a>
             <a href="/admin/professionals" className="block hover:text-blue-400">Professionals</a>
             <a href="/admin/services" className="block hover:text-blue-400">Projet Patient</a>
-            <a href="/admin/payments" className="block hover:text-blue-400">Paiements</a>
+            <a href="/admin/banners" className="block hover:text-blue-400">bannnieres</a>
           </nav>
         </aside>
 

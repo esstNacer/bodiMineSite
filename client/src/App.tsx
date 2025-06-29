@@ -36,7 +36,7 @@ import MenuPageMobile from './pages/MenuPage';
 
 
 import AddBlogPage from './Admin/AddBlogPage';
-import BannerPage from './Admin/BannerPage';
+import BannerPage from './Admin/BannersPage';
 import ProfessionalPage from './Admin/ProfessionalPage';
 import AdminDashboard from './Admin/AdminDashboard';
 
@@ -78,8 +78,7 @@ export default function App() {
 
 
       <Route path="/admin/blog" element={<AddBlogPage />} />
-<Route path="/admin/banner/patient" element={<BannerPage variant="patient" />} />
-<Route path="/admin/banner/pro"     element={<BannerPage variant="pro" />} />
+<Route path="/admin/banners" element={<BannerPage/>} />
 <Route path="/admin/professionals"     element={<ProfessionalPage />} />
 <Route path="/admin/dashboard"     element={<AdminDashboard />} />
 
