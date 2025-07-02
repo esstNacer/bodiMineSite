@@ -1,7 +1,7 @@
 // server/routes/bannerRoutes.js
 import { Router } from 'express';
 import * as controller from '../controllers/bannerController.js';
-import { uploadBanner } from '../middlewares/upload.js';
+import { uploadBanner } from '../middleware/upload.js';
 
 const router = Router();
 

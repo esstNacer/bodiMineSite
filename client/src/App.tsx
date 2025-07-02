@@ -39,6 +39,7 @@ import AddBlogPage from './Admin/AddBlogPage';
 import BannerPage from './Admin/BannersPage';
 import ProfessionalPage from './Admin/ProfessionalPage';
 import AdminDashboard from './Admin/AdminDashboard';
+import ArticlePage from './Admin/ArticlePage';
 
 export default function App() {
   return (
@@ -79,6 +80,7 @@ export default function App() {
 
       <Route path="/admin/blog" element={<AddBlogPage />} />
 <Route path="/admin/banners" element={<BannerPage/>} />
+<Route path="/admin/articles" element={<ArticlePage/>} />
 <Route path="/admin/professionals"     element={<ProfessionalPage />} />
 <Route path="/admin/dashboard"     element={<AdminDashboard />} />
 
