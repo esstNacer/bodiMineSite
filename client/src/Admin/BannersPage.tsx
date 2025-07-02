@@ -101,7 +101,21 @@ export default function BannersPage() {
 
   /* ----------------- Render ----------------- */
   return (
-    <div className="p-6 space-y-6">
+
+    <div className="flex min-h-screen">
+      {/* SIDEBAR */}
+      <aside className="w-64 bg-gray-900 text-white p-6 space-y-6">
+        <h2 className="text-xl font-bold">BodyMine Admin</h2>
+        <nav className="space-y-2">
+          <a href="/admin/dashboard" className="block hover:text-blue-400">Dashboard</a>
+          <a href="/admin/professionals" className="block hover:text-blue-400">Professionals</a>
+          <a href="/admin/services" className="block hover:text-blue-400">Projet Patient</a>
+          <a href="/admin/banners" className="block hover:text-blue-400">bannnieres</a>
+        </nav>
+      </aside>
+      
+      <main className="flex-1 bg-muted/40 p-8 overflow-y-auto">
+      <div className="mx-auto max-w-7xl space-y-10">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Gestion des bannières</h1>
         <Button onClick={openNewDialog} className="gap-2">
@@ -190,6 +204,8 @@ export default function BannersPage() {
           </div>
         </DialogContent>
       </Dialog>
+    </div>
+    </main>
     </div>
   );
 }

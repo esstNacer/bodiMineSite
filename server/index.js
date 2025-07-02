@@ -19,6 +19,7 @@ import projectRouter from './routes/projects.js';
 import ProfessionalsPhotoRouter from './routes/professionalPhotos.js'
 import adminRouter from './routes/admin.routes.js';
 import clinicsRoutes from './routes/clinics.js';
+import bannerRoutes from './routes/bannerRoutes.js';
 import path from 'path'
 
 function generateJWT(user) {
@@ -109,6 +110,8 @@ app.use('/api/projects', projectRouter);
 app.use('/api/photos', ProfessionalsPhotoRouter);
 app.use('/api/photos', ProfessionalsPhotoRouter);
 app.use('/api/clinics', clinicsRoutes);
+app.use('/api/banners', bannerRoutes);
+
 app.use('/api/admin', adminRouter);
 
 app.use('/api/payments', paymentsRoutes);

@@ -234,10 +234,10 @@ const [subscriptionType, setSubscriptionType] = useState("premium");
   //
   // ─── RENDER ───────────────────────────────────────────────────────────────────
   //
-  return (
-     <div className="flex min-h-screen">
-      {/* SIDEBAR */}
-      <aside className="w-64 bg-gray-900 text-white p-6 space-y-6">
+ return (
+  <div className="flex min-h-screen">
+    {/* ─────────────── SIDEBAR ─────────────── */}
+       <aside className="w-64 bg-gray-900 text-white p-6 space-y-6">
         <h2 className="text-xl font-bold">BodyMine Admin</h2>
         <nav className="space-y-2">
           <a href="/admin/dashboard" className="block hover:text-blue-400">Dashboard</a>
@@ -247,78 +247,87 @@ const [subscriptionType, setSubscriptionType] = useState("premium");
         </nav>
       </aside>
 
-      {/* CONTENU PRINCIPAL */}
-      <main className="flex-1 p-6 bg-gray-100 overflow-y-auto">
-    <Card className="max-w-7xl mx-auto my-10">
-      <CardHeader>Gestion des Professionnels & Cliniques</CardHeader>
-      <CardContent>
-        <Tabs defaultValue="pros">
+    {/* ─────────────── MAIN CONTENT ─────────────── */}
+    <main className="flex-1 bg-muted/40 p-8 overflow-y-auto">
+      <div className="mx-auto max-w-7xl space-y-10">
+        <h1 className="text-2xl font-semibold">
+          Gestion des Professionnels&nbsp;&amp;&nbsp;Cliniques
+        </h1>
+
+        <Tabs defaultValue="pros" className="space-y-6">
           <TabsList>
             <TabsTrigger value="pros">Professionnels</TabsTrigger>
             <TabsTrigger value="clinics">Cliniques</TabsTrigger>
           </TabsList>
 
-          {/* ───────────────── PROFESSIONNELS ───────────────── */}
-          <TabsContent value="pros">
-            <div className="flex justify-end mb-4">
-              <Button onClick={openNewPro} className="flex items-center gap-2">
-                <FiPlus /> Nouveau pro
+          {/* ─────────── PROFESSIONNELS ─────────── */}
+          <TabsContent value="pros" className="space-y-4">
+            <div className="flex justify-end">
+              <Button onClick={openNewPro} className="gap-2">
+                <FiPlus /> Nouveau&nbsp;pro
               </Button>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
+
+            <div className="rounded-lg border shadow-sm overflow-x-auto">
+              <table className="w-full text-sm whitespace-nowrap">
+                <thead className="bg-muted/60">
                   <tr>
-                    <th style={{ width: 40 }}>#</th>
-                    <th style={{ width: 180 }}>Nom</th>
-                    <th>Email</th>
-                    <th>Spécialité</th>
-                    <th>Abonné ?</th>
-                    <th>Abonnement</th>
-                    <th>Montant (€)</th>
-                    <th>Fin de l'abonnement</th>
-                    <th style={{ width: 120 }}>Action</th>
+                    <th className="px-4 py-2 w-8">#</th>
+                    <th className="px-4 py-2 w-48">Nom</th>
+                    <th className="px-4 py-2">Email</th>
+                    <th className="px-4 py-2">Spécialité</th>
+                    <th className="px-4 py-2">Abonné&nbsp;?</th>
+                    <th className="px-4 py-2">Abonnement</th>
+                    <th className="px-4 py-2">Montant&nbsp;(€)</th>
+                    <th className="px-4 py-2">Fin</th>
+                    <th className="px-4 py-2 w-32 text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {pros.map((p, i) => (
-                    <tr key={p.professional_id}>
-                      <td>{i + 1}</td>
-                      <td>{p.full_name}</td>
-                      <td>{p.email}</td>
-                      <td>{p.specialization ?? "—"}</td>
-                      <td className={p.is_premium ? "text-green-600" : "text-red-500"}>
+                    <tr key={p.professional_id} className="border-t">
+                      <td className="px-4 py-2 text-center">{i + 1}</td>
+                      <td className="px-4 py-2">{p.full_name}</td>
+                      <td className="px-4 py-2">{p.email}</td>
+                      <td className="px-4 py-2">{p.specialization ?? "—"}</td>
+                      <td
+                        className={`px-4 py-2 font-medium ${
+                          p.is_premium ? "text-green-600" : "text-destructive"
+                        }`}
+                      >
                         {p.is_premium ? "Oui" : "Non"}
                       </td>
-                      <td>{p.subscription_name ?? "—"}</td>
-                      <td>{p.subscription_value ?? "—"}</td>
-                      <td>{p.subscription_end ?? "—"}</td>
-                      <td>
-                        <button
-                          className="tbl-btn edit"
+                      <td className="px-4 py-2">{p.subscription_name ?? "—"}</td>
+                      <td className="px-4 py-2">{p.subscription_value ?? "—"}</td>
+                      <td className="px-4 py-2">{p.subscription_end ?? "—"}</td>
+                      <td className="px-4 py-2 text-center space-x-1">
+                        <Button
+                          size="icon"
+                          variant="ghost"
                           onClick={() => startEditPro(p)}
                         >
                           <FiEdit3 />
-                        </button>
-                        <button
-                          className="tbl-btn del"
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
                           onClick={() => deletePro(p.professional_id)}
                         >
                           <FiTrash />
-                        </button>
-                        <button
-  className="tbl-btn"
-  onClick={() => setSelectedPro(p.professional_id)}
->
-  <FiGift /> {/* Icône cadeau par exemple */}
-</button>
-
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          onClick={() => setSelectedPro(p.professional_id)}
+                        >
+                          <FiGift />
+                        </Button>
                       </td>
                     </tr>
                   ))}
                   {pros.length === 0 && (
                     <tr>
-                      <td colSpan={8} className="text-center py-10">
+                      <td colSpan={9} className="text-center py-10">
                         Aucun professionnel.
                       </td>
                     </tr>
@@ -328,48 +337,51 @@ const [subscriptionType, setSubscriptionType] = useState("premium");
             </div>
           </TabsContent>
 
-          {/* ───────────────── CLINIQUES ───────────────── */}
-          <TabsContent value="clinics">
-            <div className="flex justify-end mb-4">
-              <Button onClick={openNewClinic} className="flex items-center gap-2">
-                <FiPlus /> Nouvelle clinique
+          {/* ─────────── CLINIQUES ─────────── */}
+          <TabsContent value="clinics" className="space-y-4">
+            <div className="flex justify-end">
+              <Button onClick={openNewClinic} className="gap-2">
+                <FiPlus /> Nouvelle&nbsp;clinique
               </Button>
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
+
+            <div className="rounded-lg border shadow-sm overflow-x-auto">
+              <table className="w-full text-sm whitespace-nowrap">
+                <thead className="bg-muted/60">
                   <tr>
-                    <th style={{ width: 40 }}>#</th>
-                    <th style={{ width: 200 }}>Nom</th>
-                    <th>Adresse</th>
-                    <th>Ville</th>
-                    <th>Pays</th>
-                    <th>Email</th>
-                    <th style={{ width: 120 }}>Action</th>
+                    <th className="px-4 py-2 w-8">#</th>
+                    <th className="px-4 py-2 w-56">Nom</th>
+                    <th className="px-4 py-2">Adresse</th>
+                    <th className="px-4 py-2">Ville</th>
+                    <th className="px-4 py-2">Pays</th>
+                    <th className="px-4 py-2">Email</th>
+                    <th className="px-4 py-2 w-28 text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {clinics.map((c, i) => (
-                    <tr key={c.clinic_id}>
-                      <td>{i + 1}</td>
-                      <td>{c.name}</td>
-                      <td>{c.address ?? "—"}</td>
-                      <td>{c.city ?? "—"}</td>
-                      <td>{c.country ?? "—"}</td>
-                      <td>{c.email ?? "—"}</td>
-                      <td>
-                        <button
-                          className="tbl-btn edit"
+                    <tr key={c.clinic_id} className="border-t">
+                      <td className="px-4 py-2 text-center">{i + 1}</td>
+                      <td className="px-4 py-2">{c.name}</td>
+                      <td className="px-4 py-2">{c.address ?? "—"}</td>
+                      <td className="px-4 py-2">{c.city ?? "—"}</td>
+                      <td className="px-4 py-2">{c.country ?? "—"}</td>
+                      <td className="px-4 py-2">{c.email ?? "—"}</td>
+                      <td className="px-4 py-2 text-center space-x-1">
+                        <Button
+                          size="icon"
+                          variant="ghost"
                           onClick={() => startEditClinic(c)}
                         >
                           <FiEdit3 />
-                        </button>
-                        <button
-                          className="tbl-btn del"
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
                           onClick={() => deleteClinic(c.clinic_id)}
                         >
                           <FiTrash />
-                        </button>
+                        </Button>
                       </td>
                     </tr>
                   ))}
@@ -385,9 +397,7 @@ const [subscriptionType, setSubscriptionType] = useState("premium");
             </div>
           </TabsContent>
         </Tabs>
-      </CardContent>
-
-      {/* ─── DIALOG PROFESSIONNEL ────────────────────────── */}
+        {/* ─── DIALOG PROFESSIONNEL ────────────────────────── */}
       {showProDialog && editPro && (
         <Dialog open={showProDialog} onOpenChange={setShowProDialog}>
           <DialogContent className="w-full max-w-lg">
@@ -590,9 +600,9 @@ const [subscriptionType, setSubscriptionType] = useState("premium");
     </DialogContent>
   </Dialog>
 )}
-
-    </Card>
+      </div>
     </main>
-    </div>
-  );
+  </div>
+);
+
 }
