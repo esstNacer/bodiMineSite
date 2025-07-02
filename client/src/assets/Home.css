@@ -58,6 +58,8 @@ img {
 }
 .logo img {
   height: 55px;
+  border: none !important; /* Assure qu'il n'y a pas de bordure */
+  outline: none !important; /* Assure qu'il n'y a pas d'outline */
 }
 .navbar nav {
   display: flex;
@@ -135,12 +137,14 @@ img {
   position: relative;
   background: #eefaff;
   display: flex;
-  gap: 3rem;
-  justify-content: space-between;
-  padding: 3.5rem 5%;
-  flex-wrap: wrap;
+  gap: 0; /* Aucun espace entre les éléments */
+  justify-content: flex-start; /* Alignement à gauche pour maximiser l'espace texte */
+  align-items: center;
+  padding: 3.5rem 1%; /* Minimum absolu de padding */
+  flex-wrap: nowrap; /* Empêche le wrap pour forcer l'extension */
   overflow: hidden;
   z-index: 1;
+  min-height: 450px;
 }
 .hero::before {
   content: "";
@@ -159,38 +163,56 @@ img {
   z-index: 1;
 }
 .hero-left {
-  max-width: 480px;
+  flex: 1 1 auto; /* Prend tout l'espace disponible */
+  max-width: none;
+  padding-right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  width: 100%;
+  overflow: visible; /* Permet le débordement du texte */
 }
 .hero-left h1 {
-  font-size: 2.4rem;
+  font-size: 3.2rem; /* Taille réduite */
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.1;
+  margin-bottom: 0.8rem;
+  margin-top: -2rem; /* Remonté plus haut */
+  width: calc(100% + 25rem);
+  margin-right: -25rem;
 }
 .hero-left h1 span {
-  color: var(--primary);
+  color: #16b3b3; /* Un peu plus foncé que var(--primary-dark) */
 }
 .hero-left p {
-  font-size: 1.4rem;
-  margin-top: 70px;
+  font-size: 1.8rem; /* Taille réduite */
+  margin-top: 1.5rem; /* Marge réduite car titre plus haut */
   color: black;
+  line-height: 1.4;
+  width: calc(100% + 15rem);
+  margin-right: -15rem;
 }
 .hero-buttons {
   display: flex;
   gap: 1rem;
-  margin-top: 100px;
-  margin-left: 200px;
+  margin-top: 6rem; /* Descend le bouton Explore au niveau de Read more */
+  margin-left: 0;
   flex-wrap: wrap;
+  transform: translateX(20rem) translateY(6rem); /* Réduit le décalage horizontal pour éloigner de l'image */
+  position: relative;
 }
 .btn-hero {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 15px 40px;
-  font-size: 1.5rem;
+  padding: 22px 55px; /* Encore plus grand */
+  font-size: 2.2rem; /* Encore plus grand */
   border: none;
   border-radius: 200px;
   cursor: pointer;
   transition: background 0.2s ease;
+  font-weight: 600;
 }
 .btn-hero.primary {
   background: var(--primary);
@@ -200,40 +222,56 @@ img {
   background: var(--primary-dark);
 }
 .btn-hero.secondary {
-  background: #04C2C2;
+  background: linear-gradient(135deg, #04C2C2 0%, #19c7c7 50%, #7ddbdc 100%); /* Dégradé turquoise */
   color: white;
-  font-size: 1.3rem;
-  font-weight: 200;
+  font-size: 2rem; /* Encore plus grand pour le bouton Explore */
+  font-weight: 700; /* Plus gras */
   border: 2px solid var(--primary);
+  box-shadow: 0 6px 20px rgba(4, 194, 194, 0.4); /* Ombre plus prononcée */
+  padding: 24px 60px; /* Padding encore plus grand pour Explore */
 }
 .btn-hero.secondary:hover {
-  background: var(--primary);
+  background: linear-gradient(135deg, #019999 0%, #16b3b3 50%, #6bc9ca 100%); /* Dégradé plus foncé au hover */
   color: #fff;
+  transform: translateY(-3px); /* Effet de levée plus prononcé au hover */
+  box-shadow: 0 8px 25px rgba(4, 194, 194, 0.5); /* Ombre encore plus prononcée */
+}
+
+.hero-right {
+  flex: 0 0 320px; /* Taille fixe plus petite */
+  width: 320px; /* Plus compact */
+  padding-left: 0.5rem;
+  /* Pas de margin-left négatif - on garde l'image en place */
 }
 
 .hero-right h4 {
-  margin-top: 30px;
-  font-size: 2.4rem;
+  margin-top: 30px; /* Remonte au niveau du titre principal */
+  font-size: 3rem; /* Taille réduite */
   font-weight: 700;
   line-height: 1.2;
+  width: calc(100% + 15rem); /* Moins d'extension */
+  margin-left: -18rem; /* Beaucoup moins décalé vers la gauche = plus à droite */
+  white-space: nowrap; /* Force le texte sur une seule ligne */
 }
 
 .hero-right ol {
   list-style: none;
   padding-left: 0;
-  max-width: 300px;
-  margin-left: 50px;
-  margin-top: 20px;
+  max-width: calc(100% + 15rem); /* La liste déborde ENCORE PLUS vers la gauche */
+  margin-left: -15rem; /* La liste se rapproche VRAIMENT de l'image */
+  margin-top: 10px; /* Espacement réduit entre le titre et les textes */
   counter-reset: list-counter;
 }
 
 .hero-right li {
   counter-increment: list-counter;
-  margin-bottom: 15px;
+  margin-bottom: 15px; /* Réduit l'espace entre les éléments */
   position: relative;
-  padding-left: 46px;
-  font-size: 1.3rem;
-  line-height: 1.5;
+  padding-left: 60px; /* Réduit l'espace pour les ronds */
+  font-size: 1.6rem; /* Texte agrandi */
+  line-height: 1.3; /* Ligne plus aérée */
+  font-weight: 500;
+  max-width: 380px; /* Zone élargie pour le texte plus grand */
 }
 
 .hero-right li::before {
@@ -241,47 +279,88 @@ img {
   position: absolute;
   left: 0;
   top: 0;
-  width: 40px;
-  height: 40px;
+  width: 40px; /* Rond plus petit */
+  height: 40px; /* Rond plus petit */
   border-radius: 50%;
-  background-color: #7ddbdc; /* fond très clair */
-  border: 1px solid #7ddbdc; /* contour turquoise */
-  color: #ffffff; /* texte turquoise */
+  background-color: #7ddbdc;
+  border: 1px solid #7ddbdc;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 1000;
-  font-size: 1.5rem;
+  font-size: 2.2rem; /* Chiffres plus grands */
+}
+
+
+/* === BOUTON READ MORE AVEC FOND BLANC ET TEXTE VERT === */
+.btn-hero.secondary.read-more-btn {
+  background: white !important; /* Fond blanc */
+  color: #04C2C2 !important; /* Texte vert/turquoise */
+  border: 2px solid #04C2C2 !important; /* Bordure verte */
+  box-shadow: 0 4px 15px rgba(4, 194, 194, 0.2) !important; /* Ombre subtile */
+  
+  /* === TAILLE DU TEXTE AGRANDIE === */
+  font-size: 1.4rem !important; /* Taille agrandie du texte */
+  font-weight: 700 !important; /* Gras */
+  padding: 18px 40px !important; /* Padding agrandi */
+  
+  /* === ALIGNEMENT À DROITE DE LA PAGE === */
+  position: relative !important;
+  margin-top: 2rem !important; /* Espacement au-dessus du bouton */
+  margin-left: auto !important; /* Alignement à droite automatique */
+  margin-right: 0 !important; /* Collé au bord droit de son conteneur */
+  display: block !important; /* S'assure que le margin auto fonctionne */
+  width: fit-content !important; /* Largeur ajustée au contenu */
+}
+
+.btn-hero.secondary.read-more-btn:hover {
+  background: #f0f9f9 !important; /* Fond blanc légèrement grisé au hover */
+  color: #019999 !important; /* Texte vert plus foncé au hover */
+  transform: translateY(-2px); /* Même effet de translation */
+  box-shadow: 0 6px 20px rgba(4, 194, 194, 0.3) !important; /* Ombre plus marquée */
 }
 
 
 .home-wrapper .hero-right .read-more {
-  display: inline-block;
-  margin-top: 1px;
-  margin-left: 200px;
-  padding: 15px 40px;
-  border: 2px solid #04C2C2;
-  color: #04C2C2;
-  border-radius: 999px;
-  border-width: 2.5px;
-  background-color: #eefaff;
-  font-weight: 600;
-  text-decoration: none;
-  transition: 0.3s ease;
+  /* === COPIE COMPLETE DE .btn-hero avec !important === */
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 25px 60px !important; /* Encore plus grand */
+  font-size: 2.2rem !important; /* Encore plus grand */
+  border: none !important;
+  border-radius: 200px !important;
+  cursor: pointer !important;
+  transition: background 0.2s ease !important;
+  font-weight: 600 !important;
+  /* === FOND BLANC AVEC ECRITURE VERTE (inverse de Explore) === */
+  background: white !important; /* Fond blanc (inverse du dégradé turquoise) */
+  color: #04C2C2 !important; /* Écriture turquoise/verte (inverse du blanc) */
+  font-size: 1.6rem !important; /* Plus grand - IDENTIQUE à btn-hero.secondary */
+  font-weight: 600 !important;
+  border: 2px solid #04C2C2 !important; /* Bordure turquoise */
+  box-shadow: 0 4px 15px rgba(4, 194, 194, 0.3) !important; /* Même ombre que btn-hero.secondary */
+    /* === PROPRIETES SPECIFIQUES === */
+  margin-top: 1px !important;
+  margin-left: -20rem !important; /* Éloigné de l'image (était -8rem) */
+  text-decoration: none !important;
 }
 
 .hero-right .read-more:hover {
-  background-color: #92ded9;
-  color: white;
+  background: #f8fdfd !important; /* Fond blanc très légèrement teinté (inverse du dégradé hover) */
+  color: #019999 !important; /* Écriture turquoise plus foncée (inverse du blanc hover) */
+  transform: translateY(-2px); /* IDENTIQUE à btn-hero.secondary:hover */
+  box-shadow: 0 6px 20px rgba(4, 194, 194, 0.4) !important; /* IDENTIQUE à btn-hero.secondary:hover */
 }
 
 .doctor-img {
   display: block;
   width: 100%;
-  max-width: 360px;
+  max-width: 360px; /* Remis à la taille originale */
   height: auto;
-  border-radius: 0; /* pas d'arrondi visible comme dans l'image */
-  box-shadow: none; /* aucune ombre visible dans la capture */
+  border-radius: 0;
+  box-shadow: none;
   margin: 0 auto;
   position: relative;
   z-index: 2;
@@ -291,15 +370,19 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex: 0 0 450px; /* Ajusté proportionnellement */
+  width: 450px; /* Ajusté pour le cercle */
+  height: 450px; /* Ajusté pour le cercle */
+  transform: translateY(4.2rem); /* Descend seulement l'image et le halo */
 }
 
 .doctor-wrapper::before {
   content: "";
   position: absolute;
-  width: 420px;
-  height: 420px;
-  background: radial-gradient(circle at center, #92ded9 0%, #eefaff 100%);
-  border-radius: 62% 38% 48% 70% / 58% 62% 35% 42%;
+  width: 500px; /* Réduit un peu (560 -> 500) */
+  height: 500px; /* Réduit un peu (560 -> 500) */
+  background: linear-gradient(90deg, #7ddbdc 0%, #b8e6e7 50%, #e0f4f5 100%); /* Dégradé horizontal avec vert très clair */
+  border-radius: 55% 50% 45% 65% / 50% 70% 30% 40%; /* Côté droit supérieur plus étalé */
   z-index: 1;
 }
 
@@ -353,33 +436,34 @@ img {
    SEARCH BAR (CARD STYLE)
 --------------------------------------- */
 /* SearchBar.module.css
-   — remplace ou fusionne avec tes règles existantes — */
-  /* ❶ Conteneur général */
-  .searchbar {
+   — remplace ou fusionne avec tes règles existantes — */  /* ❶ Conteneur général */  .searchbar {
     background: #fff;
-    padding: 1.5rem 2rem;
+    padding: 2.5rem 3.2rem; /* Encore plus grand */
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    gap: 1rem;
-    border-radius: 16px;
+    gap: 1.6rem; /* Encore plus grand */
+    border-radius: 25px; /* Encore plus grand */
     box-shadow: 0 4px 20px rgba(0,0,0,.08);
     border: 1px solid #e6edf0;
-    max-width: 1150px;
-    margin: -5rem auto 2rem;
+    max-width: 1700px; /* Encore plus grand */
+    margin: -2rem auto 2rem; /* Descend la barre de recherche */
     position: relative;
     z-index: 10;
-  }
-  .field-col {
+    justify-content: flex-start; /* Aligne tout à gauche */
+    align-items: center; /* Centre verticalement */
+  }.field-col {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;        /* distance verticale interne */
+  align-items: center; /* Centre les éléments dans la colonne */
 }
 
 /* Rangée interne Speciality + Country */
 .field-row {
   display: flex;
   gap: 0.75rem;        /* distance horizontale entre les 2 selects */
+  justify-content: center; /* Centre les éléments */
 }
 
 .field-row > * {
@@ -388,16 +472,29 @@ img {
   /* ❷ Première ligne (inputs + bouton + filtre) */
   .search-row {
     display: flex;
-    flex-wrap: wrap;
-    gap: .8rem;
+    flex-wrap: wrap;    gap: .8rem;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* Aligne à gauche */  }.input-group {
+    position: relative;
+    flex: 15;     /* Prend 15 fois plus d'espace - ÉNORME ! */
+    min-width: 800px; /* Largeur minimale massive pour dominer totalement */
+    max-width: none;
+  }  .select-group {
+    position: relative;
+    flex: 1;        /* largeur flexible standard pour Sort By */
+    min-width: 200px; /* Largeur normale pour Sort By */
+    max-width: none;
   }
   
-  .input-group, .select-group {
-    position: relative;
-    flex: 1;        /* largeur mini */
-    min-width: 240px;
+  /* Speciality et Country : 50% chacun de la largeur de la barre de recherche */
+  .select-group.half-search-width {
+    flex: 7.5;      /* 50% de flex: 15 (barre de recherche) = 7.5 */
+    min-width: 400px; /* Largeur équivalente à 50% de la barre de recherche */
+  }
+    /* Activity : même taille que Location */
+  .select-group.activity-under-location {
+    flex: 2;        /* Même flex que .loc */
+    min-width: 400px; /* Même largeur que Location */
   }
   
   .input-group .icon,
@@ -410,93 +507,72 @@ img {
     pointer-events: none;
     font-size: 1.1rem;
   }
-  
-  /* champs texte */
+    /* champs texte - AGRANDIS ENCORE PLUS */
   .input-group input {
     width: 100%;
-    padding: .75rem 1rem .75rem 2.7rem;   /* place pour l’icône */
+    padding: 1.5rem 2rem 1.5rem 4rem !important;   /* Padding encore plus grand */
     border: 1px solid #ccdede;
-    border-radius: 10px;
-    font-size: .92rem;
-  }
-  .loc {
-    flex: 0;
-    position: relative;
-    min-width: 275px;
-  }
-  .loc .icon {
-    position: absolute;
-    top: 50%;
-    left: 14px;
-    transform: translateY(-50%);
-    color: #98aba0;
-    pointer-events: none;
-    font-size: 1.1rem;
+    border-radius: 15px !important; /* Coins encore plus arrondis */
+    font-size: 1.3rem !important; /* Texte encore plus grand */
   }
   
- .loc input {
+  /* Location input - AGRANDI */
+  .loc input {
     width: 100%;
-    padding: .75rem 1rem .75rem 2.7rem;   /* place pour l’icône */
+    padding: 1.2rem 1.5rem 1.2rem 3.5rem !important;   /* Padding plus grand */
     border: 1px solid #ccdede;
-    border-radius: 10px;
-    font-size: .92rem;
+    border-radius: 12px !important;
+    font-size: 1.1rem !important;
   }
   
-  /* menus déroulants */
+  /* Select dropdowns - AGRANDIS */
   .select-group select {
     width: 100%;
-     appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-    padding: .75rem 1rem .75rem 2.8rem;
+    padding: 1.2rem 1.5rem 1.2rem 3.5rem !important;
     border: 1px solid #ccdede;
-    border-radius: 10px;
-    font-size: .88rem;
+    border-radius: 12px !important;
+    font-size: 1.1rem !important;
     background: #fff;
     color: #3a3a3a;
     appearance: none;
+  }    /* Ajuster la largeur minimale de location - AGRANDIE */
+  .loc {
+    flex: 2; /* Prend 2 fois plus d'espace que les autres éléments */
+    position: relative;
+    min-width: 400px !important; /* Largeur minimale plus grande */  }/* Bouton de recherche - MÊME HAUTEUR QUE LA BARRE DE RECHERCHE */  .search-btn {
+    background: linear-gradient(315deg, #04C2C2 0%, #19c7c7 50%, #7ddbdc 100%) !important; /* Même dégradé qu'Explore mais direction inversée */
+    border: none !important;
+    color: #fff !important;
+    padding: 1.5rem 6rem !important; /* Même hauteur que input-group (1.5rem vertical) */
+    border-radius: 15px !important; /* Coins plus arrondis */
+    font-size: 1.4rem !important; /* Texte encore plus grand */
+    font-weight: 700 !important; /* Plus épais */
+    cursor: pointer !important;
+    transition: filter .2s ease !important;
+    min-width: 180px !important; /* Largeur minimale pour être plus imposant */
   }
   
-  /* flèche custom */
- .select-group::after {
-  content: "";
-  pointer-events: none;     /* la souris « passe à travers » */
-  position: absolute;
-  right: 14px;
-  top: 55%;
-  transform: translateY(-50%);
-  width: 12px;              /* largeur de la flèche */
-  height: 7px;              /* hauteur */
-
-  /* SVG « chevron » (épais, bords arrondis) encodé en data-URI */
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23212121' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
-              no-repeat center / contain;
-}
-  
-  .search-btn {
-    background: linear-gradient(90deg, #19d2cc, #01c0e3);
-    border: none;
-    color: #fff;
-    padding: .7rem 4rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: filter .2s ease;
+  /* Ajuster les icônes */
+  .input-group .icon,
+  .select-group .icon {
+    position: absolute;
+    top: 50%;
+    left: 18px !important; /* Ajusté pour le nouveau padding */
+    transform: translateY(-50%);
+    color: #98a1ab;
+    pointer-events: none;
+    font-size: 1.3rem !important; /* Icônes plus grandes */
   }
-  .search-btn:hover { filter: brightness(.95); }
   
-  .filter-btn {
-    background: #fff;
-    border: 1px solid #ccdede;
-    padding: .8rem .9rem;
-    border-radius: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .loc .icon {
+    position: absolute;
+    top: 50%;
+    left: 18px !important;
+    transform: translateY(-50%);
+    color: #98aba0;
+    pointer-events: none;
+    font-size: 1.3rem !important;
   }
-  .filter-btn .icon { font-size: 1.25rem; color: #98a1ab }
   
   /* ❸ Deuxième ligne (filtres) */
   .filter-row {
@@ -509,9 +585,10 @@ img {
 .sort-group {
   display: flex;               /* label + select côte-à-côte   */
   align-items: center;
-  gap: .8rem;                  /* espace entre label et menu   */
+  gap: .4rem;                  /* espace réduit entre label et menu pour rapprocher */
   position: relative;  
   margin-top: 0;        /* pour la flèche ::after        */
+  min-width: 250px; /* Largeur réduite pour Sort By */
 }
 
 .sort-group label {
@@ -519,17 +596,18 @@ img {
   font-size: .95rem;
   font-weight: 500;
   white-space: nowrap;
+  margin-right: .2rem; /* Espace supplémentaire réduit pour rapprocher */
 }
 
 /* le <select> hérite déjà de .select-group select :   
    on le raffine légèrement pour coller à la maquette */
 .sort-group select {
-  font-size: 0.88rem;          /* texte plus grand             */
-  min-width: 180px;
-    padding: .75rem 1rem .75rem 0.5rem;
-      border: 1px solid #c7ced4;
-  border-radius: 8px;
-  color: #2c2c2c;
+  font-size: 1.1rem;          /* Même taille que les autres selects */
+  min-width: 160px; /* Largeur ajustée pour être plus compact */
+  padding: 1.2rem 1.5rem 1.2rem 0.8rem !important; /* Même padding que les autres selects */
+  border: 1px solid #ccdede;
+  border-radius: 12px !important;
+  color: #3a3a3a;
 }
 
 /* flèche ▼ personnalisée */
@@ -537,6 +615,113 @@ img {
 
 /* retire la flèche native sous Edge/IE */
 .sort-group select::-ms-expand { display: none; }
+
+/* ===== RESPONSIVITÉ TABLETTE - RÉDUCTION DES ÉLÉMENTS AGRANDIS ===== */
+@media (max-width: 1024px) {
+  /* Barre de recherche intermédiaire */
+  .searchbar {
+    padding: 2rem 2.5rem !important; /* Padding intermédiaire */
+    gap: 1.2rem !important; /* Espacement intermédiaire */
+    max-width: 90% !important; /* Largeur ajustée */
+  }
+  
+  /* Champs de saisie taille intermédiaire */
+  .input-group input,
+  .loc input,
+  .select-group select {
+    padding: 1rem 1.2rem 1rem 3rem !important; /* Padding intermédiaire */
+    font-size: 1rem !important; /* Texte intermédiaire */
+    border-radius: 10px !important; /* Coins intermédiaires */
+  }  /* Largeurs des champs ajustées pour tablette */
+  .input-group, .select-group {
+    min-width: 200px !important; /* Largeur normale pour Sort By */
+  }
+  
+  .select-group.half-search-width {
+    min-width: 280px !important; /* 50% adapté pour tablette */
+  }
+  
+  .select-group.activity-under-location {
+    min-width: 240px !important; /* Même que Location sur tablette */
+  }
+  
+  .loc {
+    min-width: 240px !important; /* Largeur intermédiaire */
+  }
+    /* Bouton de recherche taille intermédiaire - MÊME HAUTEUR QUE LES INPUTS */
+  .search-btn {
+    padding: 1rem 4rem !important; /* Même hauteur que les inputs (1rem vertical) */
+    font-size: 1.1rem !important; /* Texte intermédiaire */
+    border-radius: 10px !important; /* Coins intermédiaires */
+  }
+  
+  /* Icônes repositionnées pour tablette */
+  .input-group .icon,
+  .select-group .icon,
+  .loc .icon {
+    left: 15px !important; /* Ajusté pour le padding intermédiaire */
+    font-size: 1.2rem !important; /* Icônes taille intermédiaire */
+  }
+  
+  /* Sections avec padding intermédiaire */
+  .section-speciality,
+  .section-doctors,
+  .section-clinics,
+  .section-articles {
+    padding-bottom: 3rem !important; /* Zones intermédiaires sous les carrousels */
+  }
+  
+  /* Textes hero taille intermédiaire */
+  .hero-left h1 {
+    font-size: 2.8rem !important; /* Titre principal intermédiaire */
+    width: calc(100% + 20rem) !important; /* Largeur ajustée */
+    margin-right: -20rem !important;
+  }
+  
+  .hero-left p {
+    font-size: 1.5rem !important; /* Paragraphe intermédiaire */
+    width: calc(100% + 12rem) !important; /* Largeur ajustée */
+    margin-right: -12rem !important;
+  }
+  
+  /* Boutons hero taille intermédiaire */
+  .btn-hero {
+    padding: 15px 35px !important; /* Padding intermédiaire */
+    font-size: 1.5rem !important; /* Texte intermédiaire */
+  }
+  
+  .btn-hero.secondary {
+    font-size: 1.4rem !important; /* Texte intermédiaire */
+  }
+  
+  /* Boutons hero taille intermédiaire */
+  .btn-hero {
+    padding: 18px 45px !important; /* Padding intermédiaire */
+    font-size: 1.8rem !important; /* Texte intermédiaire */
+  }
+  
+  .btn-hero.secondary {
+    font-size: 1.6rem !important; /* Texte intermédiaire */
+    padding: 20px 50px !important; /* Garde la taille plus importante pour Explore */
+  }
+  
+  /* Étapes numérotées taille intermédiaire */
+  .hero-right li {
+    font-size: 1.3rem !important; /* Texte intermédiaire */
+    max-width: 320px !important; /* Largeur intermédiaire */
+  }
+  
+  .hero-right li::before {
+    width: 35px !important; /* Cercles intermédiaires */
+    height: 35px !important;
+    font-size: 2rem !important; /* Chiffres intermédiaires */
+  }
+  
+  /* Titre "How BodyMine Works" intermédiaire */
+  .hero-right h4 {
+    font-size: 2.5rem !important; /* Titre intermédiaire */
+  }
+}
 
 @media (max-width: 768px) {
   .hero-right ol li {
@@ -546,8 +731,362 @@ img {
   .hero-right ol li:last-child {
     margin-bottom: 0 !important;
   }
+  
+  /* ===== RESPONSIVITÉ MOBILE - RÉDUCTION DES ÉLÉMENTS AGRANDIS ===== */
+  
+  /* Barre de recherche plus petite */
+  .searchbar {
+    padding: 1.5rem 1.5rem !important; /* Réduit le padding */
+    gap: 1rem !important; /* Réduit l'espacement */
+    max-width: 95% !important; /* Prend plus de largeur écran */
+    margin: 1rem auto 2rem !important; /* Moins de marge */
+    border-radius: 15px !important; /* Coins moins arrondis */
+  }
+  
+  /* Champs de saisie plus petits */
+  .input-group input,
+  .loc input,
+  .select-group select {
+    padding: 0.8rem 1rem 0.8rem 2.5rem !important; /* Padding réduit */
+    font-size: 0.9rem !important; /* Texte plus petit */
+    border-radius: 8px !important; /* Coins moins arrondis */
+  }  /* Largeurs des champs ajustées pour mobile */
+  .input-group, .select-group {
+    min-width: 150px !important; /* Largeur normale pour Sort By */
+    max-width: 100% !important; /* S'adapte à l'écran */
+  }
+  
+  .select-group.half-search-width {
+    min-width: 200px !important; /* 50% adapté pour mobile */
+  }
+  
+  .select-group.activity-under-location {
+    min-width: 180px !important; /* Même que Location sur mobile */
+  }
+  
+  .loc {
+    min-width: 180px !important; /* Largeur réduite pour mobile */
+    max-width: 100% !important; /* S'adapte à l'écran */
+  }
+    /* Bouton de recherche plus petit - MÊME HAUTEUR QUE LES INPUTS */
+  .search-btn {
+    padding: 0.8rem 2.5rem !important; /* Même hauteur que les inputs (0.8rem vertical) */
+    font-size: 1rem !important; /* Texte plus petit */
+    border-radius: 8px !important; /* Coins moins arrondis */
+    min-width: 120px !important; /* Largeur minimale */
+  }
+  
+  /* Icônes repositionnées */
+  .input-group .icon,
+  .select-group .icon,
+  .loc .icon {
+    left: 12px !important; /* Ajusté pour le nouveau padding */
+    font-size: 1rem !important; /* Icônes plus petites */
+  }
+  
+  /* Sections avec moins de padding */
+  .section-speciality,
+  .section-doctors,
+  .section-clinics,
+  .section-articles {
+    padding-bottom: 2rem !important; /* Zones réduites sous les carrousels */
+  }
+  
+  /* Titres des sections plus petits */
+  .sections .section h2 {
+    font-size: 1.5rem !important; /* Titre plus petit */
+  }
+  
+  /* Textes hero plus petits - ajustements pour les éléments agrandis */
+  .hero-left h1 {
+    font-size: 2.2rem !important; /* Titre principal plus petit */
+    margin-top: 0rem !important; /* Ajustement mobile */
+    width: calc(100% + 5rem) !important; /* Largeur réduite en mobile */
+    margin-right: -5rem !important;
+  }
+  
+  .hero-left p {
+    font-size: 1.2rem !important; /* Paragraphe plus petit */
+    margin-top: 1rem !important; /* Marge réduite */
+    width: calc(100% + 3rem) !important; /* Largeur réduite en mobile */
+    margin-right: -3rem !important;
+  }
+    /* Boutons hero plus petits mais proportionnés au nouveau design */
+  .btn-hero {
+    padding: 16px 35px !important; /* Padding réduit mais garde les proportions */
+    font-size: 1.6rem !important; /* Texte plus petit mais proportionnel */
+  }
+  
+  .btn-hero.secondary {
+    font-size: 1.4rem !important; /* Texte plus petit mais proportionnel */
+    padding: 18px 40px !important; /* Garde la taille plus importante pour Explore */
+  }
+  
+  .hero-buttons {
+    margin-top: 3rem !important; /* Marge réduite */
+    transform: translateX(15rem) translateY(3rem) !important; /* Décalage réduit */
+  }
+  
+  /* Étapes numérotées plus compactes */
+  .hero-right li {
+    font-size: 1rem !important; /* Texte plus petit */
+    margin-bottom: 10px !important; /* Espacement réduit */
+    max-width: 280px !important; /* Largeur réduite */
+    padding-left: 50px !important; /* Espacement réduit pour les cercles */
+  }
+  
+  .hero-right li::before {
+    width: 30px !important; /* Cercles plus petits */
+    height: 30px !important;
+    font-size: 1.8rem !important; /* Chiffres plus petits */
+  }
+  
+  /* Titre "How BodyMine Works" plus petit */
+  .hero-right h4 {
+    font-size: 2rem !important; /* Titre plus petit */
+    width: calc(100% + 8rem) !important; /* Largeur réduite */
+    margin-left: -10rem !important; /* Décalage réduit */
+  }
+  
+  .hero-right ol {
+    max-width: calc(100% + 8rem) !important; /* Largeur réduite */
+    margin-left: -8rem !important; /* Décalage réduit */
+  }
+  
+  /* Bouton Read More plus petit */
+  .home-wrapper .hero-right .read-more {
+    padding: 12px 30px !important; /* Padding réduit */
+    font-size: 1.1rem !important; /* Texte plus petit */
+    margin-left: -5rem !important; /* Décalage réduit */
+  }
+    .btn-hero.secondary.read-more-btn {
+    font-size: 1.2rem !important; /* Texte adapté pour tablette */
+    padding: 15px 35px !important; /* Padding adapté */
+    margin-left: auto !important; /* Toujours aligné à droite */
+    margin-right: 0 !important;
+  }
 }
 
+/* ===== RESPONSIVITÉ TRÈS PETITS ÉCRANS - OPTIMISATION FINALE ===== */
+@media (max-width: 480px) {
+  /* Barre de recherche très compacte */
+  .searchbar {
+    padding: 0.8rem 0.8rem !important; /* Padding minimal */
+    gap: 0.6rem !important; /* Espacement ultra minimal */
+  }
+  
+  /* Champs ultra compacts */
+  .input-group input,
+  .loc input,
+  .select-group select {
+    padding: 0.6rem 0.7rem 0.6rem 2rem !important; /* Padding ultra réduit */
+    font-size: 0.8rem !important; /* Texte ultra petit */
+  }
+    /* Largeurs ultra réduites */
+  .input-group, .select-group {
+    min-width: 120px !important; /* Largeur normale pour Sort By */
+  }
+  
+  .select-group.half-search-width {
+    min-width: 140px !important; /* 50% adapté pour très petit mobile */
+  }
+  
+  .select-group.activity-under-location {
+    min-width: 150px !important; /* Même que Location sur très petit mobile */
+  }
+  
+  .loc {
+    min-width: 150px !important; /* Largeur ultra minimale agrandie */
+  }
+    /* Bouton de recherche ultra compact - MÊME HAUTEUR QUE LES INPUTS */
+  .search-btn {
+    padding: 0.6rem 1.5rem !important; /* Même hauteur que les inputs (0.6rem vertical) */
+    font-size: 0.8rem !important; /* Texte ultra petit */
+    min-width: 80px !important; /* Largeur ultra minimale */
+  }
+  
+  /* Icônes ultra petites */
+  .input-group .icon,
+  .select-group .icon,
+  .loc .icon {
+    left: 8px !important; /* Position ultra ajustée */
+    font-size: 0.8rem !important; /* Icônes ultra petites */
+  }
+  
+  /* Textes hero pour très petits écrans */
+  .hero-left h1 {
+    font-size: 1.5rem !important; /* Titre ultra petit */
+    width: calc(100% + 1rem) !important; /* Largeur ultra réduite */
+    margin-right: -1rem !important;
+  }
+  
+  .hero-left p {
+    font-size: 0.9rem !important; /* Paragraphe ultra petit */
+    width: 100% !important; /* Largeur normale */
+    margin-right: 0 !important;
+  }
+    /* Boutons hero ultra compacts mais lisibles */
+  .btn-hero {
+    padding: 10px 20px !important; /* Padding ultra réduit mais proportionnel */
+    font-size: 1rem !important; /* Texte ultra petit mais lisible */
+  }
+  
+  .btn-hero.secondary {
+    padding: 11px 22px !important; /* Garde une taille légèrement plus importante */
+    font-size: 1rem !important; /* Même taille pour cohérence sur ultra petit */
+  }
+  
+  .hero-buttons {
+    margin-top: 2rem !important; /* Marge très réduite */
+    transform: translateX(8rem) translateY(2rem) !important; /* Décalage très réduit */
+  }
+  
+  /* Étapes numérotées très compactes */
+  .hero-right li {
+    font-size: 0.9rem !important; /* Texte très petit */
+    margin-bottom: 8px !important; /* Espacement très réduit */
+    max-width: 250px !important; /* Largeur très réduite */
+    padding-left: 45px !important; /* Espacement très réduit pour les cercles */
+  }
+  
+  .hero-right li::before {
+    width: 25px !important; /* Cercles très petits */
+    height: 25px !important;
+    font-size: 1.5rem !important; /* Chiffres plus petits */
+  }
+  
+  /* Titre "How BodyMine Works" très petit */
+  .hero-right h4 {
+    font-size: 1.6rem !important; /* Titre très petit */
+    width: calc(100% + 5rem) !important; /* Largeur très réduite */
+    margin-left: -7rem !important; /* Décalage très réduit */
+  }
+  
+  .hero-right ol {
+    max-width: calc(100% + 5rem) !important; /* Largeur très réduite */
+    margin-left: -5rem !important; /* Décalage très réduit */
+  }
+  
+  /* Boutons Read More très compacts */
+  .home-wrapper .hero-right .read-more {
+    padding: 10px 25px !important; /* Padding très réduit */
+    font-size: 0.95rem !important; /* Texte plus petit */
+    margin-left: -3rem !important; /* Décalage très réduit */
+  }
+    .btn-hero.secondary.read-more-btn {
+    font-size: 1rem !important; /* Texte adapté pour mobile */
+    padding: 12px 25px !important; /* Padding adapté */
+    margin-left: auto !important; /* Toujours aligné à droite */
+    margin-right: 0 !important;
+  }
+  
+  /* Sections très compactes */
+  .section-speciality,
+  .section-doctors,
+  .section-clinics,
+  .section-articles {
+    padding-bottom: 1.5rem !important; /* Zones très réduites */
+  }
+  
+  /* Titres des sections très petits */
+  .sections .section h2 {
+    font-size: 1.3rem !important; /* Titre très petit */
+  }
+  
+  /* Ajustement du sort-by pour très petits écrans */
+  .sort-group {
+    gap: 0.5rem !important; /* Espacement réduit */
+  }
+  
+  .sort-group select {
+    min-width: 140px !important; /* Largeur réduite */
+    padding: 0.6rem 0.8rem 0.6rem 0.4rem !important; /* Padding réduit */
+    font-size: 0.8rem !important; /* Texte plus petit */
+  }
+  
+  .sort-group label {
+    font-size: 0.85rem !important; /* Label plus petit */
+  }
+}
+
+/* ===== RESPONSIVITÉ ULTRA PETITS ÉCRANS - DERNIER RECOURS ===== */
+@media (max-width: 360px) {
+  /* Barre de recherche ultra compacte */
+  .searchbar {
+    padding: 0.8rem 0.8rem !important; /* Padding ultra minimal */
+    gap: 0.6rem !important; /* Espacement ultra minimal */
+  }
+  
+  /* Champs ultra compacts */
+  .input-group input,
+  .loc input,
+  .select-group select {
+    padding: 0.6rem 0.7rem 0.6rem 2rem !important; /* Padding ultra réduit */
+    font-size: 0.8rem !important; /* Texte ultra petit */
+  }
+    /* Largeurs ultra réduites */
+  .input-group, .select-group, .loc {
+    min-width: 150px !important; /* Largeur ultra minimale agrandie */
+  }
+    /* Bouton de recherche ultra compact - MÊME HAUTEUR QUE LES INPUTS */
+  .search-btn {
+    padding: 0.6rem 1.5rem !important; /* Même hauteur que les inputs (0.6rem vertical) */
+    font-size: 0.8rem !important; /* Texte ultra petit */
+    min-width: 80px !important; /* Largeur ultra minimale */
+  }
+  
+  /* Icônes ultra petites */
+  .input-group .icon,
+  .select-group .icon,
+  .loc .icon {
+    left: 8px !important; /* Position ultra ajustée */
+    font-size: 0.8rem !important; /* Icônes ultra petites */
+  }
+  
+  /* Textes hero ultra compacts */
+  .hero-left h1 {
+    font-size: 1.5rem !important; /* Titre ultra petit */
+    width: calc(100% + 1rem) !important; /* Largeur ultra réduite */
+    margin-right: -1rem !important;
+  }
+  
+  .hero-left p {
+    font-size: 0.9rem !important; /* Paragraphe ultra petit */
+    width: 100% !important; /* Largeur normale */
+    margin-right: 0 !important;
+  }
+    /* Boutons hero ultra compacts mais lisibles */
+  .btn-hero {
+    padding: 10px 20px !important; /* Padding ultra réduit mais lisible */
+    font-size: 1rem !important; /* Texte ultra petit mais lisible */
+  }
+  
+  .btn-hero.secondary {
+    padding: 11px 22px !important; /* Garde une taille légèrement plus importante */
+    font-size: 1rem !important; /* Même taille pour cohérence sur ultra petit */
+  }
+  
+  .hero-buttons {
+    transform: translateX(5rem) translateY(1rem) !important; /* Décalage ultra réduit */
+  }
+  
+  /* Étapes ultra compactes */
+  .hero-right li {
+    font-size: 0.8rem !important; /* Texte ultra petit */
+    padding-left: 40px !important; /* Espacement ultra réduit */
+  }
+  
+  .hero-right li::before {
+    width: 22px !important; /* Cercles ultra petits */
+    height: 22px !important;
+    font-size: 1.3rem !important; /* Chiffres ultra petits */
+  }
+  
+  /* Titre ultra compact */
+  .hero-right h4 {
+    font-size: 1.4rem !important; /* Titre ultra petit */
+  }
+}
 /* ---------------------------------------
    CAROUSEL (3 images fixes)
 --------------------------------------- */
@@ -646,29 +1185,39 @@ img {
 }
 
 /* -----------------------------------------------------------------
-   Empilement des sections (effet sans espace blanc)
+   Empilement des sections - SUPPRESSION ESPACES BLANCS
 ------------------------------------------------------------------ */
 .sections .section:first-child {
   padding-top: calc(3rem + 30px);
 }
 .sections .section + .section {
-  margin-top: 30px;
+  margin-top: 0; /* Supprime l'espace blanc entre les sections */
   padding-top: calc(3rem + 30px);
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
 }
 
 /* -----------------------------------------------------------------
-   Couleurs individuelles des sections
+   Couleurs individuelles des sections - ZONES AGRANDIES
 ------------------------------------------------------------------ */
 .section-speciality { 
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   background: #eefaff;
+  padding-bottom: 4rem; /* Zone agrandie sous le carrousel */
 }
-.section-doctors { background: #CFF5F5; }
-.section-clinics { background: #eefaff; }
-.section-articles { background: #CFF5F5; }
+.section-doctors { 
+  background: #CFF5F5;
+  padding-bottom: 4rem; /* Zone agrandie sous le carrousel */
+}
+.section-clinics { 
+  background: #eefaff;
+  padding-bottom: 4rem; /* Zone agrandie sous le carrousel */
+}
+.section-articles { 
+  background: #CFF5F5;
+  padding-bottom: 4rem; /* Zone agrandie sous le carrousel */
+}
 
 
 
@@ -956,7 +1505,7 @@ img {
 }
 
 /* ───────────── 2. Piste défilante ───────────── */
-/* Remplacé par Tailwind: flex gap-5 overflow-x-auto snap-x snap-mandatory pb-2 scroll-smooth [&::-webkit-scrollbar]:hidden */
+/* Remplacé par Tailwind: flex gap-5 overflow-x-auto snap-x snap-mandatory pb-2 scroll-smooth */
 
 /* ───────────── 3. Carte docteur ───────────── */
 /* Remplacé par Tailwind: snap-start flex-none w-[220px] bg-white rounded-xl shadow-md overflow-hidden relative transition-transform duration-250 hover:-translate-y-[6px] */
@@ -1055,23 +1604,23 @@ speciality-arrow.right: right-3
         gap: 0rem 0.6rem;
         align-items: start;
   }
-
   /* ---------- Titre ---------- */
   .hero-tel-title{
     margin-top: 25px;
     grid-area: title;
-    font-size: 1.8rem;
+    font-size: 2.2rem; /* Plus grand pour correspondre */
     line-height: 1.18;
     font-weight: 700;
   }
   .hero-tel-title span{color:var(--primary,#19c7c7);}
-
   /* ---------- Paragraphe ---------- */
   .hero-tel-text{
     font-weight: 550;
     grid-area: text;
-    font-size: 1.05rem;
-    margin-top: 30px;  
+    font-size: 1.25rem; /* Plus grand */
+    margin-top: 30px;
+    padding-right: 0.5rem; /* Espacement minimal avec l'image */
+    line-height: 1.4;
   }
 
   /* ---------- Image docteur ---------- */
@@ -1107,14 +1656,13 @@ speciality-arrow.right: right-3
     display:flex;
     gap:1rem;
     margin-top:0rem;
-  }
-  .hero-tel-buttons .btn-hero{
+  }  .hero-tel-buttons .btn-hero{
     flex:1;
-    padding:.9rem 0;
-    font-size:1.05rem;
+    padding:1.1rem 0; /* Un peu plus grand */
+    font-size:1.2rem; /* Plus grand */
     border-radius:200px;
     justify-content: center;
-
+    font-weight: 600;
   }
 
   /* ---------- Bloc "How BodyMine Works" ---------- */

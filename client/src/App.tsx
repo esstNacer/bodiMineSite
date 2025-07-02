@@ -18,6 +18,8 @@ import SearchPage from './pages/SearchPage';
 import ChatPage from './pages/ChatPage';
 import DoctorProfilePage from './pages/DoctorProfilePage';
 import MyBodyProjectPage from './pages/MyBodyProjectPage';
+import ChangePasswordPage from './pages/ChangePasswordPage';
+import NewsArticlesPage from './pages/NewsArticlesPage';
 import ProfessionalLoginPage from './PagesPro/ProfessionalLoginPage';
 import ProfessionalDashboard from './PagesPro/ProfessionalDashboard';
 import ProfessionalSignup from './PagesPro/ProfessionalSignup';
@@ -28,7 +30,7 @@ import ChoosePlan from './PagesPro/ChoosePlan/ChoosePlan';
 import PurchaseServicesPage from './PagesPro/PurchaseServicesPage';
 import NotificationsPage from './PagesPro/NotificationsPage';
 import DoctorListPage from './PagesPro/DoctorListPage';
-import ChangePasswordPage from './PagesPro/ChangePasswordPage';
+import ChangePasswordPagePro from './PagesPro/ChangePasswordPage';
 import ProfessionalCGU from './PagesPro/ProfessionalCGU';
 import ProfessionalDataPrivicy from './PagesPro/ProfessionalDataPrivicy';
 import Faq from './pages/info/Faq';
@@ -62,21 +64,17 @@ export default function App() {
       <Route path="/pro/dataPrivicy" element={<ProfessionalDataPrivicy />} />
       <Route path="/CGU" element={<CGUPage />} />
       <Route path="/pro/CGU" element={<ProfessionalCGU />} />
-      <Route path="/search" element={<SearchPage />} />
-      <Route path="/chat" element={<ChatPage />} />
-      <Route path="/doctor/:id" element={<DoctorProfilePage />} />
-      <Route path="/myBodyProject" element={<MyBodyProjectPage />} />
-      <Route path="/pro/edit" element={<Editprofile />} />      
+      <Route path="/search" element={<SearchPage />} />      <Route path="/chat" element={<ChatPage />} />
+      <Route path="/doctor/:id" element={<DoctorProfilePage />} />      <Route path="/myBodyProject" element={<MyBodyProjectPage />} />      <Route path="/changePassword" element={<ChangePasswordPage />} />
+      <Route path="/news" element={<NewsArticlesPage />} />
+      <Route path="/pro/edit" element={<Editprofile />} />
       <Route path="/pro/plan" element={<ChoosePlan />} />      
       <Route path="/pro/purchase-services" element={<PurchaseServicesPage />} />      
       <Route path="/pro/notifications" element={<NotificationsPage />} />        
       <Route path="/pro/doctor-list" element={<DoctorListPage />} />
-      <Route path="/pro/password" element={<ChangePasswordPage />} />
+      <Route path="/pro/password" element={<ChangePasswordPagePro />} />
       <Route path="/menu" element={<MenuPageMobile />} />
-
-
-
-
+      <Route path="/news-articles" element={<NewsArticlesPage />} />
 
       <Route path="/admin/blog" element={<AddBlogPage />} />
 <Route path="/admin/banners" element={<BannerPage/>} />

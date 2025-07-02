@@ -106,7 +106,7 @@ export const Patients = {
     );
     return result;
   },
- updatePhoto: async (patient_id, photo_url) => {
+  updatePhoto: async (patient_id, photo_url) => {
   console.log(patient_id);
   await pool.query(
     `UPDATE patients
@@ -114,7 +114,6 @@ export const Patients = {
      WHERE patient_id = ?`,
     [photo_url, patient_id]
   );
-
   return { patient_id, photo_url };
 },
   
