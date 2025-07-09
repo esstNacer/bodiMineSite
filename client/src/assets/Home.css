@@ -240,7 +240,7 @@ img {
 .hero-right {
   flex: 0 0 320px; /* Taille fixe plus petite */
   width: 320px; /* Plus compact */
-  padding-left: 0.5rem;
+  padding-left: 6rem;
   /* Pas de margin-left négatif - on garde l'image en place */
 }
 
@@ -271,7 +271,7 @@ img {
   font-size: 1.6rem; /* Texte agrandi */
   line-height: 1.3; /* Ligne plus aérée */
   font-weight: 500;
-  max-width: 380px; /* Zone élargie pour le texte plus grand */
+  max-width: 390px; /* Zone élargie pour le texte plus grand */
 }
 
 .hero-right li::before {
@@ -295,7 +295,7 @@ img {
 
 /* === BOUTON READ MORE AVEC FOND BLANC ET TEXTE VERT === */
 .btn-hero.secondary.read-more-btn {
-  background: white !important; /* Fond blanc */
+  background: transparent !important; /* Fond blanc */
   color: #04C2C2 !important; /* Texte vert/turquoise */
   border: 2px solid #04C2C2 !important; /* Bordure verte */
   box-shadow: 0 4px 15px rgba(4, 194, 194, 0.2) !important; /* Ombre subtile */
@@ -303,7 +303,7 @@ img {
   /* === TAILLE DU TEXTE AGRANDIE === */
   font-size: 1.4rem !important; /* Taille agrandie du texte */
   font-weight: 700 !important; /* Gras */
-  padding: 18px 40px !important; /* Padding agrandi */
+  padding: 23px 45px !important; /* Padding agrandi */
   
   /* === ALIGNEMENT À DROITE DE LA PAGE === */
   position: relative !important;
@@ -374,16 +374,6 @@ img {
   width: 450px; /* Ajusté pour le cercle */
   height: 450px; /* Ajusté pour le cercle */
   transform: translateY(4.2rem); /* Descend seulement l'image et le halo */
-}
-
-.doctor-wrapper::before {
-  content: "";
-  position: absolute;
-  width: 500px; /* Réduit un peu (560 -> 500) */
-  height: 500px; /* Réduit un peu (560 -> 500) */
-  background: linear-gradient(90deg, #7ddbdc 0%, #b8e6e7 50%, #e0f4f5 100%); /* Dégradé horizontal avec vert très clair */
-  border-radius: 55% 50% 45% 65% / 50% 70% 30% 40%; /* Côté droit supérieur plus étalé */
-  z-index: 1;
 }
 
 
@@ -509,11 +499,11 @@ img {
   }
     /* champs texte - AGRANDIS ENCORE PLUS */
   .input-group input {
-    width: 100%;
-    padding: 1.5rem 2rem 1.5rem 4rem !important;   /* Padding encore plus grand */
+        width: 100%;
+    padding: 1.2rem 2rem 1.2rem 4rem !important;
     border: 1px solid #ccdede;
-    border-radius: 15px !important; /* Coins encore plus arrondis */
-    font-size: 1.3rem !important; /* Texte encore plus grand */
+    border-radius: 8px !important;
+    font-size: 1.1rem !important;
   }
   
   /* Location input - AGRANDI */
@@ -521,7 +511,7 @@ img {
     width: 100%;
     padding: 1.2rem 1.5rem 1.2rem 3.5rem !important;   /* Padding plus grand */
     border: 1px solid #ccdede;
-    border-radius: 12px !important;
+    border-radius: 8px !important;
     font-size: 1.1rem !important;
   }
   
@@ -530,7 +520,7 @@ img {
     width: 100%;
     padding: 1.2rem 1.5rem 1.2rem 3.5rem !important;
     border: 1px solid #ccdede;
-    border-radius: 12px !important;
+    border-radius: 8px !important;
     font-size: 1.1rem !important;
     background: #fff;
     color: #3a3a3a;
@@ -539,13 +529,15 @@ img {
   .loc {
     flex: 2; /* Prend 2 fois plus d'espace que les autres éléments */
     position: relative;
-    min-width: 400px !important; /* Largeur minimale plus grande */  }/* Bouton de recherche - MÊME HAUTEUR QUE LA BARRE DE RECHERCHE */  .search-btn {
+    min-width: 400px !important; /* Largeur minimale plus grande */  
+  }/* Bouton de recherche - MÊME HAUTEUR QUE LA BARRE DE RECHERCHE */  
+    .search-btn {
     background: linear-gradient(315deg, #04C2C2 0%, #19c7c7 50%, #7ddbdc 100%) !important; /* Même dégradé qu'Explore mais direction inversée */
     border: none !important;
     color: #fff !important;
-    padding: 1.5rem 6rem !important; /* Même hauteur que input-group (1.5rem vertical) */
-    border-radius: 15px !important; /* Coins plus arrondis */
-    font-size: 1.4rem !important; /* Texte encore plus grand */
+    padding: 1.2rem 6rem !important; /* Même hauteur que input-group (1.5rem vertical) */
+    border-radius: 6px !important; /* Coins plus arrondis */
+    font-size: 1.3rem !important; /* Texte encore plus grand */
     font-weight: 700 !important; /* Plus épais */
     cursor: pointer !important;
     transition: filter .2s ease !important;

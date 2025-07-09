@@ -19,84 +19,115 @@ export default function Footer({ className = "" }: FooterProps) {
     if (user) navigate("/faq");
     else      navigate("/faqInfo");
   };
+    const linkClass =
+    "text-white/90 hover:text-white transition-colors duration-150";
   
   return (
-    <footer className={`bg-[#96DCD7] py-8 px-4 md:px-12 ${className}`}>
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:justify-between gap-8">
-          {/* Logo + Social + Pitch */}
-          <div className="md:max-w-xs">
-            <div className="flex flex-col items-center md:items-start gap-4">
-              <div className="flex items-center gap-4">
-                <img src={bodyMine} alt="BodyMine" className="h-12" />
-                
-                <div className="flex gap-3">
-                  <Link to="https://facebook.com" target="_blank" aria-label="Facebook" className="flex items-center justify-center w-8 h-8 bg-white rounded-full text-[#7ddbdc] hover:bg-opacity-30 hover:text-white transition duration-200">
-                    <FaFacebookF />
+    <footer className={`bg-[#96DCD7] py-10 md:py-12 ${className}`}>
+      <div className="max-w-7xl mx-auto px-4">
+        {/* --- Grille principale : logo/slogan + 3 colonnes de liens --- */}
+        <div className="flex flex-col md:flex-row md:justify-between gap-12">
+          {/* ===== Colonne : Logo  +  Réseaux  +  Pitch ===== */}
+          <div className="md:max-w-sm flex flex-col items-center md:items-start gap-6">
+            {/* Logo + icônes réseaux */}
+            <div className="flex items-center gap-6">
+              <img
+                src={bodyMine}
+                alt="BodyMine"
+                className="h-16 w-auto select-none"
+              />
+
+              <div className="flex gap-3">
+                {[
+                  {
+                    href: "https://facebook.com",
+                    label: "Facebook",
+                    Icon: FaFacebookF
+                  },
+                  {
+                    href: "https://www.instagram.com/bodymine.insta/",
+                    label: "Instagram",
+                    Icon: FaInstagram
+                  },
+                  { href: "https://tiktok.com", label: "TikTok", Icon: FaTiktok }
+                ].map(({ href, label, Icon }) => (
+                  <Link
+                    key={label}
+                    to={href}
+                    target="_blank"
+                    aria-label={label}
+                    className="flex items-center justify-center h-8 w-8 rounded-full bg-white text-[#7ddbdc] hover:bg-white/30 hover:text-white transition-colors duration-150"
+                  >
+                    <Icon className="text-base" />
                   </Link>
-                  <Link to="https://www.instagram.com/bodymine.insta/" target="_blank" aria-label="Instagram" className="flex items-center justify-center w-8 h-8 bg-white rounded-full text-[#7ddbdc] hover:bg-opacity-30 hover:text-white transition duration-200">
-                    <FaInstagram />
-                  </Link>
-                  <Link to="https://tiktok.com" target="_blank" aria-label="TikTok" className="flex items-center justify-center w-8 h-8 bg-white rounded-full text-[#7ddbdc] hover:bg-opacity-30 hover:text-white transition duration-200">
-                    <FaTiktok />
-                  </Link>
-                </div>
+                ))}
               </div>
-              
-              <p className="text-center md:text-left text-gray-800 md:mt-2">
-                BodyMine is the leading directory to help you find the perfect
-                surgeon or clinic, anywhere in the world.
-              </p>
             </div>
+
+            {/* Pitch */}
+            <p className="text-center md:text-left text-white leading-relaxed">
+              Bodymine is the leading directory to help you find&nbsp;the
+              perfect surgeon or clinic, anywhere in the world.
+            </p>
           </div>
 
-          {/* Navigation Links */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-            {/* Home */}
-            <div>
-              <h4 className="font-bold text-lg mb-3 text-gray-800">Home</h4>
+          {/* ===== Grille de navigation (3 × col) ===== */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-12 gap-y-8 py-2">
+            {/* --- Home --- */}
+            <nav>
+              <h4 className="text-lg font-semibold mb-3 text-white">Home</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/home" className="text-gray-800 hover:underline">Menu</Link>
+                  <Link to="/home" className={linkClass}>
+                    Menu
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/chat" onClick={() => handleNav('/chat')} className="text-gray-800 hover:underline">
+                  <Link to="/chat" className={linkClass}>
                     Chat
                   </Link>
                 </li>
                 <li>
-                  <Link to="/search" className="text-gray-800 hover:underline">Search</Link>
+                  <Link to="/search" className={linkClass}>
+                    Search
+                  </Link>
                 </li>
               </ul>
-            </div>
+            </nav>
 
-            {/* Info */}
-            <div>
-              <h4 className="font-bold text-lg mb-3 text-gray-800">Info</h4>
+            {/* --- Info --- */}
+            <nav>
+              <h4 className="text-lg font-semibold mb-3 text-white">Info</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/terms" className="text-gray-800 hover:underline">Terms &amp; Conditions</Link>
+                  <Link to="/terms" className={linkClass}>
+                    Terms &amp; Conditions
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/privacy" className="text-gray-800 hover:underline">Privacy Policy</Link>
+                  <Link to="/privacy" className={linkClass}>
+                    Privacy Policy
+                  </Link>
                 </li>
                 <li>
-                  <Link to="/faq" onClick={handleFaq} className="text-gray-800 hover:underline">
+                  <Link to="/faq" className={linkClass}>
                     FAQs
                   </Link>
                 </li>
               </ul>
-            </div>
+            </nav>
 
-            {/* Contact */}
-            <div>
-              <h4 className="font-bold text-lg mb-3 text-gray-800">Contact Us</h4>
+            {/* --- Contact --- */}
+            <nav>
+              <h4 className="text-lg font-semibold mb-3 text-white">Contact&nbsp;Us</h4>
               <ul className="space-y-2">
                 <li>
-                  <a href="mailto:info@bodymine.com" className="text-gray-800 hover:underline">info@bodymine.com</a>
+                  <a href="mailto:info@bodymine.com" className={linkClass}>
+                    info@Bodymine.com
+                  </a>
                 </li>
               </ul>
-            </div>
+            </nav>
           </div>
         </div>
       </div>

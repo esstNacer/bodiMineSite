@@ -39,6 +39,7 @@ import img7 from "../images/7.png";
 import img8 from "../images/8.png";
 import img9 from "../images/9.png";
 import img10 from "../images/10.png";
+import vector from "../images/Vector1.png"
 import { FaHeart, FaHeartbeat, FaRegHeart, FaUserMd } from "react-icons/fa";
 import Footer from "../components/Footer";
 import { IoFilterSharp } from "react-icons/io5";
@@ -378,7 +379,7 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
       <Header className="navbar"/>
   
       {/* Hero Section */}
-      <section className="hero w-full flex flex-row items-center justify-between gap-12 px-16 py-12 bg-[#eefaff] relative overflow-hidden z-10 min-h-[340px]" style={{paddingTop:0}}>
+      <section className="hero w-full flex flex-row items-center justify-between gap-12 px-16 pt-4 py-10 bg-[#eefaff] relative overflow-hidden z-10 min-h-[340px]" style={{paddingTop:0}}>
         {/* Left: Title and CTA */}        <div className="hero-left flex flex-col justify-center min-w-[340px] max-w-[480px] z-10">
           <h1 className="text-[2.4rem] leading-tight font-semibold text-gray-900 mb-4" style={{lineHeight:'1.2'}}>
             Find the Right Care,<br />
@@ -391,8 +392,11 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
         </div>
         {/* Center: Doctor image with organic halo */}
         <div className="doctor-wrapper relative flex items-center justify-center flex-1 min-w-[320px] max-w-[420px] h-full">
-          <span className="absolute w-[420px] h-[420px] bg-[radial-gradient(circle_at_center,_#92ded9_0%,_#eefaff_100%)] rounded-[62%_38%_48%_70%_/_58%_62%_35%_42%] z-0"></span>
-          <img src={doctorImage} alt="Doctor" className="doctor-img relative z-10 max-w-[360px] w-full h-auto" />
+<span
+  className="absolute w-[540px] h-[540px] bg-no-repeat bg-cover z-0"
+ style={{ backgroundImage: `url(${vector})` }}
+
+></span>          <img src={doctorImage} alt="Doctor" className="doctor-img relative z-10 max-w-[900px] w-full h-auto" />
         </div>
         {/* Right: How it works */}
         <div className="hero-right flex flex-col justify-center min-w-[320px] max-w-[400px] z-10">
@@ -522,7 +526,7 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
           <FiChevronRight className="text-xl" />
         </button>
       </section>      {/* Sections */}
-      <section className="sections pb-24">
+      <section className="sections">
         {/* Specialities */}
         <div className={`section section-speciality ${openedSections.includes("speciality") ? 'open' : ''}`}>
           <h2 onClick={() => handleToggleSection("speciality")} className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 flex items-center">

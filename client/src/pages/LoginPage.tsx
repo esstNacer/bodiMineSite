@@ -15,6 +15,7 @@ import bodyMine   from '../images/LogoBODYMINE.png';
 import bodyMineMobile from '../images/LogoMobile.png'
 import { FiHome, FiMessageCircle, FiSearch } from 'react-icons/fi';
 import { useUser } from '../components/UserContext';
+import Header from '@/components/Header';
 import Footer from '../components/Footer';
 import useBreakpoint from '../hooks/useBreakpoint';
 import BottomNav from '../components/BottomNav';
@@ -87,14 +88,12 @@ return (
   <div className='login'>
   <div className="home-wrapper">
     <div className="page">
-      <header className="navbar">
-        {/* Logo centré */}
+      {/*<header className="navbar">
         <div className="logo">
           <Link to={"/"}>
           <img src={bodyMine} alt="BodyMine Cosmetic Surgery" /></Link>
         </div>
 
-        {/* Liens de navigation horizontalement alignés */}
         <nav className="nav-links">
           <button
                       type="button"
@@ -120,7 +119,9 @@ return (
                       <FiSearch /> Search
                     </button>
         </nav>
-      </header>
+      </header>*/}
+            <Header className="navbar"/>
+      
 
       <main className="content">
         <section className="login carousel">
