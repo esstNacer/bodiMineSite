@@ -10,6 +10,7 @@ import Calendar from "react-calendar";
 import * as Toast from "@radix-ui/react-toast";
 import { useNavigate } from "react-router-dom";
 import CalendarWithEvents from "@/components/CalendarWithEvents";
+import Sidebar from "./AdminSidebar";
 
 const pieColors = ["#34d399", "#60a5fa"];
 
@@ -22,6 +23,8 @@ export default function AdminDashboard() {
     const [professionals, setProfessionals] = useState([]);
   const [payments, setPayments] = useState([]);
     const [tickets, setTickets] = useState([]);
+      const [userMenuOpen, setUserMenuOpen] = useState(false);
+
 
       const navigate = useNavigate();
   
@@ -75,21 +78,11 @@ console.log(data)
     <Toast.Provider swipeDirection="right">
       <div className="min-h-screen flex">
         {/* Sidebar */}
-        <aside className="w-64 bg-gray-900 text-white p-6 space-y-6">
-          <h2 className="text-xl font-bold">BodyMine Admin</h2>
-          <nav className="space-y-2">
-            <a href="/admin/dashboard" className="block hover:text-blue-400">Dashboard</a>
-            <a href="/admin/professionals" className="block hover:text-blue-400">Professionals</a>
-            <a href="/admin/services" className="block hover:text-blue-400">Projet Patient</a>
-            <a href="/admin/banners" className="block hover:text-blue-400">bannnieres</a>
-            <a href="/admin/articles" className="block hover:text-blue-400">
-            Articles
-          </a>
-          </nav>
-        </aside>
+
+<Sidebar/>
 
         {/* Main */}
-        <main className="flex-1 bg-gray-50 p-8 overflow-y-auto">
+        <main className="flex-1 bg-gray-50 p-8 overflow-y-auto ml-64 p-6">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold">Tableau de bord</h1>
             <Button variant="outline" onClick={()=>navigate("/home")}>Déconnexion</Button>

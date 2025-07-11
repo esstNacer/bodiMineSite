@@ -39,9 +39,12 @@ import MenuPageMobile from './pages/MenuPage';
 
 import AddBlogPage from './Admin/AddBlogPage';
 import BannerPage from './Admin/BannersPage';
-import ProfessionalPage from './Admin/ProfessionalPage';
+import ProfessionalPage from './Admin/PatientPage';
 import AdminDashboard from './Admin/AdminDashboard';
 import ArticlePage from './Admin/ArticlePage';
+import PaymentPage from './Admin/PaymentPage';
+import PatientsPage from './Admin/PatientPage';
+import ProfessionalsPage from './Admin/ProfessionalPage';
 
 export default function App() {
   return (
@@ -79,7 +82,9 @@ export default function App() {
       <Route path="/admin/blog" element={<AddBlogPage />} />
 <Route path="/admin/banners" element={<BannerPage/>} />
 <Route path="/admin/articles" element={<ArticlePage/>} />
-<Route path="/admin/professionals"     element={<ProfessionalPage />} />
+<Route path="/admin/payments"     element={<PaymentPage />} />
+<Route path="/admin/patients"     element={<PatientsPage />} />
+<Route path="/admin/professionals"     element={<ProfessionalsPage />} />
 <Route path="/admin/dashboard"     element={<AdminDashboard />} />
 
 

@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS bodyMine;
-CREATE DATABASE bodyMine;
-USE bodyMine;
+DROP DATABASE IF EXISTS bodymine;
+CREATE DATABASE bodymine;
+USE bodymine;
 
 -- Table : patients
 CREATE TABLE patients (
@@ -79,6 +79,7 @@ CREATE TABLE articles (
 -- Table : banners
 CREATE TABLE banners (
   banner_id INT PRIMARY KEY AUTO_INCREMENT,
+  banner_url VARCHAR(255) NOT NULL,
   image_url VARCHAR(255) NOT NULL,
   description TEXT
 );

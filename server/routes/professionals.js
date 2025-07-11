@@ -9,6 +9,7 @@ import {
   filterProfessionals,
   loginProfessional,
   filterClinics,
+  getSubscriptions,
   getDoctor        // <── nouveau contrôleur
 } from '../controllers/professionalsController.js';
 
@@ -19,6 +20,7 @@ router.get ('/filter', filterProfessionals);
 router.get ('/clinics', filterClinics);
 router.get ('/doctors', getDoctor);
 router.get ('/',        getAll);
+router.get ('/subscription',        getAll);
 router.get ('/:id',     getById);
 router.post('/',        create);
 router.put ('/:id',     update);

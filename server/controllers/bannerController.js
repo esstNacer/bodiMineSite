@@ -32,6 +32,9 @@ export async function getBannerById(req, res) {
 /**
  * POST /api/banners
  * Corps multipart/form-data : fichier = 'image', description (optionnel)
+/**
+ * POST /api/banners
+ * Crée une nouvelle bannière avec image, description et URL cible
  */
 export async function createBanner(req, res) {
   try {
@@ -39,9 +42,9 @@ export async function createBanner(req, res) {
       return res.status(400).json({ error: 'No image uploaded' });
 
     const image_url = `/uploads/${req.file.filename}`;
-    const { description } = req.body;
+    const { description, banner_url } = req.body;
 
-    const newBanner = await model.create({ image_url, description });
+    const newBanner = await model.create({ image_url, description, banner_url });
     res.status(201).json(newBanner);
   } catch (err) {
     console.error(err);
@@ -51,15 +54,21 @@ export async function createBanner(req, res) {
 
 /**
  * PUT /api/banners/:id
- * Peut accepter un nouveau fichier image ou/et un nouveau texte.
+ * Met à jour une bannière existante. Peut changer l'image, la description, et l'URL cible.
  */
 export async function updateBanner(req, res) {
   try {
     const banner_id = parseInt(req.params.id, 10);
+
     const data = {
-      image_url: req.file ? `/uploads/${req.file.filename}` : undefined,
       description: req.body.description,
+      banner_url: req.body.banner_url,
     };
+
+    // Ajoute l'image uniquement si un nouveau fichier est uploadé
+    if (req.file) {
+      data.image_url = `/uploads/${req.file.filename}`;
+    }
 
     const updated = await model.update(banner_id, data);
     res.json(updated);

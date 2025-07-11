@@ -20,12 +20,12 @@ export async function findById(banner_id) {
 
 /**
  * Crée une nouvelle bannière.
- * @param {{ image_url: string, description?: string }} data
+ * @param {{ image_url: string, description?: string, banner_url?: string }} data
  */
-export async function create({ image_url, description }) {
+export async function create({ image_url, description, banner_url }) {
   const [result] = await db.query(
-    'INSERT INTO banners (image_url, description) VALUES (?, ?)',
-    [image_url, description || null]
+    'INSERT INTO banners (image_url, description, banner_url) VALUES (?, ?, ?)',
+    [image_url, description || null, banner_url || null]
   );
   return findById(result.insertId);
 }
@@ -33,15 +33,16 @@ export async function create({ image_url, description }) {
 /**
  * Met à jour une bannière existante.
  * @param {number} banner_id
- * @param {{ image_url?: string, description?: string }} data
+ * @param {{ image_url?: string, description?: string, banner_url?: string }} data
  */
-export async function update(banner_id, { image_url, description }) {
+export async function update(banner_id, { image_url, description, banner_url }) {
   await db.query(
     `UPDATE banners 
      SET image_url = COALESCE(?, image_url),
-         description = COALESCE(?, description)
+         description = COALESCE(?, description),
+         banner_url = COALESCE(?, banner_url)
      WHERE banner_id = ?`,
-    [image_url, description, banner_id]
+    [image_url, description, banner_url, banner_id]
   );
   return findById(banner_id);
 }

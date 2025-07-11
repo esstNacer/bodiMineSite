@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableHeader,
@@ -18,6 +19,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { FiPlus, FiEdit, FiTrash } from "react-icons/fi";
+import Sidebar from "./AdminSidebar";
 
 /* -------------------------------------------------------------------------- */
 /*                                 Types                                      */
@@ -26,13 +28,15 @@ import { FiPlus, FiEdit, FiTrash } from "react-icons/fi";
 interface Banner {
   banner_id: number;
   image_url: string;
+  banner_url: string;
   description: string;
 }
 
 type FormState = {
   file: File | null;
-  imagePreview: string; // URL.createObjectURL ou URL de la BDD
+  imagePreview: string;
   description: string;
+  banner_url: string;
 };
 
 /* -------------------------------------------------------------------------- */
@@ -40,7 +44,6 @@ type FormState = {
 /* -------------------------------------------------------------------------- */
 
 export default function BannersPage() {
-  /* ---------------------------- Local states ----------------------------- */
   const [banners, setBanners] = useState<Banner[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editBanner, setEditBanner] = useState<Banner | null>(null);
@@ -48,9 +51,9 @@ export default function BannersPage() {
     file: null,
     imagePreview: "",
     description: "",
+    banner_url: "",
   });
 
-  /* ----------------------------- Fetch API ------------------------------- */
   const loadBanners = async () => {
     const res = await fetch("/api/banners");
     if (!res.ok) return console.error("Fail fetch banners");
@@ -63,6 +66,7 @@ export default function BannersPage() {
       const formData = new FormData();
       if (form.file) formData.append("image", form.file);
       formData.append("description", form.description);
+      formData.append("banner_url", form.banner_url);
 
       const url = editBanner
         ? `/api/banners/${editBanner.banner_id}`
@@ -72,11 +76,11 @@ export default function BannersPage() {
       const res = await fetch(url, { method, body: formData });
       if (!res.ok) throw new Error("Erreur HTTP");
 
-      await loadBanners(); // refresh list
+      await loadBanners();
 
-      /* Reset + close */
-      if (form.imagePreview.startsWith("blob:")) URL.revokeObjectURL(form.imagePreview);
-      setForm({ file: null, imagePreview: "", description: "" });
+      if (form.imagePreview.startsWith("blob:"))
+        URL.revokeObjectURL(form.imagePreview);
+      setForm({ file: null, imagePreview: "", description: "", banner_url: "" });
       closeDialog();
     } catch (err) {
       console.error(err);
@@ -91,10 +95,9 @@ export default function BannersPage() {
     else alert("Erreur lors de la suppression");
   };
 
-  /* ---------------------------- UI helpers ------------------------------ */
   const openNewDialog = () => {
     setEditBanner(null);
-    setForm({ file: null, imagePreview: "", description: "" });
+    setForm({ file: null, imagePreview: "", description: "", banner_url: "" });
     setIsDialogOpen(true);
   };
 
@@ -104,6 +107,7 @@ export default function BannersPage() {
       file: null,
       imagePreview: banner.image_url,
       description: banner.description,
+      banner_url: banner.banner_url,
     });
     setIsDialogOpen(true);
   };
@@ -113,39 +117,15 @@ export default function BannersPage() {
     setEditBanner(null);
   };
 
-  /* --------------------------- Lifecycle ------------------------------- */
   useEffect(() => {
     loadBanners();
   }, []);
 
-  /* ---------------------------- Render --------------------------------- */
   return (
     <div className="flex min-h-screen">
-      {/* SIDEBAR */}
-      <aside className="w-64 bg-gray-900 text-white p-6 space-y-6">
-        <h2 className="text-xl font-bold">BodyMine Admin</h2>
-        <nav className="space-y-2">
-          <a href="/admin/dashboard" className="block hover:text-blue-400">
-            Dashboard
-          </a>
-          <a href="/admin/professionals" className="block hover:text-blue-400">
-            Professionals
-          </a>
-          <a href="/admin/services" className="block hover:text-blue-400">
-            Projet Patient
-          </a>
-          <a href="/admin/banners" className="block hover:text-blue-400">
-            Bannières
-          </a>
-            <a href="/admin/articles" className="block hover:text-blue-400">
-            Articles
-          </a>
-        </nav>
-      </aside>
-
-      <main className="flex-1 bg-muted/40 p-8 overflow-y-auto">
+      <Sidebar />
+      <main className="flex-1 bg-muted/40 p-8 overflow-y-auto ml-64">
         <div className="mx-auto max-w-7xl space-y-10">
-          {/* Header */}
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold">Gestion des bannières</h1>
             <Button onClick={openNewDialog} className="gap-2">
@@ -153,12 +133,12 @@ export default function BannersPage() {
             </Button>
           </div>
 
-          {/* Table */}
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead className="w-24">Image</TableHead>
                 <TableHead>Description</TableHead>
+                <TableHead>URL</TableHead>
                 <TableHead className="w-32 text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -173,6 +153,16 @@ export default function BannersPage() {
                     />
                   </TableCell>
                   <TableCell>{banner.description}</TableCell>
+                  <TableCell>
+                    <a
+                      href={banner.banner_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 underline"
+                    >
+                      {banner.banner_url}
+                    </a>
+                  </TableCell>
                   <TableCell className="text-right space-x-2">
                     <Button
                       size="icon"
@@ -194,7 +184,6 @@ export default function BannersPage() {
             </TableBody>
           </Table>
 
-          {/* Dialog create / edit */}
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogContent className="w-full max-w-lg">
               <DialogHeader>
@@ -203,13 +192,13 @@ export default function BannersPage() {
                 </DialogTitle>
                 <DialogDescription>
                   {editBanner
-                    ? "Modifiez l'image et/ou la description."
-                    : "Choisissez une image et renseignez la description."}
+                    ? "Modifiez l'image, l'URL et/ou la description."
+                    : "Choisissez une image, renseignez l'URL et la description."}
                 </DialogDescription>
               </DialogHeader>
 
               <div className="space-y-4">
-                {/* Input Fichier */}
+                {/* Fichier image */}
                 <input
                   type="file"
                   accept="image/*"
@@ -217,7 +206,7 @@ export default function BannersPage() {
                     const file = e.target.files?.[0];
                     if (file) {
                       if (form.imagePreview.startsWith("blob:"))
-                        URL.revokeObjectURL(form.imagePreview); // nettoyage
+                        URL.revokeObjectURL(form.imagePreview);
                       setForm({
                         ...form,
                         file,
@@ -226,6 +215,17 @@ export default function BannersPage() {
                     }
                   }}
                   required={!editBanner}
+                />
+
+                {/* URL */}
+                <Input
+                  type="url"
+                  placeholder="Lien cible (ex: https://exemple.com)"
+                  value={form.banner_url}
+                  onChange={(e) =>
+                    setForm({ ...form, banner_url: e.target.value })
+                  }
+                  required
                 />
 
                 {/* Description */}
@@ -239,7 +239,7 @@ export default function BannersPage() {
                   className="min-h-[6rem]"
                 />
 
-                {/* Preview */}
+                {/* Aperçu image */}
                 {form.imagePreview && (
                   <img
                     src={form.imagePreview}

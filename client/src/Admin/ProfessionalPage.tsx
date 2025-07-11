@@ -1,611 +1,220 @@
-// src/pages/ProfessionalPage.tsx
+// src/pages/ProfessionalsPage.tsx
 import { useEffect, useState } from "react";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-} from "@/components/ui/card";
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@/components/ui/tabs";
-import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { FiEdit3, FiTrash, FiPlus, FiGift } from "react-icons/fi";
-import * as Toast from "@radix-ui/react-toast";
-import { toast } from "sonner"; // ou react-hot-toast / shadcn toast
-
-
-
-//
-// ─── TYPES ──────────────────────────────────────────────────────────────────────
-//
+import { Input } from "@/components/ui/input";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
+import { FiPlus, FiEdit, FiTrash } from "react-icons/fi";
+import Sidebar from "./AdminSidebar";
 
 interface Professional {
   professional_id: number;
-  clinic_id?: number | null;
+  clinic_id?: number;
   full_name: string;
-  clinic_name?: string | null;
-  city?: string | null;
-  country?: string | null;
+  clinic_name?: string;
+  city?: string;
+  country?: string;
   email: string;
   password: string;
-  phone_number?: string | null;
-  specialization?: string | null;
-  practice_tenure?: number | null;
-  practice_start_date?: string | null; // format YYYY-MM-DD
-  type?: string | null;
-  is_premium: boolean;
-   subscription_name?: string | null;
-  subscription_value?: number | null;
-  subscription_end?: string | null;
-  created_at?: Date|null;
-}
-
-interface Clinic {
-  clinic_id: number;
-  name: string;
-  address: string | null;
-  city: string | null;
-  country: string | null;
-  email: string | null;
-}
-
-type SubscriptionType = "basic" | "standard" | "premium";
-
-
-//
-// ─── PAGE COMPONENT ─────────────────────────────────────────────────────────────
-//
-
-export default function ProfessionalPage() {
-  const [pros, setPros] = useState<Professional[]>([]);
-  const [clinics, setClinics] = useState<Clinic[]>([]);
-// ID numérique
-const [selectedPro, setSelectedPro] = useState<number | null>(null);
-  // dialogs
-  const [showProDialog, setShowProDialog] = useState(false);
-  const [showClinicDialog, setShowClinicDialog] = useState(false);
- const [showGiftDialog, setShowGiftDialog] = useState(false);
-  // editable records
-  const [editPro, setEditPro] = useState<Partial<Professional> | null>(null);
-  const [editClinic, setEditClinic] = useState<Partial<Clinic> | null>(null);
-const [subscriptionType, setSubscriptionType] = useState("premium");
- const [endDate, setEndDate] = useState("");
-
-
-
-  //
-  // ─── DATA FETCH ───────────────────────────────────────────────────────────────
-  //
-  useEffect(() => {
-    fetchProfessionals();
-    fetchClinics();
-  }, []);
-
-  useEffect(() => {
-  if (selectedPro) setShowGiftDialog(true);
-}, [selectedPro]);
-
-
-  async function fetchProfessionals() {
-    const res = await fetch("/api/professional");
-    setPros(await res.json());
-  }
-
-  async function fetchClinics() {
-    const res = await fetch("/api/clinics");
-    setClinics(await res.json());
-  }
-
-  //
-  // ─── CRUD PROFESSIONALS ───────────────────────────────────────────────────────
-  //
-  function openNewPro() {
-    setEditPro({
-      professional_id: 0,
-      full_name: "",
-      email: "",
-      specialization: "",
-      is_premium: false,
-    });
-    setShowProDialog(true);
-  }
-
-  function startEditPro(p: Professional) {
-    setEditPro({ ...p });
-    setShowProDialog(true);
-  }
-
-  async function savePro() {
-  if (!editPro) return;
-
-  // on enlève les champs virtuels
-  const {
-    subscription_name,
-    subscription_end,
-    subscription_value,
-    created_at,   
-    ...payload
-  } = editPro;
-
-  const method = payload.professional_id ? "PUT" : "POST";
-  const url =
-    payload.professional_id
-      ? `/api/professional/${payload.professional_id}`
-      : "/api/professional";
-
-  await fetch(url, {
-    method,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-
-  setShowProDialog(false);
-  fetchProfessionals();
+  phone_number?: string;
+  specialization?: string;
+  practice_tenure?: number;
+  practice_start_date?: string;
+  type?: string;
+  is_premium?: boolean;
+  created_at?: string;
+  photo_url?: string; // ✅ Assure-toi que ce champ est là
 }
 
 
-  async function deletePro(id: number) {
-    if (!confirm("Supprimer ce professionnel ?")) return;
-    await fetch(`/api/professional/${id}`, { method: "DELETE" });
-    fetchProfessionals();
-  }
+export default function ProfessionalsPage() {
+  const [professionals, setProfessionals] = useState<Professional[]>([]);
+  const [search, setSearch] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editProfessional, setEditProfessional] = useState<Professional | null>(null);
+  const [form, setForm] = useState<Partial<Professional>>({});
 
+const loadProfessionals = async () => {
+  const res = await fetch("/api/professional");
+  if (!res.ok) return alert("Erreur lors du chargement");
 
-  const offerSubscription = async (professionalId: number, type: string, endDate: string) => {
-  try {
-    const res =await fetch(`/api/admin/offert`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ professional_id: professionalId, subscriptions_name: type, end_date: endDate }),
-    });
-    if (res.ok) {
-  setPros(prev =>
-    prev.map(pro =>
-      pro.professional_id === professionalId
-        ? { ...pro, is_premium: true }      // mutation locale
-        : pro
-    )
+  const data = await res.json();
+
+  // Ajoute les photo_url à chaque professionnel
+  const professionalsWithPhotos = await Promise.all(
+    data.map(async (pro: Professional) => {
+      const photo_url = await fetchProfilePhoto(pro.professional_id);
+      return { ...pro, photo_url };
+    })
   );
 
-  toast.success("Abonnement offert avec succès !");
-}
+  setProfessionals(professionalsWithPhotos);
+};
 
-  } catch (err) {
-    console.error(err);
-    alert("Erreur lors de l’attribution de l’abonnement.");
+  const fetchProfilePhoto = async (professionalId: number): Promise<string | null> => {
+  try {
+    const res = await fetch(`/api/photos/pro/${professionalId}`);
+    if (!res.ok) return null;
+
+    const photos = await res.json();
+    // Prends la première photo ou celle de type 'profile'
+    const profilePhoto = photos.find((p: any) => p.type === 'profile') || photos[0];
+    return profilePhoto?.photo_url || null;
+  } catch (error) {
+    console.error("Erreur chargement photo:", error);
+    return null;
   }
 };
 
 
-  //
-  // ─── CRUD CLINICS ─────────────────────────────────────────────────────────────
-  //
-  function openNewClinic() {
-    setEditClinic({
-      clinic_id: 0,
-      name: "",
-      address: "",
-      city: "",
-      country: "",
-      email: "",
-    });
-    setShowClinicDialog(true);
-  }
+  const saveProfessional = async () => {
+    const method = editProfessional ? "PUT" : "POST";
+    const url = editProfessional ? `/api/professional/${editProfessional.professional_id}` : "/api/professional";
 
-  function startEditClinic(c: Clinic) {
-    setEditClinic({ ...c });
-    setShowClinicDialog(true);
-  }
+    const payload = { ...form };
+    delete payload.created_at;
 
-  async function saveClinic() {
-    if (!editClinic) return;
-    const method = editClinic.clinic_id ? "PUT" : "POST";
-    const url =
-      editClinic.clinic_id !== 0
-        ? `/api/clinics/${editClinic.clinic_id}`
-        : "/api/clinics";
-    await fetch(url, {
+    const res = await fetch(url, {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editClinic),
+      body: JSON.stringify(payload),
     });
-    setShowClinicDialog(false);
-    fetchClinics();
-  }
 
-  async function deleteClinic(id: number) {
-    if (!confirm("Supprimer cette clinique ?")) return;
-    await fetch(`/api/clinics/${id}`, { method: "DELETE" });
-    fetchClinics();
-  }
-
-  //
-  // ─── RENDER ───────────────────────────────────────────────────────────────────
-  //
- return (
-  <div className="flex min-h-screen">
-    {/* ─────────────── SIDEBAR ─────────────── */}
-       <aside className="w-64 bg-gray-900 text-white p-6 space-y-6">
-        <h2 className="text-xl font-bold">BodyMine Admin</h2>
-        <nav className="space-y-2">
-          <a href="/admin/dashboard" className="block hover:text-blue-400">Dashboard</a>
-          <a href="/admin/professionals" className="block hover:text-blue-400">Professionals</a>
-          <a href="/admin/services" className="block hover:text-blue-400">Projet Patient</a>
-          <a href="/admin/banners" className="block hover:text-blue-400">bannnieres</a>
-          <a href="/admin/articles" className="block hover:text-blue-400">
-            Articles
-          </a>
-        </nav>
-      </aside>
-
-    {/* ─────────────── MAIN CONTENT ─────────────── */}
-    <main className="flex-1 bg-muted/40 p-8 overflow-y-auto">
-      <div className="mx-auto max-w-7xl space-y-10">
-        <h1 className="text-2xl font-semibold">
-          Gestion des Professionnels&nbsp;&amp;&nbsp;Cliniques
-        </h1>
-
-        <Tabs defaultValue="pros" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="pros">Professionnels</TabsTrigger>
-            <TabsTrigger value="clinics">Cliniques</TabsTrigger>
-          </TabsList>
-
-          {/* ─────────── PROFESSIONNELS ─────────── */}
-          <TabsContent value="pros" className="space-y-4">
-            <div className="flex justify-end">
-              <Button onClick={openNewPro} className="gap-2">
-                <FiPlus /> Nouveau&nbsp;pro
-              </Button>
-            </div>
-
-            <div className="rounded-lg border shadow-sm overflow-x-auto">
-              <table className="w-full text-sm whitespace-nowrap">
-                <thead className="bg-muted/60">
-                  <tr>
-                    <th className="px-4 py-2 w-8">#</th>
-                    <th className="px-4 py-2 w-48">Nom</th>
-                    <th className="px-4 py-2">Email</th>
-                    <th className="px-4 py-2">Spécialité</th>
-                    <th className="px-4 py-2">Abonné&nbsp;?</th>
-                    <th className="px-4 py-2">Abonnement</th>
-                    <th className="px-4 py-2">Montant&nbsp;(€)</th>
-                    <th className="px-4 py-2">Fin</th>
-                    <th className="px-4 py-2 w-32 text-center">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {pros.map((p, i) => (
-                    <tr key={p.professional_id} className="border-t">
-                      <td className="px-4 py-2 text-center">{i + 1}</td>
-                      <td className="px-4 py-2">{p.full_name}</td>
-                      <td className="px-4 py-2">{p.email}</td>
-                      <td className="px-4 py-2">{p.specialization ?? "—"}</td>
-                      <td
-                        className={`px-4 py-2 font-medium ${
-                          p.is_premium ? "text-green-600" : "text-destructive"
-                        }`}
-                      >
-                        {p.is_premium ? "Oui" : "Non"}
-                      </td>
-                      <td className="px-4 py-2">{p.subscription_name ?? "—"}</td>
-                      <td className="px-4 py-2">{p.subscription_value ?? "—"}</td>
-                      <td className="px-4 py-2">{p.subscription_end ?? "—"}</td>
-                      <td className="px-4 py-2 text-center space-x-1">
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          onClick={() => startEditPro(p)}
-                        >
-                          <FiEdit3 />
-                        </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          onClick={() => deletePro(p.professional_id)}
-                        >
-                          <FiTrash />
-                        </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          onClick={() => setSelectedPro(p.professional_id)}
-                        >
-                          <FiGift />
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                  {pros.length === 0 && (
-                    <tr>
-                      <td colSpan={9} className="text-center py-10">
-                        Aucun professionnel.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </TabsContent>
-
-          {/* ─────────── CLINIQUES ─────────── */}
-          <TabsContent value="clinics" className="space-y-4">
-            <div className="flex justify-end">
-              <Button onClick={openNewClinic} className="gap-2">
-                <FiPlus /> Nouvelle&nbsp;clinique
-              </Button>
-            </div>
-
-            <div className="rounded-lg border shadow-sm overflow-x-auto">
-              <table className="w-full text-sm whitespace-nowrap">
-                <thead className="bg-muted/60">
-                  <tr>
-                    <th className="px-4 py-2 w-8">#</th>
-                    <th className="px-4 py-2 w-56">Nom</th>
-                    <th className="px-4 py-2">Adresse</th>
-                    <th className="px-4 py-2">Ville</th>
-                    <th className="px-4 py-2">Pays</th>
-                    <th className="px-4 py-2">Email</th>
-                    <th className="px-4 py-2 w-28 text-center">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {clinics.map((c, i) => (
-                    <tr key={c.clinic_id} className="border-t">
-                      <td className="px-4 py-2 text-center">{i + 1}</td>
-                      <td className="px-4 py-2">{c.name}</td>
-                      <td className="px-4 py-2">{c.address ?? "—"}</td>
-                      <td className="px-4 py-2">{c.city ?? "—"}</td>
-                      <td className="px-4 py-2">{c.country ?? "—"}</td>
-                      <td className="px-4 py-2">{c.email ?? "—"}</td>
-                      <td className="px-4 py-2 text-center space-x-1">
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          onClick={() => startEditClinic(c)}
-                        >
-                          <FiEdit3 />
-                        </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          onClick={() => deleteClinic(c.clinic_id)}
-                        >
-                          <FiTrash />
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                  {clinics.length === 0 && (
-                    <tr>
-                      <td colSpan={7} className="text-center py-10">
-                        Aucune clinique.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </TabsContent>
-        </Tabs>
-        {/* ─── DIALOG PROFESSIONNEL ────────────────────────── */}
-      {showProDialog && editPro && (
-        <Dialog open={showProDialog} onOpenChange={setShowProDialog}>
-          <DialogContent className="w-full max-w-lg">
-            <DialogHeader>
-              <DialogTitle>{editPro.professional_id ? "Modifier" : "Ajouter"} un professionnel</DialogTitle>
-            </DialogHeader>
-
-<form
-  onSubmit={(e) => {
-    e.preventDefault();
-    savePro();
-  }}
-  className="space-y-4"
->
-  <Input
-    placeholder="Nom complet"
-    value={editPro.full_name || ""}
-    onChange={(e) => setEditPro({ ...editPro, full_name: e.target.value })}
-    required
-  />
-  <Input
-    placeholder="Nom de la clinique"
-    value={editPro.clinic_name || ""}
-    onChange={(e) => setEditPro({ ...editPro, clinic_name: e.target.value })}
-  />
-  <Input
-    placeholder="Ville"
-    value={editPro.city || ""}
-    onChange={(e) => setEditPro({ ...editPro, city: e.target.value })}
-  />
-  <Input
-    placeholder="Pays"
-    value={editPro.country || ""}
-    onChange={(e) => setEditPro({ ...editPro, country: e.target.value })}
-  />
-  <Input
-    placeholder="Email"
-    type="email"
-    value={editPro.email || ""}
-    onChange={(e) => setEditPro({ ...editPro, email: e.target.value })}
-    required
-  />{}
-  <Input
-    placeholder="Mot de passe"
-    type="password"
-    value={editPro.password || ""}
-    onChange={(e) => setEditPro({ ...editPro, password: e.target.value })}
-    required={!editPro.professional_id} // obligatoire en création, pas en modif
-  />
-  <Input
-    placeholder="Téléphone"
-    value={editPro.phone_number || ""}
-    onChange={(e) => setEditPro({ ...editPro, phone_number: e.target.value })}
-  />
-  <Input
-    placeholder="Spécialité"
-    value={editPro.specialization || ""}
-    onChange={(e) => setEditPro({ ...editPro, specialization: e.target.value })}
-  />
-  <Input
-    placeholder="Durée d’expérience (en années)"
-    type="number"
-    value={editPro.practice_tenure ?? ""}
-    onChange={(e) =>
-      setEditPro({ ...editPro, practice_tenure: parseInt(e.target.value) })
+    if (!res.ok) {
+      alert("Erreur lors de la sauvegarde");
+      return;
     }
-  />
-  <Input
-    placeholder="Date de début de pratique"
-    type="date"
-    value={editPro.practice_start_date || ""}
-    onChange={(e) =>
-      setEditPro({ ...editPro, practice_start_date: e.target.value })
-    }
-  />
-  <Input
-    placeholder="Type (ex: doctor, assistant...)"
-    value={editPro.type || ""}
-    onChange={(e) => setEditPro({ ...editPro, type: e.target.value })}
-  />
-  <div className="flex items-center gap-2">
-    <input
-      id="is_premium"
-      type="checkbox"
-      checked={!!editPro.is_premium}
-      onChange={(e) =>
-        setEditPro({ ...editPro, is_premium: e.target.checked })
-      }
-    />
-    <label htmlFor="is_premium">Est premium</label>
-  </div>
 
-  <Button type="submit" className="w-full">
-    Enregistrer
-  </Button>
-</form>
+    await loadProfessionals();
+    closeDialog();
+  };
 
-          </DialogContent>
-        </Dialog>
-      )}
+  const removeProfessional = async (id: number) => {
+    if (!confirm("Supprimer ce professionnel ?")) return;
+    const res = await fetch(`/api/professional/${id}`, { method: "DELETE" });
+    if (res.ok) setProfessionals((prev) => prev.filter((p) => p.professional_id !== id));
+  };
 
-      {/* ─── DIALOG CLINIQUE ────────────────────────────── */}
-      {showClinicDialog && editClinic && (
-        <Dialog open={showClinicDialog} onOpenChange={setShowClinicDialog}>
-          <DialogContent className="w-full max-w-lg">
-            <DialogHeader>
-              <DialogTitle>{editClinic.clinic_id ? "Modifier" : "Ajouter"} une clinique</DialogTitle>
-            </DialogHeader>
+  const openNewDialog = () => {
+    setEditProfessional(null);
+    setForm({});
+    setIsDialogOpen(true);
+  };
 
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                saveClinic();
-              }}
-              className="space-y-4"
-            >
-              <Input
-                placeholder="Nom"
-                value={editClinic.name || ""}
-                onChange={(e) =>
-                  setEditClinic({ ...editClinic, name: e.target.value })
-                }
-                required
-              />
-              <Input
-                placeholder="Adresse"
-                value={editClinic.address || ""}
-                onChange={(e) =>
-                  setEditClinic({ ...editClinic, address: e.target.value })
-                }
-              />
-              <Input
-                placeholder="Ville"
-                value={editClinic.city || ""}
-                onChange={(e) =>
-                  setEditClinic({ ...editClinic, city: e.target.value })
-                }
-              />
-              <Input
-                placeholder="Pays"
-                value={editClinic.country || ""}
-                onChange={(e) =>
-                  setEditClinic({ ...editClinic, country: e.target.value })
-                }
-              />
-              <Input
-                placeholder="Email"
-                type="email"
-                value={editClinic.email || ""}
-                onChange={(e) =>
-                  setEditClinic({ ...editClinic, email: e.target.value })
-                }
-              />
-              <Button type="submit" className="w-full">
-                Enregistrer
-              </Button>
-            </form>
-          </DialogContent>
-        </Dialog>
-      )}
-      {showGiftDialog && (
-  <Dialog open={showGiftDialog} onOpenChange={setShowGiftDialog}>
-    <DialogContent className="w-full max-w-md">
-      <DialogHeader>
-        <DialogTitle>Offrir un abonnement</DialogTitle>
-        <DialogDescription>
-          Choisissez le type d’abonnement et la date de fin pour ce professionnel.
-        </DialogDescription>
-      </DialogHeader>
+  const openEditDialog = (professional: Professional) => {
+    setEditProfessional(professional);
+    setForm(professional);
+    setIsDialogOpen(true);
+  };
 
-      <div className="space-y-4">
-        <select
-          className="w-full border rounded p-2"
-          value={subscriptionType}
-          onChange={(e) => setSubscriptionType(e.target.value)}
-        >
-          <option value="basic">Basique</option>
-          <option value="standard">Standard</option>
-          <option value="premium">Premium</option>
-        </select>
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+    setEditProfessional(null);
+  };
 
-        <input
-          type="date"
-          className="w-full border rounded p-2"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-        />
+  useEffect(() => {
+    loadProfessionals();
+  }, []);
 
-        <Button
-          onClick={async () => {
-            if (selectedPro === null) return;
-            await offerSubscription(selectedPro, subscriptionType, endDate);
-            setShowGiftDialog(false);
-            setSelectedPro(null);
-          }}
-        >
-          Offrir l’abonnement
+  const filteredProfessionals = professionals.filter((p) =>
+    p.full_name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div className="flex">
+      <Sidebar />
+      <main className="flex-1 ml-64 p-6 bg-muted/40 h-screen overflow-hidden">
+        <div className="max-w-7xl mx-auto h-full flex flex-col space-y-6">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-semibold">Gestion des professionnels</h1>
+            <Button onClick={openNewDialog} className="gap-2">
+              <FiPlus /> Ajouter un professionnel
+            </Button>
+          </div>
+
+          <Input
+            placeholder="Rechercher par nom..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="max-w-sm"
+          />
+
+          <div className="overflow-y-auto flex-1 border rounded bg-white">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Photo de profile</TableHead>
+                  <TableHead>Nom complet</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Téléphone</TableHead>
+                  <TableHead>Spécialité</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+<TableBody>
+  {filteredProfessionals.map((p) => (
+    <TableRow key={p.professional_id}>
+      <TableCell>
+        {p.photo_url ? (
+          <img
+            src={p.photo_url}
+            alt="photo professionnel"
+            className="h-10 w-10 object-cover rounded-full"
+          />
+        ) : (
+          <div className="h-10 w-10 bg-gray-300 rounded-full" />
+        )}
+      </TableCell>
+      <TableCell>{p.full_name}</TableCell>
+      <TableCell>{p.email}</TableCell>
+      <TableCell>{p.phone_number}</TableCell>
+      <TableCell>{p.specialization}</TableCell>
+      <TableCell className="text-right space-x-2">
+        <Button size="icon" variant="ghost" onClick={() => openEditDialog(p)}>
+          <FiEdit />
         </Button>
-      </div>
-    </DialogContent>
-  </Dialog>
-)}
-      </div>
-    </main>
-  </div>
-);
+        <Button size="icon" variant="ghost" onClick={() => removeProfessional(p.professional_id)}>
+          <FiTrash />
+        </Button>
+      </TableCell>
+    </TableRow>
+  ))}
+</TableBody>
 
+            </Table>
+          </div>
+
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogContent className="max-w-2xl">
+              <DialogHeader>
+                <DialogTitle>{editProfessional ? "Modifier le professionnel" : "Ajouter un professionnel"}</DialogTitle>
+                <DialogDescription>Complétez les informations.</DialogDescription>
+              </DialogHeader>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Input placeholder="Nom complet" value={form.full_name || ""} onChange={(e) => setForm({ ...form, full_name: e.target.value })} />
+                <Input placeholder="Email" value={form.email || ""} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                <Input type="password" placeholder="Mot de passe" value={form.password || ""} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+                <Input placeholder="Téléphone" value={form.phone_number || ""} onChange={(e) => setForm({ ...form, phone_number: e.target.value })} />
+                <Input placeholder="Ville" value={form.city || ""} onChange={(e) => setForm({ ...form, city: e.target.value })} />
+                <Input placeholder="Pays" value={form.country || ""} onChange={(e) => setForm({ ...form, country: e.target.value })} />
+                <Input placeholder="Spécialité" value={form.specialization || ""} onChange={(e) => setForm({ ...form, specialization: e.target.value })} />
+              </div>
+
+              <div className="flex justify-end pt-4 gap-2">
+                <Button variant="outline" onClick={closeDialog}>Annuler</Button>
+                <Button onClick={saveProfessional}>{editProfessional ? "Mettre à jour" : "Enregistrer"}</Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </main>
+    </div>
+  );
 }

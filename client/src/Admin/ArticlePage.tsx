@@ -19,6 +19,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { FiPlus, FiEdit, FiTrash } from "react-icons/fi";
+import Sidebar from "./AdminSidebar";
 
 /* -------------------------------------------------------------------------- */
 /*                                  Types                                     */
@@ -147,28 +148,10 @@ export default function ArticlePage() {
   return (
     <div className="flex min-h-screen">
       {/* SIDEBAR */}
-      <aside className="w-64 bg-gray-900 text-white p-6 space-y-6">
-        <h2 className="text-xl font-bold">BodyMine Admin</h2>
-        <nav className="space-y-2">
-          <a href="/admin/dashboard" className="block hover:text-blue-400">
-            Dashboard
-          </a>
-          <a href="/admin/professionals" className="block hover:text-blue-400">
-            Professionals
-          </a>
-          <a href="/admin/services" className="block hover:text-blue-400">
-            Projet Patient
-          </a>
-          <a href="/admin/banners" className="block hover:text-blue-400">
-            Bannières
-          </a>
-          <a href="/admin/articles" className="block hover:text-blue-400">
-            Articles
-          </a>
-        </nav>
-      </aside>
+      <Sidebar/>
+      
 
-      <main className="flex-1 bg-muted/40 p-8 overflow-y-auto">
+      <main className="flex-1 bg-muted/40 p-8 overflow-y-auto ml-64 p-6">
         <div className="mx-auto max-w-7xl space-y-10">
           {/* Header */}
           <div className="flex items-center justify-between">

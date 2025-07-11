@@ -6,7 +6,12 @@ const formatDate = (d) => (d ? new Date(d).toISOString().slice(0, 10) : null);
 
 export const Professionals = {
   /* -------- READ -------- */
-  findAll: async () => {
+ findAll: async () => {
+    const [rows] = await pool.query('SELECT * FROM professionals');
+    return rows;
+  },
+
+  findSubscriptions: async () => {
     const [rows] = await pool.query(
       `/* ─── Professionals + abonnement actif OU, à défaut, le plus récent ─── */
 SELECT
@@ -123,6 +128,8 @@ ORDER BY pr.created_at DESC;
   /* -------- UPDATE -------- */
   update: async (id, data) => {
     // Hachage du mot de passe si présent
+      delete data.photo_url; // 💥 Supprime ce champ virtuel
+
     if (data.password) {
       data.password = await bcrypt.hash(data.password, 10);
     }

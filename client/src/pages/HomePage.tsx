@@ -399,109 +399,118 @@ export default function HomePage() {  const { user, updateUser, setToken } = use
 ></span>          <img src={doctorImage} alt="Doctor" className="doctor-img relative z-10 max-w-[900px] w-full h-auto" />
         </div>
         {/* Right: How it works */}
-        <div className="hero-right flex flex-col justify-center min-w-[320px] max-w-[400px] z-10">
-        <h4 className="text-3xl font-medium text-gray-900 mb-6 mt-0">How BodyMine Works</h4>          <ol className="list-none pl-0 max-w-[300px] ml-8 mt-2 counter-reset-[list-counter]">
-            <li className="relative pl-12 mb-4 text-lg leading-snug before:content-['1'] before:absolute before:left-0 before:top-0 before:w-10 before:h-10 before:rounded-full before:bg-[#7ddbdc] before:text-white before:flex before:items-center before:justify-center before:font-medium before:text-xl before:border before:border-[#7ddbdc] before:z-10">Search for doctors by specialty or service.</li>
-            <li className="relative pl-12 mb-4 text-lg leading-snug before:content-['2'] before:absolute before:left-0 before:top-0 before:w-10 before:h-10 before:rounded-full before:bg-[#7ddbdc] before:text-white before:flex before:items-center before:justify-center before:font-medium before:text-xl before:border before:border-[#7ddbdc] before:z-10">Select based on experience, fee or rating.</li>
-            <li className="relative pl-12 mb-4 text-lg leading-snug before:content-['3'] before:absolute before:left-0 before:top-0 before:w-10 before:h-10 before:rounded-full before:bg-[#7ddbdc] before:text-white before:flex before:items-center before:justify-center before:font-medium before:text-xl before:border before:border-[#7ddbdc] before:z-10">Start chat and ask questions with your Doctors.</li>
-          </ol>          <div className="flex justify-end w-full mt-4">
-            <Link to="/how-it-works" className="btn-hero secondary read-more-btn px-8 py-3 rounded-full text-lg font-medium shadow-sm transition-colors">
-              Read more
-            </Link>
-          </div>
-        </div>
-      </section>      {/* Searchbar */}
-      <section className="searchbar">        {/* ─────────── Première ligne : Champ recherche large + Location + Search ─────────── */}
-        <div className="search-row">
-          {/* Champ de recherche principal (large) */}
-          <div className="input-group">
-            <FiSearch className="icon" />
-            <input
-              type="text"
-              placeholder="Doctor, Hospital, Dental"
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-            />
-          </div>
+   <div className="hero-right">
+  <h4>How BodyMine Works</h4>
+  <ol>
+    <li>Search for doctors by specialty or service.</li>
+    <li>Select based on experience, fee or rating.</li>
+    <li>Start chat and ask questions with your Doctors.</li>
+  </ol>
+  <div className="flex justify-end w-full mt-4">
+    <Link to="/how-it-works" className="btn-hero secondary read-more-btn">
+      Read more
+    </Link>
+  </div>
+</div>
 
-          {/* Location */}
-          <div className="loc">
-            <FiMapPin className="icon" />
-            <input
-              type="text"
-              placeholder="Location"
-              value={localisation}
-              onChange={e => setLocation(e.target.value)}
-            />
-          </div>
+      </section>     <section className="searchbar">
 
-          {/* Search button */}
-          <button
-            className="search-btn"
-            onClick={() => handleProtectedNavigation('/search')}
+  <div className="search-grid">
+
+    {/* Colonne 1 : Doctor + Speciality + Country */}
+    <div className="col col-left">
+      {/* Ligne 1 : Doctor input */}
+      <div className="input-group full-width">
+        <FiSearch className="icon" />
+        <input
+          type="text"
+          placeholder="Doctor, Hospital, Dental"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+        />
+      </div>
+
+      {/* Ligne 2 : Speciality + Country */}
+      <div className="row">
+        <div className="select-group half">
+          <FaUserMd className="icon" />
+          <select
+            value={speciality}
+            onChange={e => setSpeciality(e.target.value)}
           >
-            Search
-          </button>
-        </div>        {/* ─────────── Deuxième ligne : Speciality (50% barre recherche) + Country (50% barre recherche) + Activity (sous Location) + Sort By ─────────── */}
-        <div className="search-row">
-          {/* Speciality - 50% de la largeur de la barre de recherche */}
-          <div className="select-group half-search-width">
-            <FaUserMd className="icon" />
-            <select
-              value={speciality}
-              onChange={e => setSpeciality(e.target.value)}
-            >
-              <option value="">Speciality</option>
-              {specialitie.map(sp => (
-                <option key={sp} value={sp}>{sp}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Country - 50% de la largeur de la barre de recherche */}
-          <div className="select-group half-search-width">
-            <FiGlobe className="icon" />
-            <select
-              value={country}
-              onChange={e => setCountry(e.target.value)}
-            >
-              <option value="">Country</option>
-              {countries.map(c => (
-                <option key={c} value={c}>{c}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Activity - positionné sous Location, même taille */}
-          <div className="select-group activity-under-location">
-            <FaHeartbeat className="icon" />
-            <select
-              value={activity}
-              onChange={e => setActivity(e.target.value)}
-            >
-              <option value="">Activity</option>
-              <option value="clinic">Clinic</option>
-              <option value="hospital">Hospital</option>
-              <option value="doctor">Doctor</option>
-            </select>
-          </div>
-
-          {/* Sort By */}
-          <div className="select-group sort-group">
-            <label htmlFor="sortBy">Sort&nbsp;By</label>
-            <select
-              id="sortBy"
-              value={sortBy}
-              onChange={e => setSortBy(e.target.value)}
-            >
-              <option value="relevance">Relevance</option>
-              <option value="speciality">Speciality</option>
-              <option value="reviews">Reviews</option>
-              <option value="popularity">Popularity</option>
-            </select>
-          </div>
+            <option value="">Speciality</option>
+            {specialitie.map(sp => (
+              <option key={sp} value={sp}>{sp}</option>
+            ))}
+          </select>
         </div>
-      </section>
+
+        <div className="select-group half">
+          <FiGlobe className="icon" />
+          <select
+            value={country}
+            onChange={e => setCountry(e.target.value)}
+          >
+            <option value="">Country</option>
+            {countries.map(c => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+    </div>
+
+    {/* Colonne 2 : Location + Activity */}
+    <div className="col col-middle">
+      <div className="loc full-width">
+        <FiMapPin className="icon" />
+        <input
+          type="text"
+          placeholder="Location"
+          value={localisation}
+          onChange={e => setLocation(e.target.value)}
+        />
+      </div>
+      <div className="select-group full-width">
+        <FaHeartbeat className="icon" />
+        <select
+          value={activity}
+          onChange={e => setActivity(e.target.value)}
+        >
+          <option value="">Activity</option>
+          <option value="clinic">Clinic</option>
+          <option value="hospital">Hospital</option>
+          <option value="doctor">Doctor</option>
+        </select>
+      </div>
+    </div>
+
+    {/* Colonne 3 : Search + Sort by */}
+    <div className="col col-right">
+      <button
+        className="srch-btn full-width"
+        onClick={() => handleProtectedNavigation('/search')}
+      >
+        Search
+      </button>
+      <div className="sort-group full-width">
+        <label htmlFor="sortBy">Sort by:</label>
+        <select
+          id="sortBy"
+          value={sortBy}
+          onChange={e => setSortBy(e.target.value)}
+        >
+          <option value="relevance">Relevance</option>
+          <option value="speciality">Speciality</option>
+          <option value="reviews">Reviews</option>
+          <option value="popularity">Popularity</option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+
+</section>
 
   
       {/* Carousel */}

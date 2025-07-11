@@ -190,7 +190,7 @@ img {
   margin-top: 1.5rem; /* Marge réduite car titre plus haut */
   color: black;
   line-height: 1.4;
-  width: calc(100% + 15rem);
+  width: calc(100% + 5rem);
   margin-right: -15rem;
 }
 .hero-buttons {
@@ -422,191 +422,130 @@ img {
   font-weight: 600;
 }
 
-/* ---------------------------------------
-   SEARCH BAR (CARD STYLE)
---------------------------------------- */
-/* SearchBar.module.css
-   — remplace ou fusionne avec tes règles existantes — */  /* ❶ Conteneur général */  .searchbar {
-    background: #fff;
-    padding: 2.5rem 3.2rem; /* Encore plus grand */
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    gap: 1.6rem; /* Encore plus grand */
-    border-radius: 25px; /* Encore plus grand */
-    box-shadow: 0 4px 20px rgba(0,0,0,.08);
-    border: 1px solid #e6edf0;
-    max-width: 1700px; /* Encore plus grand */
-    margin: -2rem auto 2rem; /* Descend la barre de recherche */
-    position: relative;
-    z-index: 10;
-    justify-content: flex-start; /* Aligne tout à gauche */
-    align-items: center; /* Centre verticalement */
-  }.field-col {
+.searchbar {
+  background: #fff;
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.08);
+  border: 1px solid #e6edf0;
+  width: 1300px;
+  max-width: 1300px;
+  min-width: 1300px;
+  margin: -1.5rem auto 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.search-grid {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+/* ─── Colonnes ─────────────────────────────── */
+.col-left {
+  width: 50%;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;        /* distance verticale interne */
-  align-items: center; /* Centre les éléments dans la colonne */
+  gap: 1rem;
 }
 
-/* Rangée interne Speciality + Country */
-.field-row {
+.col-middle,
+.col-right {
+  width: 25%;
   display: flex;
-  gap: 0.75rem;        /* distance horizontale entre les 2 selects */
-  justify-content: center; /* Centre les éléments */
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.field-row > * {
-  flex: 1;             /* chaque select prend exactement 50 % du bloc */
+/* ─── Ligne imbriquée : Speciality + Country ─ */
+.row {
+  display: flex;
+  gap: 1rem;
 }
-  /* ❷ Première ligne (inputs + bouton + filtre) */
-  .search-row {
-    display: flex;
-    flex-wrap: wrap;    gap: .8rem;
-    align-items: center;
-    justify-content: flex-start; /* Aligne à gauche */  }.input-group {
-    position: relative;
-    flex: 15;     /* Prend 15 fois plus d'espace - ÉNORME ! */
-    min-width: 800px; /* Largeur minimale massive pour dominer totalement */
-    max-width: none;
-  }  .select-group {
-    position: relative;
-    flex: 1;        /* largeur flexible standard pour Sort By */
-    min-width: 200px; /* Largeur normale pour Sort By */
-    max-width: none;
-  }
-  
-  /* Speciality et Country : 50% chacun de la largeur de la barre de recherche */
-  .select-group.half-search-width {
-    flex: 7.5;      /* 50% de flex: 15 (barre de recherche) = 7.5 */
-    min-width: 400px; /* Largeur équivalente à 50% de la barre de recherche */
-  }
-    /* Activity : même taille que Location */
-  .select-group.activity-under-location {
-    flex: 2;        /* Même flex que .loc */
-    min-width: 400px; /* Même largeur que Location */
-  }
-  
-  .input-group .icon,
-  .select-group .icon {
-    position: absolute;
-    top: 50%;
-    left: 14px;
-    transform: translateY(-50%);
-    color: #98a1ab;
-    pointer-events: none;
-    font-size: 1.1rem;
-  }
-    /* champs texte - AGRANDIS ENCORE PLUS */
-  .input-group input {
-        width: 100%;
-    padding: 1.2rem 2rem 1.2rem 4rem !important;
-    border: 1px solid #ccdede;
-    border-radius: 8px !important;
-    font-size: 1.1rem !important;
-  }
-  
-  /* Location input - AGRANDI */
-  .loc input {
-    width: 100%;
-    padding: 1.2rem 1.5rem 1.2rem 3.5rem !important;   /* Padding plus grand */
-    border: 1px solid #ccdede;
-    border-radius: 8px !important;
-    font-size: 1.1rem !important;
-  }
-  
-  /* Select dropdowns - AGRANDIS */
-  .select-group select {
-    width: 100%;
-    padding: 1.2rem 1.5rem 1.2rem 3.5rem !important;
-    border: 1px solid #ccdede;
-    border-radius: 8px !important;
-    font-size: 1.1rem !important;
-    background: #fff;
-    color: #3a3a3a;
-    appearance: none;
-  }    /* Ajuster la largeur minimale de location - AGRANDIE */
-  .loc {
-    flex: 2; /* Prend 2 fois plus d'espace que les autres éléments */
-    position: relative;
-    min-width: 400px !important; /* Largeur minimale plus grande */  
-  }/* Bouton de recherche - MÊME HAUTEUR QUE LA BARRE DE RECHERCHE */  
-    .search-btn {
-    background: linear-gradient(315deg, #04C2C2 0%, #19c7c7 50%, #7ddbdc 100%) !important; /* Même dégradé qu'Explore mais direction inversée */
-    border: none !important;
-    color: #fff !important;
-    padding: 1.2rem 6rem !important; /* Même hauteur que input-group (1.5rem vertical) */
-    border-radius: 6px !important; /* Coins plus arrondis */
-    font-size: 1.3rem !important; /* Texte encore plus grand */
-    font-weight: 700 !important; /* Plus épais */
-    cursor: pointer !important;
-    transition: filter .2s ease !important;
-    min-width: 180px !important; /* Largeur minimale pour être plus imposant */
-  }
-  
-  /* Ajuster les icônes */
-  .input-group .icon,
-  .select-group .icon {
-    position: absolute;
-    top: 50%;
-    left: 18px !important; /* Ajusté pour le nouveau padding */
-    transform: translateY(-50%);
-    color: #98a1ab;
-    pointer-events: none;
-    font-size: 1.3rem !important; /* Icônes plus grandes */
-  }
-  
-  .loc .icon {
-    position: absolute;
-    top: 50%;
-    left: 18px !important;
-    transform: translateY(-50%);
-    color: #98aba0;
-    pointer-events: none;
-    font-size: 1.3rem !important;
-  }
-  
-  /* ❸ Deuxième ligne (filtres) */
-  .filter-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-  }
-  /* ▸ Spécifique au bloc Sort By  ----------------------------- */
+
+/* ─── Composants ───────────────────────────── */
+.full-width {
+  width: 100%;
+}
+
+.half {
+  width: 50%;
+}
+
+.input-group,
+.loc,
+.select-group,
 .sort-group {
-  display: flex;               /* label + select côte-à-côte   */
+  position: relative;
+}
+
+.input-group input,
+.loc input,
+.select-group select,
+.sort-group select {
+  width: 100%;
+  padding: 0.9rem 1rem 0.9rem 2.6rem;
+  border: 1px solid #ccdede;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  color: #98a1ab;
+  pointer-events: none;
+}
+
+.srch-btn {
+  background: linear-gradient(315deg, #04C2C2 0%, #19c7c7 50%, #7ddbdc 100%);
+  border: none;
+  color: #fff;
+  padding: 0.95rem 2.2rem;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.sort-group {
+  display: flex;
   align-items: center;
-  gap: .4rem;                  /* espace réduit entre label et menu pour rapprocher */
-  position: relative;  
-  margin-top: 0;        /* pour la flèche ::after        */
-  min-width: 250px; /* Largeur réduite pour Sort By */
+  gap: 0.5rem;
 }
 
 .sort-group label {
-  color: var(--muted);         /* gris #98a1ab                 */
-  font-size: .95rem;
+  font-size: 0.95rem;
   font-weight: 500;
+  color: #98a1ab;
   white-space: nowrap;
-  margin-right: .2rem; /* Espace supplémentaire réduit pour rapprocher */
+  width: 20%;
 }
 
-/* le <select> hérite déjà de .select-group select :   
-   on le raffine légèrement pour coller à la maquette */
-.sort-group select {
-  font-size: 1.1rem;          /* Même taille que les autres selects */
-  min-width: 160px; /* Largeur ajustée pour être plus compact */
-  padding: 1.2rem 1.5rem 1.2rem 0.8rem !important; /* Même padding que les autres selects */
-  border: 1px solid #ccdede;
-  border-radius: 12px !important;
-  color: #3a3a3a;
+/* Pas de responsive auto */
+@media screen and (max-width: 1300px) {
+  .searchbar {
+    transform: scale(0.85);
+    transform-origin: top center;
+  }
 }
 
-/* flèche ▼ personnalisée */
 
+/* Empêche le comportement responsive automatique */
+@media screen and (max-width: 1300px) {
+  .searchbar {
+    transform: scale(0.85);
+    transform-origin: top center;
+  }
+}
 
-/* retire la flèche native sous Edge/IE */
-.sort-group select::-ms-expand { display: none; }
 
 /* ===== RESPONSIVITÉ TABLETTE - RÉDUCTION DES ÉLÉMENTS AGRANDIS ===== */
 @media (max-width: 1024px) {
@@ -986,15 +925,8 @@ img {
   }
   
   /* Ajustement du sort-by pour très petits écrans */
-  .sort-group {
-    gap: 0.5rem !important; /* Espacement réduit */
-  }
-  
-  .sort-group select {
-    min-width: 140px !important; /* Largeur réduite */
-    padding: 0.6rem 0.8rem 0.6rem 0.4rem !important; /* Padding réduit */
-    font-size: 0.8rem !important; /* Texte plus petit */
-  }
+
+
   
   .sort-group label {
     font-size: 0.85rem !important; /* Label plus petit */

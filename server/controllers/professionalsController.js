@@ -15,6 +15,14 @@ export async function getAll(req, res, next) {
     next(err);
   }
 }
+export async function getSubscriptions(req, res, next) {
+  try {
+    const rows = await Professionals.findSubscriptions();
+    res.json(rows);
+  } catch (err) {
+    next(err);
+  }
+}
 export async function getDoctor(req, res, next) {
   try {
     const rows = await Professionals.findDoctor();
